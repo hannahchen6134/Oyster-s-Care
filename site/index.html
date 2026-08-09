@@ -400,34 +400,87 @@
     .footer { margin-top: 30px; color: var(--muted); text-align: center; font-size: 14px; }
 
     @media (max-width: 560px) {
-      body { font-size: 17px; }
-      .header-inner, .nav-inner, main { width: calc(100% - 64px); }
+      body { font-size: 16px; line-height: 1.68; }
+      .header-inner, .nav-inner, main { width: calc(100% - 40px); }
+      .header { border-bottom-width: 3px; }
+      .header-inner { padding: 20px 0 18px; }
+      .kicker { margin-bottom: 2px; font-size: 13px; }
+      h1 { font-size: 29px; line-height: 1.15; }
+      .nav-wrap { padding: 8px 0; }
       .nav-inner { grid-template-columns: repeat(2, 1fr); }
-      h1 { font-size: 32px; }
-      .tab { font-size: 14px; }
-      .intro, .tool-box, .contact-box { padding: 22px; }
-      .intro h2, .tool-box h2, .contact-box h2, .roster-intro h2 { font-size: 25px; }
-      .phase-title { padding: 22px 22px 16px; }
-      .phase-title h3 { font-size: 23px; }
-      .phase-body { padding: 0 22px 22px; }
-      .amounts, .photo-grid, .screens { grid-template-columns: 1fr; }
-      .amount-card strong { font-size: 32px; }
-      .amount-card strong small { font-size: 16px; }
-      .amount-card > span { font-size: 16px; }
+      .nav-inner { gap: 4px; padding: 4px; border-radius: 15px; }
+      .tab { min-height: 44px; padding: 5px 3px; border-radius: 10px; font-size: 14px; }
+      main { padding: 16px 0 64px; }
+      .intro, .tool-box, .contact-box, .roster-intro {
+        margin-bottom: 14px;
+        padding: 18px;
+        border-radius: 16px;
+        box-shadow: none;
+      }
+      .intro h2, .tool-box h2, .contact-box h2, .roster-intro h2 { font-size: 21px; }
+      .intro .gentle-note { margin-top: 12px; padding-top: 12px; }
+      .record-rule { margin-bottom: 16px; padding: 13px 15px; border-radius: 12px; }
+      .phase-list { gap: 14px; }
+      .phase { border-radius: 17px; box-shadow: none; }
+      .phase-title { gap: 8px; padding: 17px 18px 11px; }
+      .phase-title h3 { font-size: 20px; }
+      .phase-title p { font-size: 15px; }
+      .phase-body { padding: 0 18px 18px; }
+      .phase-body > ol, .phase-body > ul { padding-left: 22px; }
+      .phase-body li { margin: 5px 0; }
+      .amounts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+      .amount-card { padding: 13px 12px; border-radius: 13px; }
+      .amount-card b { font-size: 15px; }
+      .amount-card strong { margin: 2px 0; font-size: 28px; }
+      .amount-card:last-child strong { font-size: 22px; line-height: 1.2; }
+      .amount-card strong small { margin-bottom: 2px; font-size: 15px; }
+      .amount-card > span { display: block; font-size: 15px; line-height: 1.48; }
+      .strong { font-size: 20px; }
+      details { margin-top: 10px; border-radius: 13px; }
+      summary { padding: 12px 14px; }
+      .detail-body { padding: 0 14px 16px; }
+      .warning { margin-top: 12px; padding: 13px 14px; border-radius: 11px; }
+      .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+      .photo-slot { min-height: 92px; padding: 11px; border-radius: 12px; }
+      .photo-slot figcaption { font-size: 13px; }
+      .allowed-food-photo, .first-tool-photo {
+        min-height: 118px;
+        padding: 15px;
+        border-radius: 14px;
+      }
+      .allowed-food-photo { margin-top: 13px; }
+      .first-tool-photo { margin-bottom: 13px; }
+      .allowed-food-photo b, .first-tool-photo b { font-size: 18px; }
+      .allowed-food-photo figcaption, .first-tool-photo figcaption { font-size: 14px; }
+      .before-leaving li { min-height: 46px; padding-block: 10px; }
+      .before-leaving li::before { top: 20px; }
+      .four-steps { gap: 7px; }
+      .four-steps li { grid-template-columns: 34px 1fr; gap: 10px; padding: 11px; }
+      .four-steps b { width: 34px; height: 34px; }
+      .screens { grid-template-columns: 1fr; margin-top: 14px; }
       .shift-detail { font-size: 15px; }
-      .day-head strong { font-size: 23px; }
-      .shift-time { font-size: 17px; }
-      .person-name { font-size: 20px; }
-      .thanks strong { font-size: 19px; }
-      .phone { font-size: 32px; }
+      .roster-list { gap: 14px; }
+      .day-card { border-radius: 16px; box-shadow: none; }
+      .day-head { padding: 13px 17px; }
+      .day-head strong { font-size: 20px; }
+      .shift-list { padding: 5px 17px 10px; }
+      .shift { padding: 12px 0; }
+      .shift-time { font-size: 16px; }
+      .person-name { font-size: 18px; }
+      .overnight { padding: 12px; border-radius: 11px; }
+      .handover-note { margin-top: 14px; padding: 13px 15px; border-radius: 12px; }
+      .thanks { margin-top: 18px; padding: 17px; border-radius: 15px; }
+      .thanks strong { font-size: 18px; }
+      .footer { margin-top: 20px; }
       .shift { grid-template-columns: 1fr; gap: 3px; }
       .shift-person { align-items: flex-start; }
-      .photo-slot { min-height: 120px; }
     }
     @media (max-width: 360px) {
-      .header-inner, .nav-inner, main { width: calc(100% - 48px); }
+      .header-inner, .nav-inner, main { width: calc(100% - 32px); }
       .tab { font-size: 13px; }
-      h1 { font-size: 34px; }
+      h1 { font-size: 27px; }
+      .amount-card { padding-inline: 10px; }
+      .amount-card strong { font-size: 26px; }
     }
   </style>
 </head>
