@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蚵仔照護紀錄</title>
+    <style>
+      :root {
+        --bg: #f6f1e8;
+        --surface: rgba(255, 252, 247, 0.96);
+        --surface-strong: #fffdfa;
+        --ink: #223235;
+        --muted: #667673;
+        --line: rgba(34, 50, 53, 0.12);
+        --brand: #255b53;
+        --brand-soft: #d9e8e2;
+        --warn: #b4544d;
+        --warn-soft: #f9e0dc;
+        --shadow: 0 18px 48px rgba(34, 50, 53, 0.09);
+        --radius-xl: 28px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(37, 91, 83, 0.14), transparent 28%),
+          radial-gradient(circle at top right, rgba(212, 131, 86, 0.14), transparent 30%),
+          linear-gradient(180deg, #fbf8f2 0%, #f2ebdf 100%);
+      }
+
+      .shell {
+        width: min(980px, calc(100% - 24px));
+        margin: 0 auto;
+        padding: 20px 0 72px;
+      }
+
+      .hero,
+      .panel {
+        background: var(--surface);
+        border: 1px solid rgba(37, 91, 83, 0.1);
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        border-radius: var(--radius-xl);
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        right: -56px;
+        bottom: -76px;
+        width: 220px;
+        height: 220px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(37, 91, 83, 0.16), transparent 68%);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(37, 91, 83, 0.1);
+        color: var(--brand);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      h1 {
+        margin: 14px 0 8px;
+        font-size: clamp(28px, 5vw, 42px);
+        line-height: 1.08;
+      }
+
+      .hero-copy {
+        margin: 0;
+        max-width: 760px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .preview-badge {
+        display: none;
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-radius: var(--radius-md);
+        background: #fff0df;
+        color: #8b5928;
+        font-size: 14px;
+      }
+
+      .stack {
+        display: grid;
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .panel {
+        border-radius: var(--radius-lg);
+        padding: 20px;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .date-box {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 18px;
+        background: rgba(37, 91, 83, 0.06);
+      }
+
+      .status-line {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .summary-card {
+        padding: 16px;
+        border-radius: 18px;
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+      }
+
+      .summary-label {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .summary-value {
+        margin-top: 8px;
+        font-size: clamp(24px, 3vw, 34px);
+        font-weight: 900;
+        line-height: 1.05;
+      }
+
+      .summary-sub {
+        margin-top: 8px;
+        color: #536562;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .doctor-note {
+        margin-top: 16px;
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(37, 91, 83, 0.08), rgba(255, 255, 255, 0.84));
+        border: 1px solid rgba(37, 91, 83, 0.1);
+      }
+
+      .doctor-title {
+        margin: 0 0 8px;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .doctor-text {
+        margin: 0;
+        color: #445754;
+        line-height: 1.75;
+      }
+
+      .photo-card {
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 18px;
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+      }
+
+      .photo-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .photo-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .photo-sub {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .photo-thumb-wrap {
+        display: grid;
+        gap: 10px;
+      }
+
+      .photo-thumb {
+        width: 100%;
+        max-width: 240px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        cursor: zoom-in;
+        background: #f2efe7;
+      }
+
+      .photo-empty {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .upload-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-top: 12px;
+      }
+
+      .file-input {
+        max-width: 320px;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .section-title {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .section-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 10px;
+      }
+
+      .entry {
+        display: grid;
+        grid-template-columns: 126px 1fr auto;
+        gap: 14px;
+        align-items: start;
+        padding: 14px;
+        border-radius: 18px;
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+      }
+
+      .entry-time {
+        font-size: 24px;
+        font-weight: 900;
+        line-height: 1.05;
+      }
+
+      .entry-time small {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .entry-main {
+        display: grid;
+        gap: 8px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(37, 91, 83, 0.08);
+        color: var(--brand);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .chip.warn {
+        background: var(--warn-soft);
+        color: var(--warn);
+      }
+
+      .entry-note {
+        color: #4a5b58;
+        line-height: 1.65;
+        white-space: pre-wrap;
+      }
+
+      .empty {
+        padding: 24px;
+        border-radius: 18px;
+        border: 1px dashed rgba(37, 91, 83, 0.2);
+        background: rgba(255, 255, 255, 0.58);
+        color: var(--muted);
+        text-align: center;
+      }
+
+      details.panel {
+        padding: 0;
+        overflow: hidden;
+      }
+
+      details > summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 20px;
+      }
+
+      details > summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .summary-row .left h3 {
+        margin: 0 0 4px;
+        font-size: 20px;
+      }
+
+      .summary-row .left p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .toggle-hint {
+        color: var(--brand);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .form-wrap {
+        padding: 0 20px 20px;
+      }
+
+      .form-grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .field,
+      .field-row {
+        display: grid;
+        gap: 8px;
+      }
+
+      .field-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      label {
+        font-size: 13px;
+        font-weight: 800;
+        color: #4a635e;
+      }
+
+      input,
+      select,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--surface-strong);
+        padding: 12px 14px;
+        color: var(--ink);
+      }
+
+      textarea {
+        min-height: 92px;
+        resize: vertical;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: rgba(37, 91, 83, 0.45);
+        box-shadow: 0 0 0 4px rgba(37, 91, 83, 0.08);
+      }
+
+      .check-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .check-card {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: var(--surface-strong);
+      }
+
+      .check-card input {
+        width: auto;
+        margin: 0;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 12px 18px;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #255b53, #36766b);
+        color: #fff;
+        font-weight: 800;
+      }
+
+      .btn-secondary {
+        background: rgba(37, 91, 83, 0.08);
+        color: var(--brand);
+        font-weight: 800;
+      }
+
+      .btn-danger {
+        background: rgba(180, 84, 77, 0.08);
+        color: var(--warn);
+        font-weight: 800;
+      }
+
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(17, 24, 24, 0.78);
+        z-index: 50;
+      }
+
+      .lightbox.open {
+        display: flex;
+      }
+
+      .lightbox-inner {
+        position: relative;
+        max-width: min(92vw, 1080px);
+        max-height: 90vh;
+      }
+
+      .lightbox img {
+        display: block;
+        max-width: 100%;
+        max-height: 90vh;
+        border-radius: 20px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      }
+
+      .lightbox-close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
+
+      .loading {
+        opacity: 0.66;
+        pointer-events: none;
+      }
+
+      @media (max-width: 860px) {
+        .summary-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .entry {
+          grid-template-columns: 1fr;
+        }
+
+        .field-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .shell {
+          width: min(100% - 16px, 100%);
+          padding-top: 14px;
+        }
+
+        .hero,
+        .panel,
+        details > summary,
+        .form-wrap {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          display: grid;
+        }
+
+        .status-line {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="hero">
+        <div class="eyebrow">蚵仔照護站</div>
+        <h1><span id="catName">蚵仔</span> 每日狀況總覽</h1>
+        <p class="hero-copy">先看每天加總與腸胃重點，再往下看細節紀錄。這樣醫生第一眼就能知道今天喝水、進食、餵藥、大便嘔吐狀況，還能搭配每日照片。</p>
+        <div id="previewBadge" class="preview-badge">
+          目前是本機預覽模式，資料只會存在這台裝置的瀏覽器。部署到 Google Apps Script 後，資料會寫進 Google 試算表，照片也會跟著存在試算表。
+        </div>
+      </section>
+
+      <div class="stack">
+        <section class="panel" id="summaryPanel">
+          <div class="toolbar">
+            <div class="date-box">
+              <label for="selectedDate">查看日期</label>
+              <input id="selectedDate" type="date">
+              <button class="btn btn-secondary" type="button" id="goTodayBtn">今天</button>
+              <button class="btn btn-secondary" type="button" id="reloadBtn">重新整理</button>
+            </div>
+            <div class="status-line" id="statusLine">讀取中…</div>
+          </div>
+
+          <div class="summary-grid">
+            <article class="summary-card">
+              <div class="summary-label">喝水總量</div>
+              <div class="summary-value" id="waterTotal">0 g</div>
+              <div class="summary-sub" id="entryCountText">0 筆紀錄</div>
+            </article>
+            <article class="summary-card">
+              <div class="summary-label">食物總量</div>
+              <div class="summary-value" id="foodTotal">0 g</div>
+              <div class="summary-sub" id="foodDetail">乾糧 0 g / 罐罐 0 g</div>
+            </article>
+            <article class="summary-card">
+              <div class="summary-label">早晚藥</div>
+              <div class="summary-value" id="medicationHeadline">未勾選</div>
+              <div class="summary-sub" id="medicationStatus">早藥未勾選 / 晚藥未勾選</div>
+            </article>
+            <article class="summary-card">
+              <div class="summary-label">腸胃重點</div>
+              <div class="summary-value" id="digestiveHeadline">穩定</div>
+              <div class="summary-sub" id="digestiveSub">沒有大便或嘔吐備註</div>
+            </article>
+          </div>
+
+          <div class="doctor-note">
+            <h2 class="doctor-title">給醫生的一句話摘要</h2>
+            <p class="doctor-text" id="doctorSummary">今天還沒有紀錄。</p>
+          </div>
+
+          <div class="photo-card">
+            <div class="photo-head">
+              <div>
+                <h3 class="photo-title">每日照片</h3>
+                <div class="photo-sub">每天可放一張，點圖片可放大。</div>
+              </div>
+            </div>
+            <div id="photoArea" class="photo-thumb-wrap">
+              <div class="photo-empty">今天還沒有照片。</div>
+            </div>
+            <div class="upload-row">
+              <input id="dailyImageInput" class="file-input" type="file" accept="image/*">
+              <button class="btn btn-secondary" type="button" id="uploadImageBtn">上傳今日照片</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="timelinePanel">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">當日紀錄</h2>
+              <p class="section-note">以下是今天的補充細節，沒有填時間的紀錄會排在最後。</p>
+            </div>
+          </div>
+          <div id="timeline" class="timeline"></div>
+        </section>
+
+        <details class="panel" open>
+          <summary>
+            <div class="summary-row">
+              <div class="left">
+                <h3>新增紀錄</h3>
+                <p>需要時再展開填寫，避免首頁過度複雜。</p>
+              </div>
+              <div class="toggle-hint">展開 / 收合</div>
+            </div>
+          </summary>
+
+          <div class="form-wrap" id="formPanel">
+            <form id="entryForm" class="form-grid">
+              <div class="field-row">
+                <div class="field">
+                  <label for="date">日期</label>
+                  <input id="date" name="date" type="date" required>
+                </div>
+                <div class="field">
+                  <label for="time">時間（可留白）</label>
+                  <input id="time" name="time" type="time">
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="waterG">喝水量（g）</label>
+                  <input id="waterG" name="waterG" type="number" min="0" step="1" placeholder="例如 80">
+                </div>
+                <div class="field">
+                  <label for="foodAmountG">食物量（g）</label>
+                  <input id="foodAmountG" name="foodAmountG" type="number" min="0" step="1" placeholder="例如 42">
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="foodType">食物類型</label>
+                  <select id="foodType" name="foodType">
+                    <option value="">未填</option>
+                    <option value="乾糧">乾糧</option>
+                    <option value="罐罐">罐罐</option>
+                    <option value="零食">零食</option>
+                    <option value="其他">其他</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="brand">品牌 / 品項</label>
+                  <input id="brand" name="brand" list="brandSuggestions" placeholder="例如 法米納腎臟罐">
+                  <datalist id="brandSuggestions"></datalist>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>早晚餵藥</label>
+                <div class="check-row">
+                  <label class="check-card"><input id="medMorning" name="medMorning" type="checkbox" value="有"> 早藥有餵</label>
+                  <label class="check-card"><input id="medNight" name="medNight" type="checkbox" value="有"> 晚藥有餵</label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="stoolDetail">大便狀況</label>
+                <textarea id="stoolDetail" name="stoolDetail" placeholder="例如：有便，成形偏軟，顏色正常。"></textarea>
+              </div>
+
+              <div class="field">
+                <label for="vomitDetail">嘔吐狀況</label>
+                <textarea id="vomitDetail" name="vomitDetail" placeholder="例如：凌晨吐透明泡沫，量少。"></textarea>
+              </div>
+
+              <div class="field">
+                <label for="note">其他備註</label>
+                <textarea id="note" name="note" placeholder="例如：精神普通、食慾一般、有自己去喝水。"></textarea>
+              </div>
+
+              <div class="actions">
+                <button class="btn btn-primary" type="submit">存進今天紀錄</button>
+                <button class="btn btn-secondary" type="button" id="resetFormBtn">清空</button>
+              </div>
+            </form>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+      <div class="lightbox-inner">
+        <button class="btn btn-danger lightbox-close" type="button" id="closeLightboxBtn">關閉</button>
+        <img id="lightboxImage" alt="每日照片放大圖">
+      </div>
+    </div>
+
+    <script>
+      const CAT_NAME = '蚵仔';
+      const STORAGE_KEY = 'oyster-care-local-preview-v3';
+
+      const state = {
+        selectedDate: '',
+        entries: [],
+        brands: [],
+        summary: null,
+        dailyImages: {}
+      };
+
+      const isAppsScript =
+        typeof google !== 'undefined' &&
+        google.script &&
+        google.script.run;
+
+      const els = {
+        catName: document.getElementById('catName'),
+        previewBadge: document.getElementById('previewBadge'),
+        summaryPanel: document.getElementById('summaryPanel'),
+        timelinePanel: document.getElementById('timelinePanel'),
+        formPanel: document.getElementById('formPanel'),
+        entryForm: document.getElementById('entryForm'),
+        date: document.getElementById('date'),
+        time: document.getElementById('time'),
+        selectedDate: document.getElementById('selectedDate'),
+        brandSuggestions: document.getElementById('brandSuggestions'),
+        resetFormBtn: document.getElementById('resetFormBtn'),
+        goTodayBtn: document.getElementById('goTodayBtn'),
+        reloadBtn: document.getElementById('reloadBtn'),
+        statusLine: document.getElementById('statusLine'),
+        waterTotal: document.getElementById('waterTotal'),
+        foodTotal: document.getElementById('foodTotal'),
+        foodDetail: document.getElementById('foodDetail'),
+        medicationHeadline: document.getElementById('medicationHeadline'),
+        medicationStatus: document.getElementById('medicationStatus'),
+        digestiveHeadline: document.getElementById('digestiveHeadline'),
+        digestiveSub: document.getElementById('digestiveSub'),
+        doctorSummary: document.getElementById('doctorSummary'),
+        entryCountText: document.getElementById('entryCountText'),
+        timeline: document.getElementById('timeline'),
+        photoArea: document.getElementById('photoArea'),
+        dailyImageInput: document.getElementById('dailyImageInput'),
+        uploadImageBtn: document.getElementById('uploadImageBtn'),
+        lightbox: document.getElementById('lightbox'),
+        lightboxImage: document.getElementById('lightboxImage'),
+        closeLightboxBtn: document.getElementById('closeLightboxBtn')
+      };
+
+      const localApi = {
+        getInitialData(dateString) {
+          const selectedDate = normalizeDate(dateString) || getToday();
+          const allEntries = readLocalEntries();
+          const entries = allEntries.filter((entry) => entry.date === selectedDate).sort(compareEntries);
+          const images = readLocalImages();
+          return Promise.resolve({
+            catName: CAT_NAME,
+            selectedDate,
+            entries,
+            summary: buildSummary(entries),
+            brands: uniqueBrands(allEntries),
+            dailyImage: images[selectedDate] || null
+          });
+        },
+        saveEntry(payload) {
+          const allEntries = readLocalEntries();
+          const entry = normalizePayload(payload);
+          validateEntry(entry);
+          allEntries.push(entry);
+          writeLocalEntries(allEntries);
+          return this.getInitialData(entry.date);
+        },
+        deleteEntry(entryId) {
+          const allEntries = readLocalEntries();
+          const target = allEntries.find((entry) => entry.id === entryId);
+          if (!target) throw new Error('找不到這筆紀錄。');
+          writeLocalEntries(allEntries.filter((entry) => entry.id !== entryId));
+          return this.getInitialData(target.date);
+        },
+        saveDailyImage(payload) {
+          const images = readLocalImages();
+          const date = normalizeDate(payload.date) || getToday();
+          const dataUrl = `data:${payload.mimeType || 'image/jpeg'};base64,${payload.base64Data}`;
+          images[date] = {
+            date,
+            fileUrl: dataUrl,
+            fileName: payload.fileName || 'daily-photo.jpg',
+            updatedAt: new Date().toISOString()
+          };
+          writeLocalImages(images);
+          return this.getInitialData(date);
+        }
+      };
+
+      function getToday() {
+        return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' });
+      }
+
+      function normalizeDate(value) {
+        return /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? value : '';
+      }
+
+      function compareEntries(a, b) {
+        const timeA = a.time || '99:99';
+        const timeB = b.time || '99:99';
+        const byTime = String(timeA).localeCompare(String(timeB));
+        if (byTime !== 0) return byTime;
+        return String(a.createdAt || '').localeCompare(String(b.createdAt || ''));
+      }
+
+      function readLocalEntries() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY + '-entries');
+          return raw ? JSON.parse(raw) : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function writeLocalEntries(entries) {
+        localStorage.setItem(STORAGE_KEY + '-entries', JSON.stringify(entries));
+      }
+
+      function readLocalImages() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY + '-images');
+          return raw ? JSON.parse(raw) : {};
+        } catch (error) {
+          return {};
+        }
+      }
+
+      function writeLocalImages(images) {
+        localStorage.setItem(STORAGE_KEY + '-images', JSON.stringify(images));
+      }
+
+      function uniqueBrands(entries) {
+        return [...new Set(entries.map((entry) => (entry.brand || '').trim()).filter(Boolean))].sort();
+      }
+
+      function normalizePayload(payload) {
+        return {
+          id: payload.id || `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          date: normalizeDate(payload.date),
+          time: payload.time || '',
+          waterG: Number(payload.waterG || 0),
+          foodType: (payload.foodType || '').trim(),
+          brand: (payload.brand || '').trim(),
+          foodAmountG: Number(payload.foodAmountG || 0),
+          medMorning: payload.medMorning || '',
+          medNight: payload.medNight || '',
+          stoolDetail: (payload.stoolDetail || '').trim(),
+          vomitDetail: (payload.vomitDetail || '').trim(),
+          note: (payload.note || '').trim(),
+          createdAt: payload.createdAt || new Date().toISOString()
+        };
+      }
+
+      function validateEntry(entry) {
+        if (!entry.date) throw new Error('請先選擇日期。');
+
+        const hasContent = Boolean(
+          entry.waterG ||
+          entry.foodType ||
+          entry.foodAmountG ||
+          entry.medMorning ||
+          entry.medNight ||
+          entry.stoolDetail ||
+          entry.vomitDetail ||
+          entry.note
+        );
+
+        if (!hasContent) throw new Error('請至少填一項內容再儲存。');
+      }
+
+      function buildSummary(entries) {
+        const summary = {
+          waterTotal: 0,
+          dryFoodTotal: 0,
+          wetFoodTotal: 0,
+          otherFoodTotal: 0,
+          vomitCount: 0,
+          stoolCount: 0,
+          stoolDetails: [],
+          vomitDetails: [],
+          entryCount: entries.length,
+          medMorning: '未勾選',
+          medNight: '未勾選'
+        };
+
+        let hasMorningMedication = false;
+        let hasNightMedication = false;
+
+        entries.forEach((entry) => {
+          summary.waterTotal += Number(entry.waterG || 0);
+
+          if (entry.foodType === '乾糧') summary.dryFoodTotal += Number(entry.foodAmountG || 0);
+          if (entry.foodType === '罐罐') summary.wetFoodTotal += Number(entry.foodAmountG || 0);
+          if (entry.foodType && !['乾糧', '罐罐'].includes(entry.foodType)) {
+            summary.otherFoodTotal += Number(entry.foodAmountG || 0);
+          }
+
+          if (entry.medMorning === '有') hasMorningMedication = true;
+          if (entry.medNight === '有') hasNightMedication = true;
+
+          if (entry.stoolDetail) {
+            summary.stoolCount += 1;
+            summary.stoolDetails.push(`${entry.time || '未記時間'} ${entry.stoolDetail}`);
+          }
+
+          if (entry.vomitDetail) {
+            summary.vomitCount += 1;
+            summary.vomitDetails.push(`${entry.time || '未記時間'} ${entry.vomitDetail}`);
+          }
+        });
+
+        summary.medMorning = hasMorningMedication ? '有餵' : '未勾選';
+        summary.medNight = hasNightMedication ? '有餵' : '未勾選';
+        return summary;
+      }
+
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function setLoading(isLoading) {
+        els.summaryPanel.classList.toggle('loading', isLoading);
+        els.timelinePanel.classList.toggle('loading', isLoading);
+        els.formPanel.classList.toggle('loading', isLoading);
+      }
+
+      function callServer(method, payload) {
+        if (!isAppsScript) {
+          return Promise.resolve().then(() => localApi[method](payload));
+        }
+
+        return new Promise((resolve, reject) => {
+          const runner = google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler((error) => reject(new Error(error && error.message ? error.message : error)));
+
+          if (payload === undefined) {
+            runner[method]();
+          } else {
+            runner[method](payload);
+          }
+        });
+      }
+
+      function updateBrandSuggestions(brands) {
+        els.brandSuggestions.innerHTML = brands
+          .map((brand) => `<option value="${escapeHtml(brand)}"></option>`)
+          .join('');
+      }
+
+      function renderTimeline(entries) {
+        if (!entries.length) {
+          els.timeline.innerHTML = '<div class="empty">這一天還沒有紀錄，可以等有需要時再補。</div>';
+          return;
+        }
+
+        els.timeline.innerHTML = entries.map((entry) => {
+          const chips = [];
+          if (entry.waterG) chips.push(`<span class="chip">喝水 ${entry.waterG} g</span>`);
+          if (entry.foodAmountG || entry.foodType || entry.brand) {
+            const foodLabel = [entry.foodType, entry.brand].filter(Boolean).join(' / ');
+            chips.push(`<span class="chip">食物 ${entry.foodAmountG || 0} g${foodLabel ? ` ・ ${escapeHtml(foodLabel)}` : ''}</span>`);
+          }
+          if (entry.medMorning) chips.push('<span class="chip">早藥已餵</span>');
+          if (entry.medNight) chips.push('<span class="chip">晚藥已餵</span>');
+          if (entry.stoolDetail) chips.push('<span class="chip">有大便備註</span>');
+          if (entry.vomitDetail) chips.push('<span class="chip warn">有嘔吐備註</span>');
+          if (!chips.length) chips.push('<span class="chip">一般觀察</span>');
+
+          const notes = [];
+          if (entry.stoolDetail) notes.push(`大便：${escapeHtml(entry.stoolDetail)}`);
+          if (entry.vomitDetail) notes.push(`嘔吐：${escapeHtml(entry.vomitDetail)}`);
+          if (entry.note) notes.push(escapeHtml(entry.note));
+
+          return `
+            <article class="entry">
+              <div class="entry-time">${escapeHtml(entry.time || '未記時間')}<small>${escapeHtml(entry.date)}</small></div>
+              <div class="entry-main">
+                <div class="chips">${chips.join('')}</div>
+                ${notes.length ? `<div class="entry-note">${notes.join('<br>')}</div>` : ''}
+              </div>
+              <button class="btn btn-danger" type="button" data-delete-id="${escapeHtml(entry.id)}">刪除</button>
+            </article>
+          `;
+        }).join('');
+      }
+
+      function renderSummary(summary) {
+        const totalFood = summary.dryFoodTotal + summary.wetFoodTotal + summary.otherFoodTotal;
+
+        els.waterTotal.textContent = `${summary.waterTotal} g`;
+        els.foodTotal.textContent = `${totalFood} g`;
+        els.foodDetail.textContent = `乾糧 ${summary.dryFoodTotal} g / 罐罐 ${summary.wetFoodTotal} g${summary.otherFoodTotal ? ` / 其他 ${summary.otherFoodTotal} g` : ''}`;
+        els.entryCountText.textContent = `${summary.entryCount} 筆紀錄`;
+
+        const hasMedication = summary.medMorning === '有餵' || summary.medNight === '有餵';
+        els.medicationHeadline.textContent = hasMedication ? '已有紀錄' : '未勾選';
+        els.medicationStatus.textContent = `早藥${summary.medMorning} / 晚藥${summary.medNight}`;
+
+        if (summary.vomitCount > 0) {
+          els.digestiveHeadline.textContent = '需留意';
+          els.digestiveSub.textContent = `嘔吐 ${summary.vomitCount} 次${summary.stoolCount ? ` / 大便備註 ${summary.stoolCount} 筆` : ''}`;
+        } else if (summary.stoolCount > 0) {
+          els.digestiveHeadline.textContent = '有紀錄';
+          els.digestiveSub.textContent = `大便備註 ${summary.stoolCount} 筆`;
+        } else {
+          els.digestiveHeadline.textContent = '穩定';
+          els.digestiveSub.textContent = '沒有大便或嘔吐備註';
+        }
+
+        const doctorParts = [];
+        doctorParts.push(`今日喝水 ${summary.waterTotal} g`);
+        doctorParts.push(`食物 ${totalFood} g`);
+        doctorParts.push(`早藥${summary.medMorning}、晚藥${summary.medNight}`);
+        doctorParts.push(summary.vomitDetails.length ? `嘔吐：${summary.vomitDetails.join('；')}` : '今日無嘔吐備註');
+        doctorParts.push(summary.stoolDetails.length ? `大便：${summary.stoolDetails.join('；')}` : '今日無大便備註');
+        els.doctorSummary.textContent = doctorParts.join('。') + '。';
+      }
+
+      function renderDailyImage(image) {
+        if (!image || !image.fileUrl) {
+          els.photoArea.innerHTML = '<div class="photo-empty">今天還沒有照片。</div>';
+          return;
+        }
+
+        const previewUrl = image.fileUrl.startsWith('data:')
+          ? image.fileUrl
+          : image.fileUrl.replace('/view?usp=drivesdk', '/preview').replace('/view?usp=drive_link', '/preview');
+
+        els.photoArea.innerHTML = `
+          <img
+            class="photo-thumb"
+            src="${escapeHtml(previewUrl)}"
+            alt="${escapeHtml(image.fileName || '每日照片')}"
+            data-full-url="${escapeHtml(previewUrl)}"
+          >
+          <div class="photo-sub">更新時間：${escapeHtml(image.updatedAt || '')}</div>
+        `;
+      }
+
+      function renderAll(data) {
+        state.selectedDate = data.selectedDate;
+        state.entries = data.entries || [];
+        state.brands = data.brands || [];
+        state.summary = data.summary || buildSummary([]);
+
+        els.catName.textContent = data.catName || CAT_NAME;
+        els.date.value = data.selectedDate;
+        els.selectedDate.value = data.selectedDate;
+        els.statusLine.textContent = `${data.selectedDate} 共 ${state.entries.length} 筆`;
+
+        updateBrandSuggestions(state.brands);
+        renderSummary(state.summary);
+        renderTimeline(state.entries);
+        renderDailyImage(data.dailyImage || null);
+      }
+
+      function collectFormData() {
+        const formData = new FormData(els.entryForm);
+        return Object.fromEntries(formData.entries());
+      }
+
+      function resetForm() {
+        const keepDate = els.date.value || getToday();
+        els.entryForm.reset();
+        els.date.value = keepDate;
+      }
+
+      async function readFileAsBase64(file) {
+        const prepared = await prepareImageFile(file);
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = String(reader.result || '');
+            const commaIndex = result.indexOf(',');
+            resolve({
+              base64Data: commaIndex >= 0 ? result.slice(commaIndex + 1) : result,
+              mimeType: prepared.type || 'image/jpeg',
+              fileName: prepared.name || file.name || 'daily-photo.jpg'
+            });
+          };
+          reader.onerror = () => reject(new Error('讀取圖片失敗'));
+          reader.readAsDataURL(prepared);
+        });
+      }
+
+      function prepareImageFile(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const image = new Image();
+            image.onload = () => {
+              const maxSide = 1280;
+              const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+              const width = Math.max(1, Math.round(image.width * scale));
+              const height = Math.max(1, Math.round(image.height * scale));
+              const canvas = document.createElement('canvas');
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              if (!ctx) {
+                reject(new Error('圖片處理失敗'));
+                return;
+              }
+              ctx.drawImage(image, 0, 0, width, height);
+              canvas.toBlob((blob) => {
+                if (!blob) {
+                  reject(new Error('圖片壓縮失敗'));
+                  return;
+                }
+                resolve(new File([blob], file.name || 'daily-photo.jpg', { type: 'image/jpeg' }));
+              }, 'image/jpeg', 0.82);
+            };
+            image.onerror = () => reject(new Error('圖片讀取失敗'));
+            image.src = String(reader.result || '');
+          };
+          reader.onerror = () => reject(new Error('圖片讀取失敗'));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function loadDate(dateString) {
+        try {
+          setLoading(true);
+          els.statusLine.textContent = '讀取中…';
+          const data = await callServer('getInitialData', dateString);
+          renderAll(data);
+        } catch (error) {
+          alert(error.message || '讀取失敗');
+          els.statusLine.textContent = '讀取失敗';
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      async function handleSubmit(event) {
+        event.preventDefault();
+        try {
+          setLoading(true);
+          const result = await callServer('saveEntry', collectFormData());
+          renderAll(result);
+          resetForm();
+          els.statusLine.textContent = '已儲存';
+        } catch (error) {
+          alert(error.message || '儲存失敗');
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      async function handleDelete(entryId) {
+        if (!confirm('要刪除這筆紀錄嗎？')) return;
+        try {
+          setLoading(true);
+          const result = await callServer('deleteEntry', entryId);
+          renderAll(result);
+          els.statusLine.textContent = '已刪除';
+        } catch (error) {
+          alert(error.message || '刪除失敗');
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      async function handleImageUpload() {
+        const file = els.dailyImageInput.files && els.dailyImageInput.files[0];
+        if (!file) {
+          alert('請先選一張圖片。');
+          return;
+        }
+
+        try {
+          setLoading(true);
+          const imageData = await readFileAsBase64(file);
+          const payload = {
+            date: els.selectedDate.value || getToday(),
+            fileName: imageData.fileName,
+            mimeType: imageData.mimeType,
+            base64Data: imageData.base64Data
+          };
+          const result = await callServer('saveDailyImage', payload);
+          renderAll(result);
+          els.dailyImageInput.value = '';
+          els.statusLine.textContent = '照片已上傳';
+        } catch (error) {
+          alert(error.message || '上傳失敗');
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      function openLightbox(url) {
+        els.lightboxImage.src = url;
+        els.lightbox.classList.add('open');
+      }
+
+      function closeLightbox() {
+        els.lightbox.classList.remove('open');
+        els.lightboxImage.removeAttribute('src');
+      }
+
+      function bindEvents() {
+        els.entryForm.addEventListener('submit', handleSubmit);
+        els.resetFormBtn.addEventListener('click', resetForm);
+        els.goTodayBtn.addEventListener('click', () => loadDate(getToday()));
+        els.reloadBtn.addEventListener('click', () => loadDate(els.selectedDate.value));
+        els.selectedDate.addEventListener('change', () => loadDate(els.selectedDate.value));
+        els.timeline.addEventListener('click', (event) => {
+          const button = event.target.closest('[data-delete-id]');
+          if (button) handleDelete(button.dataset.deleteId);
+        });
+        els.uploadImageBtn.addEventListener('click', handleImageUpload);
+        els.photoArea.addEventListener('click', (event) => {
+          const image = event.target.closest('[data-full-url]');
+          if (image) openLightbox(image.dataset.fullUrl);
+        });
+        els.closeLightboxBtn.addEventListener('click', closeLightbox);
+        els.lightbox.addEventListener('click', (event) => {
+          if (event.target === els.lightbox) closeLightbox();
+        });
+      }
+
+      async function bootstrap() {
+        if (!isAppsScript) {
+          els.previewBadge.style.display = 'block';
+        }
+        els.catName.textContent = CAT_NAME;
+        els.date.value = getToday();
+        els.selectedDate.value = getToday();
+        bindEvents();
+        await loadDate(getToday());
+      }
+
+      bootstrap();
+    </script>
+  </body>
+  </html>
