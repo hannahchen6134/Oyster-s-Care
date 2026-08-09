@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6f421f">
+  <title>蚵仔照護說明</title>
+  <style>
+    :root {
+      --espresso: #3b2519;
+      --coffee: #74451f;
+      --caramel: #a27045;
+      --latte: #ead8c6;
+      --cream: #f5ece2;
+      --paper: #fffaf4;
+      --ink: #2d211a;
+      --muted: #746158;
+      --line: #d8c3ae;
+      --amber: #fff0cf;
+      --red: #963b32;
+      --red-soft: #f9e7e4;
+      --shadow: 0 12px 34px rgba(57, 34, 20, .07);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      font-size: 19px;
+      line-height: 1.65;
+    }
+    button, a, summary { font: inherit; }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 4px solid #d69b58;
+      outline-offset: 3px;
+    }
+    .header {
+      background: #f1e1d1;
+      border-bottom: 4px solid var(--coffee);
+    }
+    .header-inner, .nav-inner, main {
+      width: min(760px, calc(100% - 64px));
+      margin-inline: auto;
+    }
+    .header-inner { padding: 36px 0 30px; }
+    .kicker {
+      margin: 0 0 4px;
+      color: var(--coffee);
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+    h1 {
+      margin: 0;
+      color: var(--espresso);
+      font-family: "Noto Serif TC", "Microsoft JhengHei", serif;
+      font-size: clamp(36px, 9vw, 50px);
+      line-height: 1.18;
+    }
+    .date { margin: 12px 0 0; color: var(--muted); font-size: 16px; font-weight: 800; }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 12px 0;
+      background: rgba(245, 236, 226, .96);
+      backdrop-filter: blur(10px);
+    }
+    .nav-inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      padding: 6px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(57, 34, 20, .05);
+    }
+    .tab {
+      min-width: 0;
+      min-height: 50px;
+      padding: 8px 4px;
+      color: var(--coffee);
+      background: transparent;
+      border: 0;
+      border-radius: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .tab[aria-selected="true"] { color: white; background: var(--coffee); }
+
+    main { padding: 28px 0 100px; }
+    [hidden] { display: none !important; }
+    .panel { animation: enter .18s ease-out; }
+    @keyframes enter { from { opacity: 0; transform: translateY(4px); } }
+
+    .intro {
+      margin-bottom: 24px;
+      padding: 25px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .intro h2 {
+      margin: 0 0 8px;
+      color: var(--espresso);
+      font-family: "Noto Serif TC", "Microsoft JhengHei", serif;
+      font-size: 29px;
+      line-height: 1.35;
+    }
+    .intro p { margin: 0; color: var(--muted); }
+    .intro .gentle-note {
+      margin-top: 15px;
+      padding-top: 15px;
+      color: var(--coffee);
+      border-top: 1px solid #e6d5c5;
+    }
+    .record-rule {
+      margin: 0 0 26px;
+      padding: 18px 20px;
+      color: var(--espresso);
+      background: var(--amber);
+      border: 1px solid #e2bf79;
+      border-radius: 16px;
+      font-weight: 800;
+    }
+
+    .phase-list { display: grid; gap: 22px; }
+    .phase {
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .phase-title {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 24px 24px 18px;
+    }
+    .phase-number { display: none; }
+    .phase-title h3 { margin: 0; color: var(--espresso); font-size: 26px; line-height: 1.3; }
+    .phase-title p { margin: 2px 0 0; color: var(--muted); font-size: 16px; }
+    .phase-body { padding: 0 24px 24px; }
+    .phase-body > ol, .phase-body > ul { margin: 0; padding-left: 26px; }
+    .phase-body li { margin: 8px 0; }
+    .strong { color: var(--coffee); font-size: 27px; font-weight: 950; white-space: nowrap; }
+    .number-accent {
+      color: #835126;
+      font-size: inherit;
+      line-height: inherit;
+      vertical-align: baseline;
+      font-weight: 950;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .amounts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .amount-card {
+      padding: 18px;
+      background: #f6ece2;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+    .amount-card b { display: block; color: var(--coffee); font-size: 18px; }
+    .amount-card strong { display: block; margin: 3px 0; color: var(--espresso); font-size: 39px; line-height: 1.08; }
+    .amount-card strong small { display: block; margin-bottom: 4px; color: var(--muted); font-size: 16px; font-weight: 800; }
+    .amount-card > span { color: var(--muted); font-size: 16px; }
+
+    details {
+      margin-top: 14px;
+      background: #fbf4ec;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+    summary {
+      padding: 16px 18px;
+      color: var(--coffee);
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .detail-body { padding: 0 18px 20px; }
+    .detail-body ol, .detail-body ul { margin: 0; padding-left: 25px; }
+    .warning {
+      margin-top: 15px;
+      padding: 16px 18px;
+      color: var(--espresso);
+      background: var(--amber);
+      border-radius: 14px;
+    }
+    .danger { background: var(--red-soft); border: 1px solid #d7a5a0; }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .photo-slot {
+      min-height: 130px;
+      margin: 0;
+      display: grid;
+      place-content: center;
+      padding: 16px;
+      text-align: center;
+      background: #efe3d7;
+      border: 2px dashed #b99c82;
+      border-radius: 14px;
+    }
+    .photo-slot b { color: var(--coffee); }
+    .photo-slot figcaption { margin-top: 4px; color: var(--muted); font-size: 14px; line-height: 1.4; }
+    .allowed-food-photo {
+      min-height: 210px;
+      margin: 18px 0 0;
+      display: grid;
+      place-content: center;
+      padding: 24px;
+      text-align: center;
+      background: #efe3d7;
+      border: 2px dashed #a98565;
+      border-radius: 18px;
+    }
+    .allowed-food-photo b { color: var(--coffee); font-size: 22px; }
+    .allowed-food-photo figcaption { margin-top: 7px; color: var(--muted); font-size: 15px; }
+    .first-tool-photo {
+      min-height: 170px;
+      margin: 0 0 18px;
+      display: grid;
+      place-content: center;
+      padding: 22px;
+      text-align: center;
+      background: #efe3d7;
+      border: 2px dashed #a98565;
+      border-radius: 18px;
+    }
+    .first-tool-photo b { color: var(--coffee); font-size: 22px; }
+    .first-tool-photo figcaption { margin-top: 7px; color: var(--muted); font-size: 15px; }
+
+    .before-leaving {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .before-leaving li {
+      position: relative;
+      min-height: 52px;
+      margin: 0;
+      padding: 13px 8px 13px 30px;
+      background: transparent;
+      border-bottom: 1px solid #e8d9cb;
+    }
+    .before-leaving li:last-child { border-bottom: 0; }
+    .before-leaving li::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 23px;
+      width: 8px;
+      height: 8px;
+      background: var(--caramel);
+      border-radius: 50%;
+    }
+
+    .tool-box, .contact-box {
+      margin-bottom: 22px;
+      padding: 25px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .tool-box h2, .contact-box h2 { margin: 0 0 8px; color: var(--espresso); font-size: 29px; }
+    .tool-box > p, .contact-box > p { margin: 0 0 18px; color: var(--muted); }
+    .four-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .four-steps li {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 15px;
+      background: #f6ece2;
+      border-radius: 14px;
+    }
+    .four-steps b {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: var(--coffee);
+      border-radius: 50%;
+    }
+    .four-steps b .number-accent { color: white; font-size: inherit; }
+    .screens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
+    .screen { margin: 0; }
+    .screen img { width: 100%; max-height: 560px; display: block; object-fit: contain; object-position: top; border-radius: 14px; }
+    .screen figcaption { margin-top: 7px; color: var(--muted); font-size: 14px; text-align: center; }
+
+    .action {
+      display: flex;
+      min-height: 62px;
+      margin-top: 14px;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      color: white;
+      text-decoration: none;
+      background: var(--coffee);
+      border-radius: 14px;
+      font-weight: 900;
+    }
+    .call { background: var(--red); }
+    .phone { display: block; margin: 12px 0; color: var(--espresso); font-size: clamp(32px, 9vw, 48px); font-weight: 950; }
+    .roster-intro {
+      margin-bottom: 22px;
+      padding: 24px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .roster-intro h2 { margin: 0 0 6px; color: var(--espresso); font-size: 29px; }
+    .roster-intro p { margin: 0; color: var(--muted); }
+    .roster-list { display: grid; gap: 20px; }
+    .day-card {
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .day-head {
+      padding: 18px 22px;
+      color: var(--espresso);
+      background: #ead8c6;
+      border-bottom: 1px solid var(--line);
+    }
+    .day-head strong { display: block; font-size: 26px; }
+    .shift-list { margin: 0; padding: 8px 22px 14px; list-style: none; }
+    .shift {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #e7d8ca;
+    }
+    .shift:last-child { border-bottom: 0; }
+    .shift-time { min-width: 0; color: var(--espresso); font-weight: 900; white-space: normal; overflow-wrap: anywhere; }
+    .shift-person { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .person-block { display: flex; flex-direction: column; }
+    .person-name { color: var(--coffee); font-size: 22px; font-weight: 950; }
+    .shift-detail { color: var(--muted); font-size: 15px; }
+    .shift-note {
+      flex: 0 0 auto;
+      padding: 3px 9px;
+      color: var(--coffee);
+      background: #efe1d3;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .overnight {
+      margin: 4px 0;
+      padding: 16px;
+      background: #f2e3d4;
+      border-radius: 14px;
+      border-bottom: 0;
+    }
+    .handover-note {
+      margin-top: 20px;
+      padding: 17px 19px;
+      color: var(--espresso);
+      background: var(--amber);
+      border: 1px solid #e2bf79;
+      border-radius: 16px;
+    }
+    .thanks {
+      margin-top: 30px;
+      padding: 24px;
+      color: var(--espresso);
+      text-align: center;
+      background: #f1e1d1;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      line-height: 1.8;
+    }
+    .thanks strong { display: block; margin-bottom: 4px; color: var(--coffee); font-size: 22px; }
+    .footer { margin-top: 30px; color: var(--muted); text-align: center; font-size: 14px; }
+
+    @media (max-width: 560px) {
+      body { font-size: 17px; }
+      .header-inner, .nav-inner, main { width: calc(100% - 64px); }
+      .nav-inner { grid-template-columns: repeat(2, 1fr); }
+      h1 { font-size: 32px; }
+      .tab { font-size: 14px; }
+      .intro, .tool-box, .contact-box { padding: 22px; }
+      .intro h2, .tool-box h2, .contact-box h2, .roster-intro h2 { font-size: 25px; }
+      .phase-title { padding: 22px 22px 16px; }
+      .phase-title h3 { font-size: 23px; }
+      .phase-body { padding: 0 22px 22px; }
+      .amounts, .photo-grid, .screens { grid-template-columns: 1fr; }
+      .amount-card strong { font-size: 32px; }
+      .amount-card strong small { font-size: 16px; }
+      .amount-card > span { font-size: 16px; }
+      .shift-detail { font-size: 15px; }
+      .day-head strong { font-size: 23px; }
+      .shift-time { font-size: 17px; }
+      .person-name { font-size: 20px; }
+      .thanks strong { font-size: 19px; }
+      .phone { font-size: 32px; }
+      .shift { grid-template-columns: 1fr; gap: 3px; }
+      .shift-person { align-items: flex-start; }
+      .photo-slot { min-height: 120px; }
+    }
+    @media (max-width: 360px) {
+      .header-inner, .nav-inner, main { width: calc(100% - 48px); }
+      .tab { font-size: 13px; }
+      h1 { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <p class="kicker">喵喵照護管家・交接說明</p>
+      <h1>蚵仔照護</h1>
+    </div>
+  </header>
+
+  <nav class="nav-wrap" aria-label="主要內容">
+    <div class="nav-inner" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="carePanel">照護方式</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="recordPanel">怎麼記錄</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="rosterPanel">交班時間</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="contactPanel">聯絡青青</button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="panel" id="carePanel" role="tabpanel">
+      <div class="intro">
+        <h2>謝謝你來陪蚵仔</h2>
+        <p>照自己方便的順序就好，不用一次全部記住。蚵仔如果有點抗拒，先讓他休息也沒關係。</p>
+        <p class="gentle-note">如果這次沒有餵到水或藥也沒關係，幫我準備乾淨的碗和水給蚵仔就好。也請幫我摸摸牠，感恩！</p>
+      </div>
+      <p class="record-rule">餵食、餵水或餵藥後，方便的話幫我在「喵喵照護管家」記一下時間和數量，謝謝你。</p>
+
+      <div class="phase-list">
+        <article class="phase">
+          <div class="phase-title"><span class="phase-number">1</span><div><h3>到達時</h3><p>拿鑰匙、看看蚵仔</p></div></div>
+          <div class="phase-body">
+            <ol>
+              <li>鑰匙放在指定郵箱的信封裡。</li>
+              <li>信封先留著，開門後就可以進來陪蚵仔。</li>
+              <li>進門後看看蚵仔的精神、呼吸和走路是否和平常差不多。</li>
+            </ol>
+            <details>
+              <summary>找不到蚵仔時</summary>
+              <div class="detail-body">他很喜歡待在<b>推車內、廁所內、浴缸內或紙箱內</b>，可以先看看這幾個地方。</div>
+            </details>
+            <details>
+              <summary>查看郵箱與鑰匙照片</summary>
+              <div class="detail-body photo-grid">
+                <figure class="photo-slot"><b>照片位置：郵箱</b><figcaption>方便認出郵箱位置</figcaption></figure>
+                <figure class="photo-slot"><b>照片位置：鑰匙信封</b><figcaption>信封與鑰匙外觀</figcaption></figure>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-title"><span class="phase-number">2</span><div><h3>照護中</h3><p>需要餵食、餵藥或餵水時再查看</p></div></div>
+          <div class="phase-body">
+            <figure class="first-tool-photo">
+              <b>照片位置：3 ml餵水針筒</b>
+              <figcaption>餵水時會用到，看照片認一下就好</figcaption>
+            </figure>
+            <div class="amounts">
+              <div class="amount-card"><b>罐罐／肉</b><strong><small>每餐約</small>35g</strong><span>每天至少4次，視情況第5次</span></div>
+              <div class="amount-card"><b>乾乾</b><strong><small>每餐約</small>10g</strong><span>每天約2次</span></div>
+              <div class="amount-card"><b>餵水工具</b><strong>3 ml</strong><span>使用小針筒，記錄約喝下幾 ml</span></div>
+              <div class="amount-card"><b>藥物</b><strong>資料準備中</strong><span>藥名、藥量與餵藥時間</span></div>
+            </div>
+            <p class="warning">食物和水的克數、ml都是大約值，差一點沒關係；藥物劑量則照標示即可。</p>
+            <figure class="allowed-food-photo">
+              <b>照片位置：蚵仔目前可以吃的食物</b>
+              <figcaption>會放上目前可餵的罐罐、肉類與乾乾</figcaption>
+            </figure>
+            <p class="warning">蚵仔現在的腸胃比較敏感，餵照片裡的食物就可以了，謝謝你。</p>
+
+            <details>
+              <summary>怎麼秤食物</summary>
+              <div class="detail-body">
+                <ol>
+                  <li>開啟食物秤，放上空碗。</li>
+                  <li>按「歸零／TARE」。</li>
+                  <li>畫面回到 <span class="strong">0 g</span>、單位顯示g後，再開始放食物。</li>
+                  <li>再放入食物，秤到指定克數。</li>
+                </ol>
+                <div class="photo-grid">
+                  <figure class="photo-slot"><b>照片位置：食物秤全貌</b><figcaption>使用的秤與放置位置</figcaption></figure>
+                  <figure class="photo-slot"><b>照片位置：食物秤按鈕</b><figcaption>會標出開機與歸零</figcaption></figure>
+                  <figure class="photo-slot"><b>照片位置：0 g畫面</b><figcaption>畫面可參考這張</figcaption></figure>
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary>肉類怎麼加水</summary>
+              <div class="detail-body">
+                <ol>
+                  <li>每餐秤約35g肉類。</li>
+                  <li>可以直接加入70°C熱水，約加5～10g水。</li>
+                  <li>攪拌後稍微等涼，再給蚵仔吃。</li>
+                </ol>
+                <p class="warning">熱水溫度比較高，拌好後稍微放涼再給蚵仔，謝謝你。</p>
+              </div>
+            </details>
+
+            <details>
+              <summary>餵藥與餵水</summary>
+              <div class="detail-body">
+                <ul>
+                  <li>可以先把水放進空玻璃罐，再用3 ml針筒從玻璃罐裡吸水。</li>
+                  <li>可以從嘴巴側邊慢慢餵，讓蚵仔有時間吞下去。</li>
+                  <li>餵完藥後，看3 ml針筒剩多少。</li>
+                  <li>憑感覺扣掉大概流掉的水，記錄約喝下幾ml。</li>
+                  <li>如果掙扎得很厲害、咳嗽、嗆到或呼吸和平常不同，就先停下來讓他休息。</li>
+                  <li>這次沒有餵到藥或水也沒關係，幫我記一下就好。</li>
+                  <li>如果不確定藥有沒有吞下，先別補第二次，LINE跟青青說一聲即可。</li>
+                </ul>
+                <div class="photo-grid">
+                  <figure class="photo-slot"><b>照片位置：從空玻璃罐吸水</b><figcaption>會放上玻璃罐與3 ml針筒的操作照片</figcaption></figure>
+                  <figure class="photo-slot"><b>照片位置：藥品</b><figcaption>會標明每種藥與用量</figcaption></figure>
+                  <figure class="photo-slot"><b>照片位置：餵藥器</b><figcaption>可參考外觀與使用方向</figcaption></figure>
+                </div>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-title"><span class="phase-number">3</span><div><h3>每天離開前</h3><p>離開前看一眼，順序不拘</p></div></div>
+          <div class="phase-body">
+            <ul class="before-leaving">
+              <li><b>鏟貓砂一次</b>，查看有沒有尿尿與便便。</li>
+              <li>益生菌<b>半包</b>＋約<b>9 ml常溫礦泉水</b>，水量接近即可，用約3支3 ml小針筒慢慢餵。</li>
+              <li>睡前補約<b>20g乾乾</b>給蚵仔。</li>
+              <li>放一小碟乾淨的水給蚵仔。</li>
+              <li>離開時讓冷氣繼續開著，窗戶維持關閉就好。</li>
+              <li>咖啡、巧克力、橘子、清潔劑、洗碗精、防曬乳等，麻煩放在蚵仔碰不到的地方。</li>
+              <li>離開時帶著鑰匙，鎖好大門後輕拉一下門確認即可。</li>
+              <li>鑰匙用原本信封包好，放回原本郵箱。</li>
+            </ul>
+            <p class="warning danger">鑰匙最後用原本的信封包好、放回郵箱就可以了。鎖好門後再放回去，會比較不容易忘記。</p>
+            <details>
+              <summary>查看離開前照片</summary>
+              <div class="detail-body photo-grid">
+                <figure class="photo-slot"><b>照片位置：貓砂工具</b><figcaption>工具與垃圾處理位置</figcaption></figure>
+                <figure class="photo-slot"><b>照片位置：益生菌與針筒</b><figcaption>半包與3支3 ml針筒</figcaption></figure>
+                <figure class="photo-slot"><b>照片位置：小碟水</b><figcaption>使用的碟子與位置</figcaption></figure>
+                <figure class="photo-slot"><b>照片位置：冷氣與窗戶</b><figcaption>離開時可以參考</figcaption></figure>
+              </div>
+            </details>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="recordPanel" role="tabpanel" hidden>
+      <article class="tool-box">
+        <h2>喵喵照護管家</h2>
+        <ol class="four-steps">
+          <li><b>1</b><span>開啟喵喵照護管家</span></li>
+          <li><b>2</b><span>填食物、水量、藥和異常狀況</span></li>
+          <li><b>3</b><span>按下儲存</span></li>
+        </ol>
+        <p class="warning">水量不用非常精準。用3 ml針筒餵完後，扣掉剩餘與大概流掉的量，記錄約喝下幾ml即可。</p>
+        <div class="screens">
+          <figure class="screen"><img src="assets/miaomiao-record.jpg" alt="喵喵照護管家的記錄完成畫面"><figcaption>記錄後可看到當日累積。</figcaption></figure>
+          <figure class="screen"><img src="assets/miaomiao-choice.jpg" alt="喵喵照護管家的食物品項選擇畫面"><figcaption>詢問品項時，點正確的食物。</figcaption></figure>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel" id="rosterPanel" role="tabpanel" hidden>
+      <div class="roster-intro">
+        <h2>照護交班時間</h2>
+        <p>依日期查看照護者與時段。</p>
+      </div>
+      <div class="roster-list">
+        <article class="day-card">
+          <header class="day-head"><strong>8月17日</strong></header>
+          <ul class="shift-list">
+            <li class="shift"><span class="shift-time">14:00－18:00</span><span class="shift-person"><b class="person-name">小琳</b><small class="shift-note">下午</small></span></li>
+            <li class="shift"><span class="shift-time">19:00－22:00</span><span class="shift-person"><b class="person-name">小琳</b><small class="shift-note">晚上</small></span></li>
+            <li class="shift"><span class="shift-time">23:00－23:30</span><span class="shift-person"><span class="person-block"><b class="person-name">弟弟</b><small class="shift-detail">放一些乾糧、罐罐及水，並餵益生菌給蚵仔</small></span><small class="shift-note">晚間</small></span></li>
+          </ul>
+        </article>
+
+        <article class="day-card">
+          <header class="day-head"><strong>8月18日</strong></header>
+          <ul class="shift-list">
+            <li class="shift"><span class="shift-time">09:30－12:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">上午</small></span></li>
+            <li class="shift"><span class="shift-time">15:00－17:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">下午</small></span></li>
+            <li class="shift"><span class="shift-time">20:30－22:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">晚上</small></span></li>
+            <li class="shift overnight"><span class="shift-time">22:00－隔日08:00</span><span class="shift-person"><b class="person-name">智堯</b><small class="shift-note">過夜</small></span></li>
+          </ul>
+        </article>
+
+        <article class="day-card">
+          <header class="day-head"><strong>8月19日</strong></header>
+          <ul class="shift-list">
+            <li class="shift"><span class="shift-time">00:00－08:00</span><span class="shift-person"><b class="person-name">智堯</b><small class="shift-note">接續過夜班</small></span></li>
+            <li class="shift"><span class="shift-time">09:30－12:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">上午</small></span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="contactPanel" role="tabpanel" hidden>
+      <article class="contact-box">
+        <h2>有些狀況想告訴青青</h2>
+        <p>如果看到嘔吐、拉肚子、沒吃、沒有排泄、沒餵到藥水，或和平常不太一樣，LINE跟青青說一聲就好。</p>
+      </article>
+      <article class="contact-box">
+        <h2>需要馬上聯絡時</h2>
+        <p>如果看到呼吸不順、倒下、叫不醒、持續抽搐或大量流血，麻煩立刻用 LINE 聯絡青青，謝謝。</p>
+      </article>
+    </section>
+
+    <div class="thanks">
+      <strong>謝謝大家願意幫忙照顧蚵仔，深深感謝。</strong>
+    </div>
+    <p class="footer">蚵仔照護交接說明</p>
+  </main>
+
+  <script>
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(item => item.setAttribute('aria-selected', String(item === tab)));
+      const target = tab.getAttribute('aria-controls');
+      panels.forEach(panel => panel.hidden = panel.id !== target);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }));
+    const numberWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const numberNodes = [];
+    while (numberWalker.nextNode()) {
+      const node = numberWalker.currentNode;
+      if (/\d/.test(node.nodeValue) && !['SCRIPT', 'STYLE'].includes(node.parentElement?.tagName)) numberNodes.push(node);
+    }
+    numberNodes.forEach(node => {
+      const parts = node.nodeValue.split(/(\d+(?:[:：.]\d+)?)/g);
+      if (parts.length < 2) return;
+      const fragment = document.createDocumentFragment();
+      parts.forEach(part => {
+        if (/^\d+(?:[:：.]\d+)?$/.test(part)) {
+          const span = document.createElement('span');
+          span.className = 'number-accent';
+          span.textContent = part;
+          fragment.appendChild(span);
+        } else {
+          fragment.appendChild(document.createTextNode(part));
+        }
+      });
+      node.replaceWith(fragment);
+    });
+  </script>
+</body>
+</html>
