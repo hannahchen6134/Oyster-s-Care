@@ -259,6 +259,9 @@
     }
     .daily-row:last-child { border-bottom: 0; }
     .daily-row b { color: var(--coffee); }
+    .guide-group { margin-top: 18px; background: #f4e7da; }
+    .guide-group > summary { font-size: 18px; }
+    .guide-list > details { background: var(--paper); }
 
     details {
       margin-top: 14px;
@@ -541,7 +544,7 @@
 
     @media (max-width: 560px) {
       body { font-size: 16px; line-height: 1.68; }
-      .header-inner, .nav-inner, main { width: calc(100% - 40px); }
+      .header-inner, .nav-inner, main { width: calc(100% - 64px); }
       .header { border-bottom-width: 3px; }
       .header-inner { padding: 20px 0 18px; }
       .kicker { margin-bottom: 2px; font-size: 13px; }
@@ -553,7 +556,7 @@
       main { padding: 16px 0 64px; }
       .intro, .tool-box, .contact-box, .roster-intro {
         margin-bottom: 14px;
-        padding: 18px;
+        padding: 21px;
         border-radius: 16px;
         box-shadow: none;
       }
@@ -567,28 +570,37 @@
       .phase-list::before { left: 9px; top: 25px; bottom: 25px; }
       .phase { border-radius: 17px; box-shadow: none; }
       .phase::before { left: -23px; top: 23px; width: 12px; height: 12px; box-shadow: 0 0 0 4px var(--cream); }
-      .phase-title { gap: 8px; padding: 14px 15px; }
+      .phase-title { gap: 8px; padding: 16px 18px; }
       .phase-title::after { width: 30px; height: 30px; font-size: 20px; }
       .phase-title h3 { font-size: 20px; }
       .phase-title p { font-size: 15px; }
       .time-label { font-size: 12px; }
-      .phase-body { padding: 0 15px 16px; }
-      .phase[open] > .phase-body { padding-top: 15px; }
+      .phase-body { padding: 0 18px 19px; }
+      .phase[open] > .phase-body { padding-top: 18px; }
       .phase-body > ol, .phase-body > ul { padding-left: 22px; }
       .phase-body li { margin: 5px 0; }
-      .amounts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
-      .amount-card { padding: 13px 12px; border-radius: 13px; }
+      .amounts { grid-template-columns: 1fr; gap: 9px; margin: 12px 0 18px; }
+      .amount-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: auto auto;
+        column-gap: 14px;
+        align-items: center;
+        padding: 14px 16px;
+        border-radius: 13px;
+      }
       .amount-card b { font-size: 15px; }
-      .amount-card strong { margin: 2px 0; font-size: 28px; }
+      .amount-card strong { grid-column: 2; grid-row: 1 / 3; margin: 0; font-size: 28px; text-align: right; }
       .amount-card:last-child strong { font-size: 28px; line-height: 1.2; }
       .amount-card strong small { margin-bottom: 2px; font-size: 15px; }
-      .amount-card > span { display: block; font-size: 15px; line-height: 1.48; }
+      .amount-card > span { grid-column: 1; display: block; font-size: 14px; line-height: 1.42; }
+      .amount-card.wide { grid-column: auto; }
       .section-label { font-size: 17px; }
       .daily-row { grid-template-columns: 74px 1fr; gap: 9px; padding: 11px 12px; }
       .strong { font-size: 20px; }
       details { margin-top: 10px; border-radius: 13px; }
-      summary { padding: 12px 14px; }
-      .detail-body { padding: 0 14px 16px; }
+      summary { padding: 14px 17px; }
+      .detail-body { padding: 0 17px 19px; }
       .warning { margin-top: 12px; padding: 13px 14px; border-radius: 11px; }
       .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
       .medicine-grid, .leaving-photo-grid { grid-template-columns: 1fr; gap: 14px; }
@@ -603,6 +615,23 @@
       .first-tool-photo { margin-bottom: 13px; }
       .allowed-food-photo b, .first-tool-photo b { font-size: 18px; }
       .allowed-food-photo figcaption, .first-tool-photo figcaption { font-size: 14px; }
+      .real-photo img {
+        width: 78%;
+        max-height: 390px;
+        margin-inline: auto;
+      }
+      .real-photo figcaption {
+        width: 78%;
+        margin: 10px auto 0;
+      }
+      .single-photo + .single-photo { margin-top: 26px; }
+      .screen img {
+        width: 78%;
+        max-height: 500px;
+        margin-inline: auto;
+      }
+      .screen-label { margin-left: 11%; }
+      .screen figcaption { width: 78%; margin: 9px auto 0; }
       .before-leaving li { min-height: 46px; padding-block: 10px; }
       .before-leaving li::before { top: 20px; }
       .four-steps { gap: 7px; }
@@ -629,7 +658,7 @@
       .shift-person { align-items: flex-start; }
     }
     @media (max-width: 360px) {
-      .header-inner, .nav-inner, main { width: calc(100% - 32px); }
+      .header-inner, .nav-inner, main { width: calc(100% - 44px); }
       .tab { font-size: 12px; }
       h1 { font-size: 27px; }
       .amount-card { padding-inline: 10px; }
@@ -699,11 +728,14 @@
             </div>
             <h4 class="section-label">一天大概這樣餵</h4>
             <div class="daily-plan">
-              <div class="daily-row"><b>早上</b><span>罐罐、乾乾1次；兩種藥共2顆</span></div>
-              <div class="daily-row"><b>中間</b><span>視情況餵罐罐；一天合計2～3次</span></div>
-              <div class="daily-row"><b>晚上睡前</b><span>罐罐、乾乾1次（離開前補20g）；兩種藥共2顆</span></div>
+              <div class="daily-row"><b>早上</b><span>罐罐・乾乾・藥2顆</span></div>
+              <div class="daily-row"><b>中間</b><span>罐罐（全日共2～3次）</span></div>
+              <div class="daily-row"><b>晚上</b><span>罐罐・乾乾・藥2顆</span></div>
             </div>
-            <p class="warning"><strong>早晚各餵藥一次：</strong>每次餵2顆不同的藥，也就是橘白色1顆＋粉紅白色1顆。建議約早上10點與晚上10點，前後差一點沒關係。</p>
+            <p class="warning"><strong>餵藥：</strong>早晚各一次，每次2顆（橘白1顆＋粉紅白1顆）。約10點即可，不用卡很準。</p>
+            <details class="guide-group">
+              <summary>照片與操作教學</summary>
+              <div class="detail-body guide-list">
             <details class="tool-photo-toggle">
               <summary>查看針管與餵藥器</summary>
               <div class="detail-body">
@@ -727,7 +759,7 @@
                 <p class="warning">蚵仔現在的腸胃比較敏感，餵照片裡的食物就可以了，謝謝你。</p>
               </div>
             </details>
-            <details>
+            <details class="medicine-photo-toggle">
               <summary>查看兩種藥與餵藥時間</summary>
               <div class="detail-body">
                 <p class="warning"><strong>早晚各餵一次，每次共2顆：</strong>橘白色1顆＋粉紅白色1顆。建議約早上10點與晚上10點，不用太嚴格限制時間。</p>
@@ -753,7 +785,7 @@
               </div>
             </details>
 
-            <details>
+            <details class="water-measure-toggle">
               <summary>肉類怎麼加水</summary>
               <div class="detail-body">
                 <ol>
@@ -787,6 +819,8 @@
                   <img src="assets/water-from-glass-jar.jpg" alt="用餵水針筒從玻璃罐吸水">
                   <figcaption>玻璃罐在<strong>飲水機旁</strong>，可以在玻璃罐內用餵水針筒吸水。</figcaption>
                 </figure>
+              </div>
+            </details>
               </div>
             </details>
           </div>
