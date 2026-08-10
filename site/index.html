@@ -129,26 +129,90 @@
       border-radius: 16px;
       font-weight: 800;
     }
+    .gentle-help { margin-top: 12px; background: transparent; border: 0; border-top: 1px solid #e6d5c5; border-radius: 0; }
+    .gentle-help summary { padding: 13px 0 4px; font-size: 16px; }
+    .gentle-help .detail-body { padding: 4px 0 0; color: var(--muted); }
+    .tool-photo-toggle { margin-top: 0; }
+    .tool-photo-toggle .first-tool-photo { margin: 0; }
+    .food-photo-toggle .allowed-food-photo { margin: 0; }
+    .secondary-leaving { margin-top: 2px; }
 
-    .phase-list { display: grid; gap: 22px; }
+    .timeline-head { margin: 24px 0 14px; }
+    .timeline-head h2 { margin: 0; color: var(--espresso); font-size: 25px; }
+    .timeline-head p { margin: 3px 0 0; color: var(--muted); font-size: 15px; }
+    .phase-list {
+      position: relative;
+      display: grid;
+      gap: 16px;
+      padding-left: 34px;
+    }
+    .phase-list::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: 28px;
+      bottom: 28px;
+      width: 2px;
+      background: #d4bda7;
+    }
     .phase {
-      overflow: hidden;
+      position: relative;
       background: var(--paper);
       border: 1px solid var(--line);
       border-radius: 24px;
       box-shadow: var(--shadow);
     }
+    .phase::before {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      left: -29px;
+      top: 27px;
+      width: 14px;
+      height: 14px;
+      background: var(--paper);
+      border: 3px solid #a87a53;
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px var(--cream);
+    }
+    .phase[open]::before { background: var(--coffee); border-color: var(--coffee); }
     .phase-title {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr auto;
       gap: 14px;
       align-items: center;
       padding: 24px 24px 18px;
+      list-style: none;
+      cursor: pointer;
     }
+    .phase-title::-webkit-details-marker { display: none; }
+    .phase-title::after {
+      content: "+";
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--coffee);
+      background: #f1e3d6;
+      border-radius: 50%;
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .phase[open] > .phase-title::after { content: "−"; }
     .phase-number { display: none; }
+    .time-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      color: var(--caramel);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
     .phase-title h3 { margin: 0; color: var(--espresso); font-size: 26px; line-height: 1.3; }
     .phase-title p { margin: 2px 0 0; color: var(--muted); font-size: 16px; }
     .phase-body { padding: 0 24px 24px; }
+    .phase[open] > .phase-body { border-top: 1px solid #eadbcd; padding-top: 20px; }
     .phase-body > ol, .phase-body > ul { margin: 0; padding-left: 26px; }
     .phase-body li { margin: 8px 0; }
     .strong { color: var(--coffee); font-size: 27px; font-weight: 950; white-space: nowrap; }
@@ -347,14 +411,35 @@
       border-bottom: 1px solid var(--line);
     }
     .day-head strong { display: block; font-size: 26px; }
-    .shift-list { margin: 0; padding: 8px 22px 14px; list-style: none; }
+    .shift-list { position: relative; margin: 0; padding: 8px 22px 14px 42px; list-style: none; }
+    .shift-list::before {
+      content: "";
+      position: absolute;
+      left: 25px;
+      top: 25px;
+      bottom: 30px;
+      width: 2px;
+      background: #dfc9b6;
+    }
     .shift {
+      position: relative;
       display: grid;
       grid-template-columns: 1fr;
       gap: 4px;
       align-items: center;
       padding: 16px 0;
       border-bottom: 1px solid #e7d8ca;
+    }
+    .shift::before {
+      content: "";
+      position: absolute;
+      left: -21px;
+      top: 22px;
+      width: 8px;
+      height: 8px;
+      background: var(--paper);
+      border: 2px solid var(--caramel);
+      border-radius: 50%;
     }
     .shift:last-child { border-bottom: 0; }
     .shift-time { min-width: 0; color: var(--espresso); font-weight: 900; white-space: normal; overflow-wrap: anywhere; }
@@ -407,9 +492,9 @@
       .kicker { margin-bottom: 2px; font-size: 13px; }
       h1 { font-size: 29px; line-height: 1.15; }
       .nav-wrap { padding: 8px 0; }
-      .nav-inner { grid-template-columns: repeat(2, 1fr); }
+      .nav-inner { grid-template-columns: repeat(4, 1fr); }
       .nav-inner { gap: 4px; padding: 4px; border-radius: 15px; }
-      .tab { min-height: 44px; padding: 5px 3px; border-radius: 10px; font-size: 14px; }
+      .tab { min-height: 42px; padding: 5px 2px; border-radius: 9px; font-size: 13px; }
       main { padding: 16px 0 64px; }
       .intro, .tool-box, .contact-box, .roster-intro {
         margin-bottom: 14px;
@@ -417,15 +502,23 @@
         border-radius: 16px;
         box-shadow: none;
       }
+      .intro { padding: 5px 2px 13px; background: transparent; border: 0; border-radius: 0; }
       .intro h2, .tool-box h2, .contact-box h2, .roster-intro h2 { font-size: 21px; }
       .intro .gentle-note { margin-top: 12px; padding-top: 12px; }
       .record-rule { margin-bottom: 16px; padding: 13px 15px; border-radius: 12px; }
-      .phase-list { gap: 14px; }
+      .timeline-head { margin: 18px 0 11px; }
+      .timeline-head h2 { font-size: 20px; }
+      .phase-list { gap: 11px; padding-left: 27px; }
+      .phase-list::before { left: 9px; top: 25px; bottom: 25px; }
       .phase { border-radius: 17px; box-shadow: none; }
-      .phase-title { gap: 8px; padding: 17px 18px 11px; }
+      .phase::before { left: -23px; top: 23px; width: 12px; height: 12px; box-shadow: 0 0 0 4px var(--cream); }
+      .phase-title { gap: 8px; padding: 14px 15px; }
+      .phase-title::after { width: 30px; height: 30px; font-size: 20px; }
       .phase-title h3 { font-size: 20px; }
       .phase-title p { font-size: 15px; }
-      .phase-body { padding: 0 18px 18px; }
+      .time-label { font-size: 12px; }
+      .phase-body { padding: 0 15px 16px; }
+      .phase[open] > .phase-body { padding-top: 15px; }
       .phase-body > ol, .phase-body > ul { padding-left: 22px; }
       .phase-body li { margin: 5px 0; }
       .amounts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
@@ -463,7 +556,9 @@
       .day-card { border-radius: 16px; box-shadow: none; }
       .day-head { padding: 13px 17px; }
       .day-head strong { font-size: 20px; }
-      .shift-list { padding: 5px 17px 10px; }
+      .shift-list { padding: 5px 17px 10px 36px; }
+      .shift-list::before { left: 21px; }
+      .shift::before { left: -19px; }
       .shift { padding: 12px 0; }
       .shift-time { font-size: 16px; }
       .person-name { font-size: 18px; }
@@ -477,7 +572,7 @@
     }
     @media (max-width: 360px) {
       .header-inner, .nav-inner, main { width: calc(100% - 32px); }
-      .tab { font-size: 13px; }
+      .tab { font-size: 12px; }
       h1 { font-size: 27px; }
       .amount-card { padding-inline: 10px; }
       .amount-card strong { font-size: 26px; }
@@ -504,15 +599,22 @@
   <main>
     <section class="panel" id="carePanel" role="tabpanel">
       <div class="intro">
-        <h2>謝謝你來陪蚵仔</h2>
-        <p>照自己方便的順序就好，不用一次全部記住。蚵仔如果有點抗拒，先讓他休息也沒關係。</p>
-        <p class="gentle-note">如果這次沒有餵到水或藥也沒關係，幫我準備乾淨的碗和水給蚵仔就好。也請幫我摸摸牠，感恩！</p>
+        <h2>第一次照顧也沒關係</h2>
+        <p>看現在是哪個時間點，再點開那一段就好，不用先把全部內容記住。</p>
+        <details class="gentle-help">
+          <summary>蚵仔抗拒時怎麼辦？</summary>
+          <div class="detail-body">先讓牠休息就好。這次沒有餵到水或藥也沒關係，幫我準備乾淨的碗和水，也請幫我摸摸牠，感恩！</div>
+        </details>
       </div>
       <p class="record-rule">餵食、餵水或餵藥後，方便的話幫我在「喵喵照護管家」記一下時間和數量，謝謝你。</p>
 
+      <div class="timeline-head">
+        <h2>現在要做哪一段？</h2>
+        <p>依時間往下看，點開需要的內容。</p>
+      </div>
       <div class="phase-list">
-        <article class="phase">
-          <div class="phase-title"><span class="phase-number">1</span><div><h3>到達時</h3><p>拿鑰匙、看看蚵仔</p></div></div>
+        <details class="phase" open>
+          <summary class="phase-title"><div><span class="time-label">剛到家</span><h3>到達時</h3><p>鑰匙・找蚵仔・看一下狀況</p></div></summary>
           <div class="phase-body">
             <ol>
               <li>鑰匙放在指定郵箱的信封裡。</li>
@@ -531,15 +633,11 @@
               </div>
             </details>
           </div>
-        </article>
+        </details>
 
-        <article class="phase">
-          <div class="phase-title"><span class="phase-number">2</span><div><h3>照護中</h3><p>需要餵食、餵藥或餵水時再查看</p></div></div>
+        <details class="phase">
+          <summary class="phase-title"><div><span class="time-label">陪伴期間</span><h3>照護中</h3><p>罐罐35g・乾乾10g・水與藥</p></div></summary>
           <div class="phase-body">
-            <figure class="first-tool-photo">
-              <b>照片位置：3 ml餵水針筒</b>
-              <figcaption>餵水時會用到，看照片認一下就好</figcaption>
-            </figure>
             <div class="amounts">
               <div class="amount-card"><b>罐罐／肉</b><strong><small>每餐約</small>35g</strong><span>每天至少4次，視情況第5次</span></div>
               <div class="amount-card"><b>乾乾</b><strong><small>每餐約</small>10g</strong><span>每天約2次</span></div>
@@ -547,11 +645,25 @@
               <div class="amount-card"><b>藥物</b><strong>資料準備中</strong><span>藥名、藥量與餵藥時間</span></div>
             </div>
             <p class="warning">食物和水的克數、ml都是大約值，差一點沒關係；藥物劑量則照標示即可。</p>
-            <figure class="allowed-food-photo">
-              <b>照片位置：蚵仔目前可以吃的食物</b>
-              <figcaption>會放上目前可餵的罐罐、肉類與乾乾</figcaption>
-            </figure>
-            <p class="warning">蚵仔現在的腸胃比較敏感，餵照片裡的食物就可以了，謝謝你。</p>
+            <details class="tool-photo-toggle">
+              <summary>查看3 ml針筒照片</summary>
+              <div class="detail-body">
+                <figure class="first-tool-photo">
+                  <b>照片位置：3 ml餵水針筒</b>
+                  <figcaption>餵水時會用到，看照片認一下就好</figcaption>
+                </figure>
+              </div>
+            </details>
+            <details class="food-photo-toggle">
+              <summary>查看蚵仔目前可以吃的食物</summary>
+              <div class="detail-body">
+                <figure class="allowed-food-photo">
+                  <b>照片位置：蚵仔目前可以吃的食物</b>
+                  <figcaption>會放上目前可餵的罐罐、肉類與乾乾</figcaption>
+                </figure>
+                <p class="warning">蚵仔現在的腸胃比較敏感，餵照片裡的食物就可以了，謝謝你。</p>
+              </div>
+            </details>
 
             <details>
               <summary>怎麼秤食物</summary>
@@ -602,22 +714,29 @@
               </div>
             </details>
           </div>
-        </article>
+        </details>
 
-        <article class="phase">
-          <div class="phase-title"><span class="phase-number">3</span><div><h3>每天離開前</h3><p>離開前看一眼，順序不拘</p></div></div>
+        <details class="phase">
+          <summary class="phase-title"><div><span class="time-label">準備回家</span><h3>離開前</h3><p>貓砂・益生菌・乾乾・水・鑰匙</p></div></summary>
           <div class="phase-body">
             <ul class="before-leaving">
               <li><b>鏟貓砂一次</b>，查看有沒有尿尿與便便。</li>
               <li>益生菌<b>半包</b>＋約<b>9 ml常溫礦泉水</b>，水量接近即可，用約3支3 ml小針筒慢慢餵。</li>
               <li>睡前補約<b>20g乾乾</b>給蚵仔。</li>
               <li>放一小碟乾淨的水給蚵仔。</li>
-              <li>離開時讓冷氣繼續開著，窗戶維持關閉就好。</li>
-              <li>咖啡、巧克力、橘子、清潔劑、洗碗精、防曬乳等，麻煩放在蚵仔碰不到的地方。</li>
-              <li>離開時帶著鑰匙，鎖好大門後輕拉一下門確認即可。</li>
-              <li>鑰匙用原本信封包好，放回原本郵箱。</li>
             </ul>
-            <p class="warning danger">鑰匙最後用原本的信封包好、放回郵箱就可以了。鎖好門後再放回去，會比較不容易忘記。</p>
+            <details>
+              <summary>最後關門：冷氣、窗戶與鑰匙</summary>
+              <div class="detail-body">
+                <ul class="before-leaving secondary-leaving">
+                  <li>讓冷氣繼續開著，窗戶維持關閉就好。</li>
+                  <li>咖啡、巧克力、橘子、清潔劑、洗碗精、防曬乳等，麻煩放在蚵仔碰不到的地方。</li>
+                  <li>帶著鑰匙，鎖好大門後輕拉一下門確認即可。</li>
+                  <li>鑰匙用原本信封包好，放回原本郵箱。</li>
+                </ul>
+                <p class="warning danger">先鎖好門，再把鑰匙用原本信封包好、放回郵箱。</p>
+              </div>
+            </details>
             <details>
               <summary>查看離開前照片</summary>
               <div class="detail-body photo-grid">
@@ -628,7 +747,7 @@
               </div>
             </details>
           </div>
-        </article>
+        </details>
       </div>
     </section>
 
@@ -708,6 +827,11 @@
       const target = tab.getAttribute('aria-controls');
       panels.forEach(panel => panel.hidden = panel.id !== target);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }));
+    const phases = [...document.querySelectorAll('.phase')];
+    phases.forEach(phase => phase.addEventListener('toggle', () => {
+      if (!phase.open) return;
+      phases.forEach(other => { if (other !== phase) other.open = false; });
     }));
     const numberWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     const numberNodes = [];
