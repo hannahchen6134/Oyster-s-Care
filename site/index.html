@@ -241,6 +241,24 @@
     .amount-card strong { display: block; margin: 3px 0; color: var(--espresso); font-size: 39px; line-height: 1.08; }
     .amount-card strong small { display: block; margin-bottom: 4px; color: var(--muted); font-size: 16px; font-weight: 800; }
     .amount-card > span { color: var(--muted); font-size: 16px; }
+    .amount-card.wide { grid-column: 1 / -1; }
+    .section-label { margin: 2px 0 8px; color: var(--espresso); font-size: 18px; }
+    .daily-plan {
+      margin: 14px 0;
+      overflow: hidden;
+      background: #f8f0e8;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+    }
+    .daily-row {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 12px;
+      padding: 13px 15px;
+      border-bottom: 1px solid #e5d4c4;
+    }
+    .daily-row:last-child { border-bottom: 0; }
+    .daily-row b { color: var(--coffee); }
 
     details {
       margin-top: 14px;
@@ -310,6 +328,25 @@
     }
     .first-tool-photo b { color: var(--coffee); font-size: 22px; }
     .first-tool-photo figcaption { margin-top: 7px; color: var(--muted); font-size: 15px; }
+    .real-photo { margin: 0; }
+    .real-photo img {
+      width: 100%;
+      max-height: 470px;
+      display: block;
+      object-fit: contain;
+      background: #efe3d7;
+      border-radius: 14px;
+    }
+    .real-photo figcaption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      text-align: left;
+    }
+    .real-photo figcaption strong { color: var(--espresso); }
+    .single-photo { margin-top: 14px; }
+    .medicine-grid { margin-top: 14px; }
 
     .before-leaving {
       margin: 0;
@@ -335,6 +372,15 @@
       background: var(--caramel);
       border-radius: 50%;
     }
+    .before-leaving .must-water {
+      margin: 6px 0;
+      padding: 15px 14px 15px 38px;
+      color: var(--espresso);
+      background: var(--amber);
+      border: 1px solid #e2bf79;
+      border-radius: 12px;
+    }
+    .before-leaving .must-water::before { left: 15px; top: 25px; }
 
     .tool-box, .contact-box {
       margin-bottom: 22px;
@@ -368,8 +414,17 @@
     .four-steps b .number-accent { color: white; font-size: inherit; }
     .screens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
     .screen { margin: 0; }
+    .screen-label {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 5px 11px;
+      color: white;
+      background: var(--coffee);
+      border-radius: 999px;
+      font-weight: 900;
+    }
     .screen img { width: 100%; max-height: 560px; display: block; object-fit: contain; object-position: top; border-radius: 14px; }
-    .screen figcaption { margin-top: 7px; color: var(--muted); font-size: 14px; text-align: center; }
+    .screen figcaption { margin-top: 7px; color: var(--muted); font-size: 15px; text-align: left; }
 
     .action {
       display: flex;
@@ -525,15 +580,18 @@
       .amount-card { padding: 13px 12px; border-radius: 13px; }
       .amount-card b { font-size: 15px; }
       .amount-card strong { margin: 2px 0; font-size: 28px; }
-      .amount-card:last-child strong { font-size: 22px; line-height: 1.2; }
+      .amount-card:last-child strong { font-size: 28px; line-height: 1.2; }
       .amount-card strong small { margin-bottom: 2px; font-size: 15px; }
       .amount-card > span { display: block; font-size: 15px; line-height: 1.48; }
+      .section-label { font-size: 17px; }
+      .daily-row { grid-template-columns: 74px 1fr; gap: 9px; padding: 11px 12px; }
       .strong { font-size: 20px; }
       details { margin-top: 10px; border-radius: 13px; }
       summary { padding: 12px 14px; }
       .detail-body { padding: 0 14px 16px; }
       .warning { margin-top: 12px; padding: 13px 14px; border-radius: 11px; }
       .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+      .medicine-grid, .leaving-photo-grid { grid-template-columns: 1fr; gap: 14px; }
       .photo-slot { min-height: 92px; padding: 11px; border-radius: 12px; }
       .photo-slot figcaption { font-size: 13px; }
       .allowed-food-photo, .first-tool-photo {
@@ -582,7 +640,6 @@
 <body>
   <header class="header">
     <div class="header-inner">
-      <p class="kicker">喵喵照護管家・交接說明</p>
       <h1>蚵仔照護</h1>
     </div>
   </header>
@@ -602,7 +659,7 @@
         <summary>蚵仔太過於抗拒怎麼辦？</summary>
         <div class="detail-body">蚵仔餵水或餵藥時一定會扭動，稍微抗拒是正常的。如果掙扎得太激烈、持續咳嗽、嗆到或呼吸和平常不同，就先停下來讓牠休息。這次沒有餵完水或藥也沒關係，幫我準備乾淨的碗和水，也請幫我摸摸牠，感恩！</div>
       </details>
-      <p class="record-rule">餵食、餵水或餵藥後，方便的話幫我在「喵喵照護管家」記一下時間和數量，謝謝你。</p>
+      <p class="record-rule">餵食或餵水後，方便的話幫我在「喵喵照護管家」記下食物克數和水的ml數即可，不用記時間，謝謝你。</p>
 
       <div class="timeline-head">
         <h2>現在要做哪一段？</h2>
@@ -632,32 +689,52 @@
         </details>
 
         <details class="phase">
-          <summary class="phase-title"><div><span class="time-label">陪伴期間</span><h3>照護中</h3><p>罐罐35g・乾乾10g・水與藥</p></div></summary>
+          <summary class="phase-title"><div><span class="time-label">陪伴期間</span><h3>照護中</h3><p>罐罐2～3次・乾乾早晚・藥早晚</p></div></summary>
           <div class="phase-body">
+            <h4 class="section-label">每次餵多少</h4>
             <div class="amounts">
-              <div class="amount-card"><b>罐罐／肉</b><strong><small>每餐約</small>35g</strong><span>每天至少4次，視情況第5次</span></div>
-              <div class="amount-card"><b>乾乾</b><strong><small>每餐約</small>10g</strong><span>每天約2次</span></div>
-              <div class="amount-card"><b>餵水工具</b><strong>3 ml</strong><span>使用小針筒，記錄約喝下幾 ml</span></div>
-              <div class="amount-card"><b>藥物</b><strong>資料準備中</strong><span>藥名、藥量與餵藥時間</span></div>
+              <div class="amount-card"><b>罐罐／肉</b><strong><small>每餐約</small>35g</strong><span>一天共2～3次</span></div>
+              <div class="amount-card"><b>乾乾</b><strong><small>一般每次約</small>10g</strong><span>早上與晚上睡前</span></div>
+              <div class="amount-card wide"><b>罐頭加水</b><strong>5～10 ml</strong><span>可用量杯或食物秤測量</span></div>
             </div>
-            <p class="warning">食物和水的克數、ml都是大約值，差一點沒關係；藥物劑量則照標示即可。</p>
+            <h4 class="section-label">一天大概這樣餵</h4>
+            <div class="daily-plan">
+              <div class="daily-row"><b>早上</b><span>罐罐、乾乾1次；兩種藥共2顆</span></div>
+              <div class="daily-row"><b>中間</b><span>視情況餵罐罐；一天合計2～3次</span></div>
+              <div class="daily-row"><b>晚上睡前</b><span>罐罐、乾乾1次（離開前補20g）；兩種藥共2顆</span></div>
+            </div>
+            <p class="warning"><strong>早晚各餵藥一次：</strong>每次餵2顆不同的藥，也就是橘白色1顆＋粉紅白色1顆。建議約早上10點與晚上10點，前後差一點沒關係。</p>
             <details class="tool-photo-toggle">
-              <summary>查看3 ml針筒照片</summary>
+              <summary>查看針管與餵藥器</summary>
               <div class="detail-body">
-                <figure class="first-tool-photo">
-                  <b>照片位置：3 ml餵水針筒</b>
-                  <figcaption>餵水時會用到，看照片認一下就好</figcaption>
+                <figure class="real-photo single-photo">
+                  <img src="assets/water-medicine-tools-labeled.png" alt="3 ml餵水針管、5 ml餵水針管與膠囊餵藥器的標示照片">
+                  <figcaption>照片已標出：<strong>3 ml餵水針管、5 ml餵水針管、膠囊餵藥器</strong>。</figcaption>
                 </figure>
               </div>
             </details>
             <details class="food-photo-toggle">
-              <summary>查看蚵仔目前可以吃的食物</summary>
+              <summary>查看蚵仔目前只能吃的三種食物</summary>
               <div class="detail-body">
-                <figure class="allowed-food-photo">
-                  <b>照片位置：蚵仔目前可以吃的食物</b>
-                  <figcaption>會放上目前可餵的罐罐、肉類與乾乾</figcaption>
+                <figure class="real-photo single-photo">
+                  <img src="assets/allowed-foods.jpg" alt="蚵仔目前可以吃的三種腸胃照護食物">
+                  <figcaption><strong>目前只餵照片中的三種食物。</strong>乾糧放在碗盤旁，另外兩種罐頭在冰箱內可找到。</figcaption>
+                </figure>
+                <figure class="real-photo single-photo">
+                  <img src="assets/leftover-food-clip.jpg" alt="沒吃完的罐頭用夾子夾緊保存">
+                  <figcaption>沒吃完的罐頭，用照片中的夾子<strong>夾緊後放回冰箱冷藏</strong>即可。</figcaption>
                 </figure>
                 <p class="warning">蚵仔現在的腸胃比較敏感，餵照片裡的食物就可以了，謝謝你。</p>
+              </div>
+            </details>
+            <details>
+              <summary>查看兩種藥與餵藥時間</summary>
+              <div class="detail-body">
+                <p class="warning"><strong>早晚各餵一次，每次共2顆：</strong>橘白色1顆＋粉紅白色1顆。建議約早上10點與晚上10點，不用太嚴格限制時間。</p>
+                <div class="photo-grid medicine-grid">
+                  <figure class="real-photo"><img src="assets/medicine-orange-white.jpg" alt="橘白色膠囊照片"><figcaption><strong>橘白色膠囊：</strong>早晚各1顆</figcaption></figure>
+                  <figure class="real-photo"><img src="assets/medicine-thyroid-wash-hands.png" alt="粉紅白色甲亢藥物與餵完藥請洗手提醒"><figcaption><strong>粉紅白色膠囊（甲亢藥物）：</strong>早晚各1顆，餵完藥請洗手。</figcaption></figure>
+                </div>
               </div>
             </details>
 
@@ -681,10 +758,16 @@
               <div class="detail-body">
                 <ol>
                   <li>每餐秤約35g肉類。</li>
-                  <li>可以直接加入70°C熱水，約加5～10g水。</li>
+                  <li>蚵仔幾乎不會自己喝水，我通常會把水加在罐頭裡；可以用量杯量約5～10 ml。</li>
+                  <li>也可以秤完肉後再按一次歸零，直接加水；秤上增加的克數，可當作大約加入的ml數。</li>
+                  <li>可以直接加入70°C熱水。</li>
                   <li>攪拌後稍微等涼，再給蚵仔吃。</li>
                 </ol>
                 <p class="warning">熱水溫度比較高，拌好後稍微放涼再給蚵仔，謝謝你。</p>
+                <figure class="real-photo single-photo">
+                  <img src="assets/water-measuring-cup.jpg" alt="用來測量加進罐頭內飲水ml數的透明量杯">
+                  <figcaption><strong>量水用的小量杯：</strong>可以直接看加入罐頭的水量。</figcaption>
+                </figure>
               </div>
             </details>
 
@@ -692,7 +775,7 @@
               <summary>餵藥與餵水</summary>
               <div class="detail-body">
                 <ul>
-                  <li>可以先把水放進空玻璃罐，再用3 ml針筒從玻璃罐裡吸水。</li>
+                  <li>玻璃罐放在飲水機旁，可以先把水放進玻璃罐，再用餵水針筒吸水。</li>
                   <li>可以從嘴巴側邊慢慢餵，讓蚵仔有時間吞下去。</li>
                   <li>餵完藥後，看3 ml針筒剩多少。</li>
                   <li>憑感覺扣掉大概流掉的水，記錄約喝下幾ml。</li>
@@ -700,11 +783,10 @@
                   <li>這次沒有餵到藥或水也沒關係，幫我記一下就好。</li>
                   <li>如果不確定藥有沒有吞下，先別補第二次，LINE跟青青說一聲即可。</li>
                 </ul>
-                <div class="photo-grid">
-                  <figure class="photo-slot"><b>照片位置：從空玻璃罐吸水</b><figcaption>會放上玻璃罐與3 ml針筒的操作照片</figcaption></figure>
-                  <figure class="photo-slot"><b>照片位置：藥品</b><figcaption>會標明每種藥與用量</figcaption></figure>
-                  <figure class="photo-slot"><b>照片位置：餵藥器</b><figcaption>可參考外觀與使用方向</figcaption></figure>
-                </div>
+                <figure class="real-photo single-photo">
+                  <img src="assets/water-from-glass-jar.jpg" alt="用餵水針筒從玻璃罐吸水">
+                  <figcaption>玻璃罐在<strong>飲水機旁</strong>，可以在玻璃罐內用餵水針筒吸水。</figcaption>
+                </figure>
               </div>
             </details>
           </div>
@@ -715,9 +797,9 @@
           <div class="phase-body">
             <ul class="before-leaving">
               <li><b>鏟貓砂一次</b>，查看有沒有尿尿與便便。</li>
-              <li>益生菌<b>半包</b>＋約<b>9 ml常溫礦泉水</b>，水量接近即可，用約3支3 ml小針筒慢慢餵。</li>
-              <li>睡前補約<b>20g乾乾</b>給蚵仔。</li>
-              <li>放一小碟乾淨的水給蚵仔。</li>
+              <li>離開前可餵益生菌：<b>半包</b>＋約<b>9 ml常溫礦泉水</b>攪拌，水量接近即可，再用約3支3 ml小針筒慢慢餵。</li>
+              <li>離開前補約<b>20g乾乾</b>給蚵仔。</li>
+              <li class="must-water"><b>特別注意：離開前一定要用照片中的水碟，放乾淨的水給蚵仔。</b></li>
             </ul>
             <details>
               <summary>最後離開前：冷氣、窗戶與鑰匙</summary>
@@ -733,9 +815,9 @@
             </details>
             <details>
               <summary>查看離開前照片</summary>
-              <div class="detail-body photo-grid">
-                <figure class="photo-slot"><b>照片位置：益生菌與針筒</b><figcaption>半包與3支3 ml針筒</figcaption></figure>
-                <figure class="photo-slot"><b>照片位置：小碟水</b><figcaption>使用的碟子與位置</figcaption></figure>
+              <div class="detail-body photo-grid leaving-photo-grid">
+                <figure class="real-photo"><img src="assets/probiotic.jpg" alt="蚵仔睡前或離開前要吃的益生菌"><figcaption><strong>益生菌：</strong>半包加入常溫水攪拌後，用針筒慢慢餵；離開前可餵。</figcaption></figure>
+                <figure class="real-photo"><img src="assets/water-dishes-rotated.png" alt="蚵仔喝水使用的水碟"><figcaption><strong>蚵仔的水碟：</strong>離開前請放乾淨的水。</figcaption></figure>
               </div>
             </details>
           </div>
@@ -748,13 +830,13 @@
         <h2>喵喵照護管家</h2>
         <ol class="four-steps">
           <li><b>1</b><span>開啟喵喵照護管家</span></li>
-          <li><b>2</b><span>填食物、水量、藥和異常狀況</span></li>
+          <li><b>2</b><span>填食物克數和水量（ml）</span></li>
           <li><b>3</b><span>按下儲存</span></li>
         </ol>
-        <p class="warning">水量不用非常精準。用3 ml針筒餵完後，扣掉剩餘與大概流掉的量，記錄約喝下幾ml即可。</p>
+        <p class="warning">水量不用非常精準。用3 ml或5 ml針筒餵完後，扣掉剩餘與大概流掉的量，記錄約喝下幾ml即可。</p>
         <div class="screens">
-          <figure class="screen"><img src="assets/miaomiao-record.jpg" alt="喵喵照護管家的記錄完成畫面"><figcaption>記錄後可看到當日累積。</figcaption></figure>
-          <figure class="screen"><img src="assets/miaomiao-choice.jpg" alt="喵喵照護管家的食物品項選擇畫面"><figcaption>詢問品項時，點正確的食物。</figcaption></figure>
+          <figure class="screen"><span class="screen-label">記水</span><img src="assets/record-water.jpg" alt="喵喵照護管家記錄飲水5 ml的畫面"><figcaption>輸入「水＋ml數」，確認畫面顯示喝水與水量。</figcaption></figure>
+          <figure class="screen"><span class="screen-label">記食物</span><img src="assets/record-food.jpg" alt="喵喵照護管家記錄罐頭克數與加水ml數的畫面"><figcaption>輸入罐頭名稱、克數；罐頭有加水時，也一起填水的ml數。</figcaption></figure>
         </div>
       </article>
     </section>
