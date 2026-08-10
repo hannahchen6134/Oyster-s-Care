@@ -56,8 +56,9 @@
       margin: 0;
       color: var(--espresso);
       font-family: "Noto Serif TC", "Microsoft JhengHei", serif;
-      font-size: clamp(36px, 9vw, 50px);
+      font-size: clamp(32px, 7vw, 44px);
       line-height: 1.18;
+      letter-spacing: .14em;
     }
     .date { margin: 12px 0 0; color: var(--muted); font-size: 16px; font-weight: 800; }
 
@@ -548,7 +549,7 @@
       .header { border-bottom-width: 3px; }
       .header-inner { padding: 20px 0 18px; }
       .kicker { margin-bottom: 2px; font-size: 13px; }
-      h1 { font-size: 29px; line-height: 1.15; }
+      h1 { font-size: 26px; line-height: 1.2; letter-spacing: .18em; }
       .nav-wrap { padding: 8px 0; }
       .nav-inner { grid-template-columns: repeat(4, 1fr); }
       .nav-inner { gap: 4px; padding: 4px; border-radius: 15px; }
@@ -660,7 +661,7 @@
     @media (max-width: 360px) {
       .header-inner, .nav-inner, main { width: calc(100% - 44px); }
       .tab { font-size: 12px; }
-      h1 { font-size: 27px; }
+      h1 { font-size: 24px; }
       .amount-card { padding-inline: 10px; }
       .amount-card strong { font-size: 26px; }
     }
@@ -775,13 +776,15 @@
               <div class="detail-body">
                 <ol>
                   <li>開啟食物秤，放上空碗。</li>
-                  <li>按「歸零／TARE」。</li>
-                  <li>畫面回到 <span class="strong">0 g</span>、單位顯示g後，再開始放食物。</li>
-                  <li>再放入食物，秤到指定克數。</li>
+                  <li>先確認畫面右上角的單位是<span class="strong">g</span>。</li>
+                  <li>按「歸零／TARE」，畫面顯示<span class="strong">0.0 g</span>後，再開始放食物。</li>
+                  <li>碗放在秤的中央，肉也盡量放在碗中間，測量會比較準確。</li>
+                  <li>放入食物，秤到指定克數。</li>
                 </ol>
-                <div class="photo-grid">
-                  <figure class="photo-slot"><b>照片位置：食物秤歸0</b><figcaption>畫面顯示0 g後再放食物</figcaption></figure>
-                </div>
+                <figure class="real-photo single-photo">
+                  <img src="assets/scale-zero-g.jpg" alt="食物秤顯示g單位並歸零為0.0 g的畫面">
+                  <figcaption><strong>正確畫面：</strong>右上角顯示g，數字已歸零為0.0。</figcaption>
+                </figure>
               </div>
             </details>
 
@@ -833,13 +836,13 @@
               <li><b>鏟貓砂一次</b>，查看有沒有尿尿與便便。</li>
               <li>離開前可餵益生菌：<b>半包</b>＋約<b>9 ml常溫礦泉水</b>攪拌，水量接近即可，再用約3支3 ml小針筒慢慢餵。</li>
               <li>離開前補約<b>20g乾乾</b>給蚵仔。</li>
-              <li class="must-water"><b>特別注意：離開前一定要用照片中的水碟，放乾淨的水給蚵仔。</b></li>
+              <li class="must-water"><b>請用水碟放乾淨的水給蚵仔。</b></li>
             </ul>
             <details>
               <summary>最後離開前：冷氣、窗戶與鑰匙</summary>
               <div class="detail-body">
                 <ul class="before-leaving secondary-leaving">
-                  <li><b>所有窗戶都保持關上，冷氣都不要關掉。</b></li>
+                  <li><b>所有窗戶都保持關上，冷氣不需關掉。</b></li>
                   <li>咖啡、巧克力、橘子、清潔劑、洗碗精、防曬乳等，麻煩放在蚵仔碰不到的地方。</li>
                   <li>帶著鑰匙，鎖好大門後輕拉一下門確認即可。</li>
                   <li>鑰匙用原本信封包好，放回原本郵箱。</li>
@@ -851,7 +854,7 @@
               <summary>查看離開前照片</summary>
               <div class="detail-body photo-grid leaving-photo-grid">
                 <figure class="real-photo"><img src="assets/probiotic.jpg" alt="蚵仔睡前或離開前要吃的益生菌"><figcaption><strong>益生菌：</strong>半包加入常溫水攪拌後，用針筒慢慢餵；離開前可餵。</figcaption></figure>
-                <figure class="real-photo"><img src="assets/water-dishes-rotated.png" alt="蚵仔喝水使用的水碟"><figcaption><strong>蚵仔的水碟：</strong>離開前請放乾淨的水。</figcaption></figure>
+                <figure class="real-photo"><img src="assets/water-dishes-rotated.png" alt="蚵仔喝水使用的水碟"><figcaption><strong>蚵仔的水碟：</strong>這是蚵仔喝水使用的水碟。</figcaption></figure>
               </div>
             </details>
           </div>
