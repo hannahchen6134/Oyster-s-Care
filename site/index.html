@@ -55,8 +55,9 @@
     h1 {
       margin: 0;
       color: var(--espresso);
-      font-family: "Noto Serif TC", "Microsoft JhengHei", serif;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       font-size: clamp(32px, 7vw, 44px);
+      font-weight: 800;
       line-height: 1.18;
       letter-spacing: .14em;
     }
@@ -286,15 +287,11 @@
       border-radius: 14px;
     }
     .danger { background: var(--red-soft); border: 1px solid #d7a5a0; }
-    .affection-note {
-      margin: 16px 0 4px;
-      padding: 15px 17px;
-      color: var(--espresso);
+    .affection-details {
       background: #f3e6dc;
       border-left: 4px solid var(--caramel);
-      border-radius: 12px;
-      line-height: 1.65;
     }
+    .affection-details .detail-body { color: var(--espresso); line-height: 1.65; }
 
     .photo-grid {
       display: grid;
@@ -713,7 +710,10 @@
               <li>信封先留著，開門後就可以進來陪蚵仔。</li>
               <li>進門後看看蚵仔的精神、呼吸和走路是否和平常差不多。</li>
             </ol>
-            <p class="affection-note"><b>蚵仔喜歡被摸摸：</b>肚子不要摸；牠特別喜歡輕輕摸額頭、拍拍屁屁。可以多陪牠、摸摸牠。</p>
+            <details class="affection-details">
+              <summary>安撫蚵仔的方法</summary>
+              <div class="detail-body"><b>蚵仔喜歡被摸摸：</b>肚子不要摸；牠特別喜歡輕輕摸額頭、拍拍屁屁。可以多陪牠、摸摸牠。</div>
+            </details>
             <details>
               <summary>找不到蚵仔時</summary>
               <div class="detail-body">他很喜歡待在<b>推車內、廁所內、浴缸內或紙箱內</b>，可以先看看這幾個地方。</div>
@@ -729,12 +729,12 @@
         </details>
 
         <details class="phase">
-          <summary class="phase-title"><div><span class="time-label">陪伴期間</span><h3>照護中</h3><p>罐罐8～9次・乾乾早晚・藥早晚</p></div></summary>
+          <summary class="phase-title"><div><span class="time-label">陪伴期間</span><h3>照護中</h3><p>罐罐8～9次・乾乾早晚各1次・藥早晚各1次</p></div></summary>
           <div class="phase-body">
             <h4 class="section-label">每次餵多少</h4>
             <div class="amounts">
               <div class="amount-card"><b>罐罐／肉</b><strong><small>每餐約</small>35g</strong><span>一天共8～9次</span></div>
-              <div class="amount-card"><b>乾乾</b><strong><small>一般每次約</small>10g</strong><span>早上與晚上睡前</span></div>
+              <div class="amount-card"><b>乾乾</b><strong><small>一般每次約</small>10g</strong><span>早晚各1次</span></div>
               <div class="amount-card wide"><b>罐頭加水</b><strong>5～10 ml</strong><span>可用量杯或食物秤測量</span></div>
             </div>
             <h4 class="section-label">一天大概這樣餵</h4>
