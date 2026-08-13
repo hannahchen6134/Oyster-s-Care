@@ -242,6 +242,14 @@
     .amount-card > span { color: var(--muted); font-size: 16px; }
     .amount-card.wide { grid-column: 1 / -1; }
     .section-label { margin: 2px 0 8px; color: var(--espresso); font-size: 18px; }
+    .hunger-note {
+      margin: 0 0 16px;
+      padding: 14px 16px;
+      color: var(--espresso);
+      background: #f8f0e8;
+      border-left: 4px solid var(--coffee);
+      border-radius: 12px;
+    }
     .daily-plan {
       margin: 14px 0;
       overflow: hidden;
@@ -421,6 +429,18 @@
       border-radius: 50%;
     }
     .four-steps b .number-accent { color: white; font-size: inherit; }
+    .record-formats {
+      margin: 16px 0 0;
+      padding: 16px 18px;
+      background: #f6ece2;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    .record-formats > strong { display: block; margin-bottom: 10px; color: var(--espresso); }
+    .record-format-row { display: flex; gap: 10px; align-items: baseline; padding: 7px 0; }
+    .record-format-row + .record-format-row { border-top: 1px solid var(--line); }
+    .record-format-row b { min-width: 52px; color: var(--coffee); }
+    .record-format-note { margin: 10px 0 0; color: var(--muted); }
     .screens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
     .screen { margin: 0; }
     .screen-label {
@@ -725,6 +745,7 @@
         <details class="phase">
           <summary class="phase-title"><div><span class="time-label">陪伴期間</span><h3>照護中</h3><p>罐罐早中晚至少各2次・乾乾早晚各1次・藥早晚各1次</p></div></summary>
           <div class="phase-body">
+            <p class="hunger-note"><strong>蚵仔餓了時：</strong>可能會蹭你的腳，或在飯碗附近喵喵叫。</p>
             <h4 class="section-label">每次餵多少</h4>
             <div class="amounts">
               <div class="amount-card"><b>罐頭</b><strong><small>每餐約</small>35g</strong><span>早中晚至少各2次</span></div>
@@ -873,13 +894,19 @@
         <h2><a class="miaomiao-link" href="https://line.me/R/ti/p/@232mjffx" target="_blank" rel="noopener noreferrer">喵喵安心照護管家</a></h2>
         <ol class="four-steps">
           <li><b>1</b><span>開啟<a class="miaomiao-link" href="https://line.me/R/ti/p/@232mjffx" target="_blank" rel="noopener noreferrer">喵喵安心照護管家</a></span></li>
-          <li><b>2</b><span>填食物克數和水量（ml）</span></li>
+          <li><b>2</b><span>照下方的固定格式輸入</span></li>
           <li><b>3</b><span>按下儲存</span></li>
         </ol>
+        <div class="record-formats">
+          <strong>只要照這樣輸入：</strong>
+          <div class="record-format-row"><b>罐頭</b><span>主食＋克數</span></div>
+          <div class="record-format-row"><b>乾糧</b><span>乾糧＋克數</span></div>
+          <p class="record-format-note">不用記罐頭品牌。罐頭有加水時，再輸入「水＋ml數」。</p>
+        </div>
         <p class="warning">水量不用非常精準。用3 ml或5 ml針筒餵完後，扣掉剩餘與大概流掉的量，記錄約喝下幾ml即可。</p>
         <div class="screens">
           <figure class="screen"><span class="screen-label">記水</span><img src="assets/record-water.jpg" alt="喵喵安心照護管家記錄飲水5 ml的畫面"><figcaption>輸入「水＋ml數」，確認畫面顯示喝水與水量。</figcaption></figure>
-          <figure class="screen"><span class="screen-label">記食物</span><img src="assets/record-food.jpg" alt="喵喵安心照護管家記錄罐頭克數與加水ml數的畫面"><figcaption>輸入罐頭名稱、克數；罐頭有加水時，也一起填水的ml數。</figcaption></figure>
+          <figure class="screen"><span class="screen-label">記罐頭＋水</span><img src="assets/record-food.jpg" alt="喵喵安心照護管家輸入主食克數與水量的畫面"><figcaption>罐頭輸入「主食＋克數」；有加水，再輸入「水＋ml數」。</figcaption></figure>
         </div>
       </article>
     </section>
