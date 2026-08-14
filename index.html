@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0; url=index-simple.html">
+  <script>window.location.replace('index-simple.html');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#5b3927">
+  <title>蚵仔照護指南</title>
+  <style>
+    :root {
+      --coffee-950: #342116;
+      --coffee-900: #4a2c19;
+      --coffee-800: #824e20;
+      --coffee-700: #93602f;
+      --coffee-600: #a67746;
+      --coffee-200: #d8c2ad;
+      --coffee-100: #eadfd3;
+      --cream: #f4ede5;
+      --paper: #fffaf4;
+      --ink: #2c211b;
+      --muted: #6c5c52;
+      --green: #74472c;
+      --green-soft: #eee0d2;
+      --amber: #8a5a16;
+      --amber-soft: #f7e9c9;
+      --red: #9b342e;
+      --red-soft: #f8e1de;
+      --line: #d8c9ba;
+      --radius: 24px;
+      --shadow: 0 12px 36px rgba(55, 35, 24, .07);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      font-size: 20px;
+      line-height: 1.65;
+    }
+    button, a { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, a:focus-visible, summary:focus-visible {
+      outline: 4px solid #d59a55;
+      outline-offset: 3px;
+    }
+    .skip-link {
+      position: fixed;
+      left: 12px;
+      top: -80px;
+      z-index: 999;
+      padding: 12px 18px;
+      color: white;
+      background: var(--coffee-950);
+    }
+    .skip-link:focus { top: 12px; }
+
+    .topbar {
+      color: var(--coffee-900);
+      background: #f4e6d7;
+      border-bottom: 5px solid var(--coffee-800);
+    }
+    .topbar-inner {
+      width: min(980px, calc(100% - 56px));
+      margin: 0 auto;
+      padding: 34px 0 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+    }
+    .brand-kicker {
+      margin: 0 0 2px;
+      color: var(--coffee-800);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+    h1 {
+      margin: 0;
+      font-family: "Noto Serif TC", "Microsoft JhengHei", serif;
+      font-size: clamp(34px, 5vw, 52px);
+      line-height: 1.2;
+    }
+    .today-label {
+      flex: 0 0 auto;
+      padding: 8px 14px;
+      color: var(--coffee-900);
+      background: #ead8c5;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .tabs-shell {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(248, 243, 236, .96);
+      padding: 10px 0;
+      backdrop-filter: blur(12px);
+    }
+    .tabs {
+      width: min(980px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 6px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(255, 250, 244, .9);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 6px 18px rgba(55, 35, 24, .05);
+    }
+    .tab-button {
+      min-width: 0;
+      min-height: 54px;
+      padding: 9px 12px;
+      color: var(--coffee-800);
+      background: transparent;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      font-weight: 900;
+    }
+    .tab-button[aria-selected="true"] {
+      color: white;
+      background: var(--coffee-800);
+    }
+
+    main {
+      width: min(980px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 120px;
+    }
+    [hidden] { display: none !important; }
+    .panel { animation: appear .25s ease-out; }
+    @keyframes appear { from { opacity: 0; transform: translateY(5px); } }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .hero-copy, .progress-card, .care-card, .notice, details, .tool-card, .contact-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .hero-copy, .progress-card { padding: 32px; border-radius: var(--radius); }
+    .hero-copy h2, .section-title {
+      margin: 0 0 8px;
+      font-family: "Noto Serif TC", "Microsoft JhengHei", serif;
+      font-size: clamp(27px, 4vw, 38px);
+      line-height: 1.3;
+    }
+    .hero-copy p { margin: 0; color: var(--muted); }
+    .progress-card { color: white; background: var(--coffee-800); border-color: var(--coffee-800); }
+    .progress-card strong { display: block; font-size: 38px; line-height: 1.2; }
+    .progress-card span { color: var(--coffee-100); font-size: 17px; }
+    .progress-track {
+      height: 12px;
+      margin-top: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,.2);
+      border-radius: 999px;
+    }
+    .progress-fill { width: 0; height: 100%; background: #f2d7aa; transition: width .25s ease; }
+
+    .notice {
+      margin: 24px 0;
+      padding: 24px 26px;
+      border-radius: 18px;
+    }
+    .notice strong { display: block; margin-bottom: 4px; font-size: 23px; }
+    .notice-warning { background: var(--amber-soft); border-color: #dec184; }
+    .notice-danger { background: var(--red-soft); border-color: #dbaba6; }
+    .notice-safe { background: var(--green-soft); border-color: #b6d1bf; }
+    .pending {
+      padding: 18px;
+      background: #fff4da;
+      border: 2px dashed #c18a35;
+      border-radius: 14px;
+    }
+    .pending strong { color: #70460b; }
+
+    .section-head { margin: 38px 0 16px; }
+    .section-head p { margin: 0; color: var(--muted); }
+    .care-grid { display: grid; gap: 24px; }
+    .care-card {
+      position: relative;
+      padding: 32px;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .care-card.done { background: #faf2e9; border-color: #c9aa8e; }
+    .step-head {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .step-number {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: var(--coffee-800);
+      border-radius: 50%;
+      font-size: 24px;
+      font-weight: 900;
+    }
+    .step-head h3 { margin: 0; font-size: 27px; line-height: 1.3; }
+    .step-head p { margin: 2px 0 0; color: var(--muted); font-size: 17px; }
+    .check-list { margin: 0; padding: 0; list-style: none; }
+    .check-list li { position: relative; padding: 7px 0 7px 30px; }
+    .check-list li::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 18px;
+      width: 12px;
+      height: 12px;
+      background: var(--coffee-600);
+      border-radius: 50%;
+    }
+    .amount {
+      display: inline-block;
+      margin: 4px 2px;
+      color: var(--coffee-900);
+      font-size: 34px;
+      font-weight: 950;
+      line-height: 1.1;
+    }
+    .primary-button, .secondary-button, .danger-button, .counter-button {
+      min-height: 56px;
+      border-radius: 12px;
+      font-weight: 900;
+    }
+    .primary-button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px 18px;
+      color: white;
+      background: var(--green);
+      border: 2px solid var(--green);
+    }
+    .primary-button.is-done::before { content: "已完成　"; }
+    .secondary-button {
+      padding: 11px 18px;
+      color: var(--coffee-900);
+      background: var(--paper);
+      border: 2px solid var(--coffee-700);
+    }
+    .danger-button {
+      display: flex;
+      width: 100%;
+      padding: 14px 20px;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      background: var(--red);
+      border: 2px solid var(--red);
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .photo-slot {
+      min-height: 150px;
+      margin: 0;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      padding: 18px;
+      text-align: center;
+      background: #f2ebe3;
+      border: 2px dashed #b59b84;
+      border-radius: 12px;
+    }
+    .photo-slot b { color: var(--coffee-800); }
+    .photo-slot figcaption { margin-top: 5px; color: var(--muted); font-size: 15px; line-height: 1.45; }
+    .tutorial-photo {
+      width: 100%;
+      max-height: 620px;
+      display: block;
+      object-fit: contain;
+      object-position: top;
+      background: #f1e6da;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    .tutorial-shot { margin: 0; }
+    .tutorial-shot figcaption { margin-top: 8px; color: var(--muted); font-size: 16px; text-align: center; }
+
+    .schedule-card {
+      margin: 32px 0;
+      padding: 32px;
+      background: #fffdf8;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .schedule-card h3 { margin: 0; color: var(--coffee-800); font-size: 28px; }
+    .schedule-card > p { margin: 3px 0 18px; color: var(--muted); }
+    .schedule-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .schedule-row {
+      min-height: 68px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 124px;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      background: #f7eee5;
+      border: 1px solid #dbc7b5;
+      border-radius: 12px;
+    }
+    .schedule-row b { display: block; color: var(--coffee-800); }
+    .schedule-row small { display: block; color: var(--muted); font-size: 14px; }
+    .schedule-row input[type="time"] {
+      width: 100%;
+      min-height: 48px;
+      padding: 6px;
+      color: var(--ink);
+      background: white;
+      border: 2px solid #a99179;
+      border-radius: 10px;
+      font-size: 19px;
+    }
+
+    .feeding-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .feeding-box { padding: 22px; background: #f7f0e8; border: 1px solid var(--line); border-radius: 16px; }
+    .feeding-box h4 { margin: 0; font-size: 25px; }
+    .feeding-box p { margin: 4px 0 14px; color: var(--muted); }
+    .counter {
+      display: grid;
+      grid-template-columns: 58px 1fr 58px;
+      gap: 10px;
+      align-items: center;
+    }
+    .counter-button {
+      padding: 0;
+      color: white;
+      background: var(--coffee-800);
+      border: 0;
+      font-size: 30px;
+    }
+    .counter-value { text-align: center; }
+    .counter-value strong { display: block; font-size: 38px; line-height: 1.1; }
+    .counter-value span { color: var(--muted); font-size: 15px; }
+
+    details { margin-top: 16px; border-radius: 14px; }
+    summary { padding: 17px 20px; color: var(--coffee-900); font-weight: 900; cursor: pointer; }
+    .details-body { padding: 0 20px 20px; }
+    .details-body ol { padding-left: 28px; }
+    .details-body li { margin: 8px 0; }
+
+    .mini-checks { display: grid; gap: 10px; }
+    .check-row {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 10px 14px;
+      background: #f8f3ed;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    .check-row input { width: 26px; height: 26px; accent-color: var(--green); flex: 0 0 auto; }
+
+    .tool-card, .contact-card { margin-bottom: 24px; padding: 32px; border-radius: var(--radius); }
+    .simple-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .simple-steps li { padding: 18px; background: #f2ebe3; border-radius: 14px; }
+    .simple-steps b { display: block; margin-bottom: 6px; color: var(--coffee-800); font-size: 25px; }
+    .fake-link {
+      display: block;
+      width: 100%;
+      padding: 14px 18px;
+      text-align: center;
+      color: #765b46;
+      background: #e9ded3;
+      border: 2px dashed #a8896c;
+      border-radius: 12px;
+      font-weight: 900;
+    }
+    .contact-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .line-button {
+      display: flex;
+      min-height: 60px;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      background: var(--green);
+      border: 2px solid var(--green);
+      border-radius: 12px;
+      font-weight: 900;
+    }
+    .phone-number { display: block; margin: 10px 0 20px; font-size: clamp(34px, 8vw, 56px); font-weight: 950; letter-spacing: .03em; }
+
+    .footer-note { margin-top: 28px; color: var(--muted); text-align: center; font-size: 15px; }
+    .reset-button { margin-top: 16px; color: var(--muted); background: transparent; border: 0; text-decoration: underline; }
+
+    @media (max-width: 800px) {
+      body { font-size: 19px; }
+      .topbar-inner { align-items: start; flex-direction: column; gap: 14px; }
+      .hero, .feeding-grid { grid-template-columns: 1fr; }
+      .simple-steps { grid-template-columns: repeat(2, 1fr); }
+      .contact-actions { grid-template-columns: 1fr; }
+      .schedule-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .topbar-inner { width: calc(100% - 40px); padding: 30px 0 26px; }
+      .tabs-shell { padding: 10px 0; }
+      main { width: calc(100% - 40px); padding: 26px 0 110px; }
+      .tabs { width: calc(100% - 32px); gap: 5px; padding: 5px; }
+      .tab-button { min-height: 50px; padding-inline: 3px; font-size: 14px; white-space: nowrap; }
+      .hero { gap: 18px; margin-bottom: 26px; }
+      .hero-copy, .progress-card, .care-card, .tool-card, .contact-card { padding: 24px; }
+      .notice { margin: 20px 0; padding: 21px 22px; }
+      .care-grid { gap: 20px; }
+      .step-head { grid-template-columns: 46px 1fr; }
+      .step-number { width: 46px; height: 46px; }
+      .step-head h3 { font-size: 24px; }
+      .photo-grid, .simple-steps { grid-template-columns: 1fr; }
+      .photo-slot { min-height: 132px; }
+      .amount { font-size: 32px; }
+      .schedule-card { margin: 26px 0; padding: 24px; }
+      .schedule-grid { gap: 12px; }
+      .schedule-row { grid-template-columns: minmax(0, 1fr) 104px; padding: 14px 15px; }
+      .schedule-row input[type="time"] { font-size: 17px; }
+    }
+    @media print {
+      .tabs-shell, button, .reset-button { display: none !important; }
+      main { width: 100%; padding: 0; }
+      .panel { display: block !important; }
+      .care-card, .tool-card, .contact-card, details { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <p class="brand-kicker">喵喵照護管家・長輩友善版</p>
+        <h1>蚵仔照護指南</h1>
+      </div>
+      <div class="today-label" id="todayLabel">今天</div>
+    </div>
+  </header>
+
+  <nav class="tabs-shell" aria-label="主要功能">
+    <div class="tabs" role="tablist">
+      <button class="tab-button" role="tab" aria-selected="true" aria-controls="carePanel" id="careTab">今天照護</button>
+      <button class="tab-button" role="tab" aria-selected="false" aria-controls="recordPanel" id="recordTab">喵喵記錄</button>
+      <button class="tab-button" role="tab" aria-selected="false" aria-controls="contactPanel" id="contactTab">異常聯絡</button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="panel" id="carePanel" role="tabpanel" aria-labelledby="careTab">
+      <div class="hero">
+        <div class="hero-copy">
+          <h2>照著順序做，就不會漏掉</h2>
+          <p>每完成一項就按「完成」。如果蚵仔太抗拒，安全最重要，不用勉強餵藥或餵水。</p>
+        </div>
+        <div class="progress-card" aria-live="polite">
+          <strong id="progressText">0／7</strong>
+          <span>今天的主要項目</span>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+      </div>
+
+      <section class="schedule-card" aria-labelledby="scheduleTitle">
+        <h3 id="scheduleTitle">今日時間表</h3>
+        <p>罐罐不用記錄時間，只要記錄今天餵了幾次。這裡只保留需要提醒的時間。</p>
+        <div class="schedule-grid">
+          <label class="schedule-row"><span><b>乾乾第1次</b><small>約10g</small></span><input type="time" data-time="dry1" aria-label="乾乾第1次時間"></label>
+          <label class="schedule-row"><span><b>乾乾第2次</b><small>約10g</small></span><input type="time" data-time="dry2" aria-label="乾乾第2次時間"></label>
+          <label class="schedule-row"><span><b>早藥</b><small>時間與藥量待補</small></span><input type="time" data-time="medAm" aria-label="早藥時間"></label>
+          <label class="schedule-row"><span><b>晚藥</b><small>時間與藥量待補</small></span><input type="time" data-time="medPm" aria-label="晚藥時間"></label>
+          <label class="schedule-row"><span><b>離開前鏟貓砂</b><small>每天離開前一次</small></span><input type="time" data-time="litter" aria-label="離開前鏟貓砂時間"></label>
+        </div>
+      </section>
+
+      <div class="notice notice-danger">
+        <strong>房間環境不能改</strong>
+        冷氣請一直開著，不要關掉。窗戶請保持關閉，不要打開。
+      </div>
+      <div class="notice notice-warning">
+        <strong>蚵仔不能碰到這些東西</strong>
+        咖啡、巧克力、橘子、任何清潔劑、洗碗精、防曬乳等，都要蓋好並收到蚵仔碰不到的地方。
+      </div>
+
+      <section class="care-grid" aria-label="今日照護流程">
+        <article class="care-card" data-task="key-in">
+          <div class="step-head">
+            <div class="step-number">1</div>
+            <div><h3>從郵箱拿鑰匙</h3><p>到達時先做</p></div>
+          </div>
+          <ul class="check-list">
+            <li>到指定的郵箱，找到裝鑰匙的信封。</li>
+            <li>取出鑰匙，信封請保留好，不要丟掉。</li>
+            <li>用鑰匙進入家中。</li>
+          </ul>
+          <div class="photo-grid">
+            <figure class="photo-slot"><b>待補：正確郵箱照片</b><figcaption>讓照護者一眼認出是哪個郵箱</figcaption></figure>
+            <figure class="photo-slot"><b>待補：鑰匙信封照片</b><figcaption>顯示信封外觀與鑰匙樣子</figcaption></figure>
+          </div>
+          <button class="primary-button task-button" type="button">我已拿到鑰匙</button>
+        </article>
+
+        <article class="care-card" data-task="condition">
+          <div class="step-head">
+            <div class="step-number">2</div>
+            <div><h3>先看看蚵仔</h3><p>確認沒有明顯異常</p></div>
+          </div>
+          <ul class="check-list">
+            <li>蚵仔在家，可以正常走動。</li>
+            <li>呼吸和平常一樣。</li>
+            <li>沒有明顯嘔吐、拉肚子、流血或其他異常。</li>
+          </ul>
+          <details open>
+            <summary>找不到蚵仔時，先看這四個地方</summary>
+            <div class="details-body">
+              <ol>
+                <li>推車內</li>
+                <li>廁所內</li>
+                <li>浴缸內</li>
+                <li>紙箱內</li>
+              </ol>
+              <div class="photo-grid">
+                <figure class="photo-slot"><b>待補：推車內</b><figcaption>拍出蚵仔常躲的位置</figcaption></figure>
+                <figure class="photo-slot"><b>待補：廁所／浴缸</b><figcaption>顯示進去後要查看的地方</figcaption></figure>
+                <figure class="photo-slot"><b>待補：紙箱位置</b><figcaption>顯示蚵仔常待的紙箱</figcaption></figure>
+                <figure class="photo-slot"><b>待補：其他常待位置</b><figcaption>之後有新位置可以補在這裡</figcaption></figure>
+              </div>
+            </div>
+          </details>
+          <p class="notice notice-warning">看到異常時，請到「異常聯絡」用 LINE 留言給 Hanna。</p>
+          <button class="primary-button task-button" type="button">已查看蚵仔</button>
+        </article>
+
+        <article class="care-card" data-task="feeding">
+          <div class="step-head">
+            <div class="step-number">3</div>
+            <div><h3>今天的餵食</h3><p>每次餵完就按一次＋</p></div>
+          </div>
+          <div class="feeding-grid">
+            <section class="feeding-box">
+              <h4>罐罐／肉類</h4>
+              <p>每次約 <span class="amount">35g</span><br>一天至少4次，視情況第5次。<b>不用記錄時間。</b></p>
+              <div class="counter" data-counter="wet">
+                <button class="counter-button minus" type="button" aria-label="罐罐次數減一">−</button>
+                <div class="counter-value"><strong id="wetCount">0</strong><span>今天已餵／至少4次</span></div>
+                <button class="counter-button plus" type="button" aria-label="罐罐次數加一">＋</button>
+              </div>
+            </section>
+            <section class="feeding-box">
+              <h4>乾乾</h4>
+              <p>每次約 <span class="amount">10g</span><br>一天約2次。</p>
+              <div class="counter" data-counter="dry">
+                <button class="counter-button minus" type="button" aria-label="乾乾次數減一">−</button>
+                <div class="counter-value"><strong id="dryCount">0</strong><span>今天已餵／約2次</span></div>
+                <button class="counter-button plus" type="button" aria-label="乾乾次數加一">＋</button>
+              </div>
+            </section>
+          </div>
+
+          <details open>
+            <summary>先看：正確秤重方式</summary>
+            <div class="details-body">
+              <ol>
+                <li>把食物秤放在平穩的桌面並開機。</li>
+                <li>放上要使用的空碗。</li>
+                <li>按「歸零／TARE」。</li>
+                <li>確認顯示 <span class="amount">0 g</span>，單位一定要是 <b>g（克）</b>。</li>
+                <li>再慢慢放入蚵仔的食物，秤到指定克數。</li>
+              </ol>
+              <div class="photo-grid">
+                <figure class="photo-slot"><b>待補：食物秤按鈕</b><figcaption>圈出開機、單位與歸零按鈕</figcaption></figure>
+                <figure class="photo-slot"><b>待補：正確的 0 g 畫面</b><figcaption>讓照護者知道看到什麼才可以開始秤</figcaption></figure>
+              </div>
+            </div>
+          </details>
+
+          <details>
+            <summary>罐罐／肉類怎麼準備</summary>
+            <div class="details-body">
+              <ol>
+                <li>秤出約 <b>35g</b> 的罐罐或肉類。</li>
+                <li>蚵仔的肉可以直接加入70°C熱水。</li>
+                <li><b>加水量尚待 Hanna 補充。</b></li>
+                <li>攪拌後等待降溫，確認不燙才給蚵仔吃。</li>
+                <li>冰箱內的食物，照護者都可以取用；熱水也可以使用。</li>
+              </ol>
+              <div class="notice notice-warning"><strong>小心熱水</strong>熱水最低溫是70°C。加完不能立刻餵，一定要先攪拌、等待降溫。</div>
+              <div class="photo-grid">
+                <figure class="photo-slot"><b>待補：蚵仔的罐罐／肉</b><figcaption>拍清楚正確食物及包裝</figcaption></figure>
+                <figure class="photo-slot"><b>待補：完成後的正確樣子</b><figcaption>顯示35g加水後看起來如何</figcaption></figure>
+              </div>
+            </div>
+          </details>
+          <button class="primary-button task-button" type="button">今天餵食已確認</button>
+        </article>
+
+        <article class="care-card" data-task="medicine">
+          <div class="step-head">
+            <div class="step-number">4</div>
+            <div><h3>餵藥與餵水</h3><p>蚵仔安全最重要，不要硬餵</p></div>
+          </div>
+          <div class="pending"><strong>待補資料：</strong>藥名、每次藥量與餵藥時間。這些數字不自行猜測。</div>
+          <div class="notice notice-safe">
+            <strong>請看蚵仔的抗拒狀況</strong>
+            如果蚵仔抗拒太嚴重，沒有餵到水或藥沒關係，請立即停止。不確定藥有沒有吞下去時，不要自行再補餵一次。
+          </div>
+          <ul class="check-list">
+            <li>輕輕嘗試，從嘴巴側邊慢慢餵。</li>
+            <li>餵水使用 <b>3 ml小針筒</b>。</li>
+            <li>每次餵完藥後，看針筒剩多少，並憑感覺扣除大概流掉的水量。</li>
+            <li>把蚵仔實際喝下的水量以「約幾 ml」記錄在喵喵照護管家。</li>
+            <li>如果激烈掙扎、咳嗽、嗆到或呼吸異常，立刻停止。</li>
+            <li>沒有成功時，在喵喵照護管家記錄即可。</li>
+          </ul>
+          <div class="photo-grid">
+            <figure class="photo-slot"><b>待補：每種藥品照片</b><figcaption>每張標明藥名與一次用量</figcaption></figure>
+            <figure class="photo-slot"><b>待補：3 ml餵水針筒</b><figcaption>拍清楚3 ml刻度、剩餘水量怎麼看</figcaption></figure>
+          </div>
+          <button class="primary-button task-button" type="button">本次藥與水已處理</button>
+        </article>
+
+        <article class="care-card" data-task="litter">
+          <div class="step-head">
+            <div class="step-number">5</div>
+            <div><h3>每天離開前鏟貓砂</h3><p>離開前一次，並查看尿尿與便便</p></div>
+          </div>
+          <ul class="check-list">
+            <li>鏟掉尿塊與便便，依指定方式丟棄。</li>
+            <li>確認今天有沒有看到尿尿與便便。</li>
+            <li>有異常可用 LINE 留言給 Hanna。</li>
+          </ul>
+          <div class="photo-grid">
+            <figure class="photo-slot"><b>待補：貓砂與工具位置</b><figcaption>顯示貓砂鏟、垃圾袋放在哪裡</figcaption></figure>
+            <figure class="photo-slot"><b>待補：垃圾怎麼處理</b><figcaption>顯示應該丟到哪裡</figcaption></figure>
+          </div>
+          <button class="primary-button task-button" type="button">離開前已鏟貓砂</button>
+        </article>
+
+        <article class="care-card" data-task="leave">
+          <div class="step-head">
+            <div class="step-number">6</div>
+            <div><h3>離開前全部確認</h3><p>益生菌、食物、飲水與房間安全</p></div>
+          </div>
+          <h4>先餵益生菌</h4>
+          <ol>
+            <li>取益生菌 <span class="amount">半包</span>。</li>
+            <li>加入約 <span class="amount">9ml</span> 常溫礦泉水。</li>
+            <li>攪拌均勻，用約3支3 ml小針筒慢慢餵。</li>
+            <li>只能使用常溫礦泉水，不要用熱水。</li>
+            <li>若蚵仔太抗拒，立即停止，不用勉強餵完。</li>
+          </ol>
+          <div class="photo-grid">
+            <figure class="photo-slot"><b>待補：益生菌半包</b><figcaption>顯示正確品牌及半包份量</figcaption></figure>
+            <figure class="photo-slot"><b>待補：3 ml 小針筒</b><figcaption>顯示3 ml刻度與約3支的數量</figcaption></figure>
+          </div>
+          <h4>再逐項勾選</h4>
+          <div class="mini-checks" id="leaveChecks">
+            <label class="check-row"><input type="checkbox">離開前已鏟貓砂一次</label>
+            <label class="check-row"><input type="checkbox">視當日次數，補約10g乾乾</label>
+            <label class="check-row"><input type="checkbox">放一小碟乾淨的水給蚵仔</label>
+            <label class="check-row"><input type="checkbox">咖啡、巧克力、橘子、橘子皮與橘子汁都已收好</label>
+            <label class="check-row"><input type="checkbox">清潔劑、洗碗精、防曬乳等都已蓋好並收妥</label>
+            <label class="check-row"><input type="checkbox">桌面、地面沒有蚵仔不能碰的食物或飲料</label>
+            <label class="check-row"><input type="checkbox">冷氣保持開啟，沒有關掉</label>
+            <label class="check-row"><input type="checkbox">所有窗戶保持關閉，沒有打開</label>
+            <label class="check-row"><input type="checkbox">蚵仔人在家，門窗環境安全</label>
+          </div>
+          <div class="photo-grid">
+            <figure class="photo-slot"><b>待補：小碟水正確位置</b><figcaption>顯示使用哪個碟子、放在哪裡</figcaption></figure>
+            <figure class="photo-slot"><b>待補：冷氣與窗戶</b><figcaption>顯示離開時應保持的正確狀態</figcaption></figure>
+          </div>
+          <button class="primary-button task-button" type="button">離開前項目已確認</button>
+        </article>
+
+        <article class="care-card" data-task="key-out">
+          <div class="step-head">
+            <div class="step-number">7</div>
+            <div><h3>鎖門並放回鑰匙</h3><p>一定要先鎖門，再放回郵箱</p></div>
+          </div>
+          <ol>
+            <li>帶著鑰匙離開家門。</li>
+            <li>用鑰匙鎖好大門，拉一下確認真的鎖好了。</li>
+            <li>把鑰匙放回原本的信封並包好。</li>
+            <li>把信封放回原本的郵箱，關好郵箱。</li>
+          </ol>
+          <div class="notice notice-danger"><strong>不要把鑰匙帶回家</strong>不要放到其他郵箱。一定要先鎖好大門，再把鑰匙放回郵箱。</div>
+          <div class="mini-checks">
+            <label class="check-row"><input type="checkbox">大門已鎖好</label>
+            <label class="check-row"><input type="checkbox">鑰匙已用原本的信封包好</label>
+            <label class="check-row"><input type="checkbox">信封已放回原本的郵箱</label>
+          </div>
+          <button class="primary-button task-button" type="button">鑰匙已放回，今天完成</button>
+        </article>
+      </section>
+
+      <p class="footer-note">進度只保存在這台裝置與瀏覽器中。</p>
+      <button class="reset-button" id="resetButton" type="button">清除今天的勾選與次數</button>
+    </section>
+
+    <section class="panel" id="recordPanel" role="tabpanel" aria-labelledby="recordTab" hidden>
+      <div class="section-head">
+        <h2 class="section-title">喵喵照護管家記錄</h2>
+        <p>教學保持簡單，只要完成下面四步。</p>
+      </div>
+      <article class="tool-card">
+        <ol class="simple-steps">
+          <li><b>1</b>開啟喵喵照護管家</li>
+          <li><b>2</b>選擇今天的日期</li>
+          <li><b>3</b>填實際食物、約喝幾 ml水、藥與狀況</li>
+          <li><b>4</b>按下儲存</li>
+        </ol>
+        <div class="fake-link">待補：喵喵照護管家網址</div>
+        <div class="photo-grid">
+          <figure class="tutorial-shot"><img class="tutorial-photo" src="assets/miaomiao-record.jpg" alt="喵喵照護安心管家顯示蚵仔體重與當日水分、食物、熱量累積的記錄畫面"><figcaption>記錄完成後會看到當日水分、食物與藥物狀態。</figcaption></figure>
+          <figure class="tutorial-shot"><img class="tutorial-photo" src="assets/miaomiao-choice.jpg" alt="喵喵照護安心管家詢問罐頭品項的選擇畫面"><figcaption>系統詢問品項時，點選正確的食物即可。</figcaption></figure>
+        </div>
+      </article>
+      <div class="notice notice-safe"><strong>沒有餵成功也要記錄</strong>如果藥、水或益生菌因抗拒而沒有完成，照實記錄即可。</div>
+      <div class="notice notice-warning"><strong>水量記錄不用非常精準</strong>用3 ml針筒餵水後，扣掉剩餘及大概流掉的量，記錄蚵仔約喝下幾 ml即可。</div>
+    </section>
+
+    <section class="panel" id="contactPanel" role="tabpanel" aria-labelledby="contactTab" hidden>
+      <div class="section-head">
+        <h2 class="section-title">看到異常，聯絡 Hanna</h2>
+        <p>不用自己判斷原因。</p>
+      </div>
+      <article class="contact-card">
+        <h3>一般異常請用 LINE 留言</h3>
+        <ul class="check-list">
+          <li>嘔吐、拉肚子或食慾異常</li>
+          <li>沒有尿尿、沒有便便或排泄狀況不同</li>
+          <li>藥、水或益生菌沒有餵成功</li>
+          <li>精神和平常不同，或其他不確定的狀況</li>
+        </ul>
+        <a class="line-button" href="https://line.me/R/" target="_blank" rel="noopener">開啟 LINE 留言</a>
+      </article>
+      <article class="contact-card">
+        <h3>情況嚴重，直接打電話</h3>
+        <p>例如呼吸不順、倒下、叫不醒、持續抽搐或大量流血。</p>
+        <span class="phone-number">0905-358-226</span>
+        <a class="danger-button" href="tel:0905358226">直接撥打給 Hanna</a>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const dateKey = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(new Date());
+      const storageKey = `oyster-care-${dateKey}`;
+      const defaults = { tasks: {}, counters: { wet: 0, dry: 0 }, checks: {}, times: {} };
+      let state;
+      try { state = { ...defaults, ...JSON.parse(localStorage.getItem(storageKey) || '{}') }; }
+      catch { state = structuredClone(defaults); }
+      state.tasks ||= {};
+      state.counters ||= { wet: 0, dry: 0 };
+      state.checks ||= {};
+      state.times ||= {};
+
+      const save = () => localStorage.setItem(storageKey, JSON.stringify(state));
+      document.getElementById('todayLabel').textContent = new Intl.DateTimeFormat('zh-TW', {
+        timeZone: 'Asia/Taipei', month: 'long', day: 'numeric', weekday: 'short'
+      }).format(new Date());
+
+      const tabs = [...document.querySelectorAll('[role="tab"]')];
+      const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+      tabs.forEach(tab => tab.addEventListener('click', () => {
+        tabs.forEach(item => item.setAttribute('aria-selected', String(item === tab)));
+        panels.forEach(panel => panel.hidden = panel.id !== tab.getAttribute('aria-controls'));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }));
+
+      const taskCards = [...document.querySelectorAll('[data-task]')];
+      const renderTasks = () => {
+        let done = 0;
+        taskCards.forEach(card => {
+          const key = card.dataset.task;
+          const isDone = Boolean(state.tasks[key]);
+          card.classList.toggle('done', isDone);
+          const button = card.querySelector('.task-button');
+          button.classList.toggle('is-done', isDone);
+          button.setAttribute('aria-pressed', String(isDone));
+          if (isDone) done += 1;
+        });
+        document.getElementById('progressText').textContent = `${done}／${taskCards.length}`;
+        document.getElementById('progressFill').style.width = `${done / taskCards.length * 100}%`;
+      };
+      taskCards.forEach(card => card.querySelector('.task-button').addEventListener('click', () => {
+        const key = card.dataset.task;
+        state.tasks[key] = !state.tasks[key];
+        save();
+        renderTasks();
+      }));
+
+      const renderCounters = () => {
+        document.getElementById('wetCount').textContent = state.counters.wet || 0;
+        document.getElementById('dryCount').textContent = state.counters.dry || 0;
+      };
+      document.querySelectorAll('[data-counter]').forEach(counter => {
+        const key = counter.dataset.counter;
+        counter.querySelector('.plus').addEventListener('click', () => {
+          const limit = key === 'wet' ? 5 : 2;
+          state.counters[key] = Math.min(limit, (state.counters[key] || 0) + 1);
+          save(); renderCounters();
+        });
+        counter.querySelector('.minus').addEventListener('click', () => {
+          state.counters[key] = Math.max(0, (state.counters[key] || 0) - 1);
+          save(); renderCounters();
+        });
+      });
+
+      const checkboxes = [...document.querySelectorAll('input[type="checkbox"]')];
+      checkboxes.forEach((box, index) => {
+        box.checked = Boolean(state.checks[index]);
+        box.addEventListener('change', () => {
+          state.checks[index] = box.checked;
+          save();
+        });
+      });
+
+      document.querySelectorAll('[data-time]').forEach(input => {
+        const key = input.dataset.time;
+        input.value = state.times[key] || '';
+        input.addEventListener('change', () => {
+          state.times[key] = input.value;
+          save();
+        });
+      });
+
+      document.getElementById('resetButton').addEventListener('click', () => {
+        if (!confirm('要清除今天所有已完成項目與餵食次數嗎？')) return;
+        localStorage.removeItem(storageKey);
+        state = structuredClone(defaults);
+        checkboxes.forEach(box => box.checked = false);
+        document.querySelectorAll('[data-time]').forEach(input => input.value = '');
+        renderTasks(); renderCounters();
+      });
+
+      renderTasks();
+      renderCounters();
+    })();
+  </script>
+</body>
+</html>
