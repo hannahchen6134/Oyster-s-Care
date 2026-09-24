@@ -269,6 +269,13 @@
     }
     .daily-row:last-child { border-bottom: 0; }
     .daily-row b { color: var(--coffee); }
+    .daily-items {
+      margin: 0;
+      padding-left: 1.25em;
+    }
+    .daily-items li { margin: 0 0 5px; line-height: 1.55; }
+    .daily-items li:last-child { margin-bottom: 0; }
+    .daily-items li::marker { color: var(--caramel); }
     .guide-group { margin-top: 18px; background: #f4e7da; }
     .guide-group > summary { font-size: 18px; }
     .guide-list > details { background: var(--paper); }
@@ -755,9 +762,9 @@
             </div>
             <h4 class="section-label">一天大概這樣餵</h4>
             <div class="daily-plan">
-              <div class="daily-row"><b>早上</b><span>乾乾約15g・左邊藍白藥1顆・盡量餵水3 ml針筒10支</span></div>
-              <div class="daily-row"><b>下午</b><span>乾乾約15g・下午1～2點餵右邊灰白藥1顆・盡量餵水3 ml針筒10支</span></div>
-              <div class="daily-row"><b>晚上</b><span>乾乾約15g・左邊藍白藥1顆・盡量餵水3 ml針筒10支</span></div>
+              <div class="daily-row"><b>早上</b><ul class="daily-items"><li>乾乾約15g</li><li>左邊藍白藥1顆</li><li>盡量餵水3 ml針筒10支</li></ul></div>
+              <div class="daily-row"><b>下午</b><ul class="daily-items"><li>乾乾約15g</li><li>下午1～2點餵右邊灰白藥1顆</li><li>盡量餵水3 ml針筒10支</li></ul></div>
+              <div class="daily-row"><b>晚上</b><ul class="daily-items"><li>乾乾約15g</li><li>左邊藍白藥1顆</li><li>盡量餵水3 ml針筒10支</li></ul></div>
             </div>
             <p class="warning"><strong>餵藥：</strong>左邊藍白色膠囊，早上1顆、晚上1顆；右邊灰白色膠囊，下午1～2點之間餵1顆。</p>
             <details class="guide-group">
@@ -924,22 +931,23 @@
         <article class="day-card">
           <header class="day-head"><strong>9月28日</strong></header>
           <ul class="shift-list">
-            <li class="shift"><span class="shift-time">14:00－隔日10:00</span><span class="shift-person"><span class="person-block"><b class="person-name">小琳</b><small class="shift-detail">離開前請餵蚵仔早上的藍白膠囊 1 顆，感謝。</small></span><small class="shift-note">下午至過夜</small></span></li>
+            <li class="shift"><span class="shift-time">14:00－隔日18:00</span><span class="shift-person"><b class="person-name">小琳</b><small class="shift-note">下午至隔日晚間</small></span></li>
           </ul>
         </article>
 
         <article class="day-card">
           <header class="day-head"><strong>9月29日</strong></header>
           <ul class="shift-list">
-            <li class="shift"><span class="shift-time">10:00－12:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">上午</small></span></li>
-            <li class="shift"><span class="shift-time">15:00－17:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">下午</small></span></li>
+            <li class="shift"><span class="shift-time">00:00－18:00</span><span class="shift-person"><span class="person-block"><b class="person-name">小琳</b><small class="shift-detail">晚上6點離開前，請餵蚵仔晚上的藍白膠囊 1 顆，感謝。</small></span><small class="shift-note">至下午6點</small></span></li>
             <li class="shift"><span class="shift-time">20:30－22:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">晚上</small></span></li>
+            <li class="shift"><span class="shift-time">23:00－隔日07:00</span><span class="shift-person"><b class="person-name">智堯</b><small class="shift-note">過夜</small></span></li>
           </ul>
         </article>
 
         <article class="day-card">
           <header class="day-head"><strong>9月30日</strong></header>
           <ul class="shift-list">
+            <li class="shift"><span class="shift-time">00:00－07:00</span><span class="shift-person"><span class="person-block"><b class="person-name">智堯</b><small class="shift-detail">前一日班次延續。</small></span><small class="shift-note">清晨</small></span></li>
             <li class="shift"><span class="shift-time">09:30－12:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">上午</small></span></li>
           </ul>
         </article>
