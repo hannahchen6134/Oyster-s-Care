@@ -1,1285 +1,1005 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>蚵仔照護紀錄</title>
-    <style>
-      :root {
-        --bg: #f6f1e8;
-        --surface: rgba(255, 252, 247, 0.96);
-        --surface-strong: #fffdfa;
-        --ink: #223235;
-        --muted: #667673;
-        --line: rgba(34, 50, 53, 0.12);
-        --brand: #255b53;
-        --brand-soft: #d9e8e2;
-        --warn: #b4544d;
-        --warn-soft: #f9e0dc;
-        --shadow: 0 18px 48px rgba(34, 50, 53, 0.09);
-        --radius-xl: 28px;
-        --radius-lg: 22px;
-        --radius-md: 16px;
-      }
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="theme-color" content="#6f421f">
+  <title>蚵仔照護說明</title>
+  <style>
+    :root {
+      --espresso: #3b2519;
+      --coffee: #74451f;
+      --caramel: #a27045;
+      --latte: #ead8c6;
+      --cream: #f5ece2;
+      --paper: #fffaf4;
+      --ink: #2d211a;
+      --muted: #746158;
+      --line: #d8c3ae;
+      --amber: #fff0cf;
+      --red: #963b32;
+      --red-soft: #f9e7e4;
+      --shadow: 0 12px 34px rgba(57, 34, 20, .07);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      font-size: 19px;
+      line-height: 1.65;
+    }
+    button, a, summary { font: inherit; }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 4px solid #d69b58;
+      outline-offset: 3px;
+    }
+    .header {
+      background: #f1e1d1;
+      border-bottom: 4px solid var(--coffee);
+    }
+    .header-inner, .nav-inner, main {
+      width: min(760px, calc(100% - 64px));
+      margin-inline: auto;
+    }
+    .header-inner { padding: 36px 0 30px; }
+    .kicker {
+      margin: 0 0 4px;
+      color: var(--coffee);
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+    h1 {
+      margin: 0;
+      color: var(--espresso);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      font-size: clamp(32px, 7vw, 44px);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: .14em;
+    }
+    .date { margin: 12px 0 0; color: var(--muted); font-size: 16px; font-weight: 800; }
 
-      * { box-sizing: border-box; }
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 12px 0;
+      background: rgba(245, 236, 226, .96);
+      backdrop-filter: blur(10px);
+    }
+    .nav-inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      padding: 6px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(57, 34, 20, .05);
+    }
+    .tab {
+      min-width: 0;
+      min-height: 50px;
+      padding: 8px 4px;
+      color: var(--coffee);
+      background: transparent;
+      border: 0;
+      border-radius: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .tab[aria-selected="true"] { color: white; background: var(--coffee); }
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-        color: var(--ink);
-        background:
-          radial-gradient(circle at top left, rgba(37, 91, 83, 0.14), transparent 28%),
-          radial-gradient(circle at top right, rgba(212, 131, 86, 0.14), transparent 30%),
-          linear-gradient(180deg, #fbf8f2 0%, #f2ebdf 100%);
-      }
+    main { padding: 28px 0 100px; }
+    [hidden] { display: none !important; }
+    .panel { animation: enter .18s ease-out; }
+    @keyframes enter { from { opacity: 0; transform: translateY(4px); } }
 
-      .shell {
-        width: min(980px, calc(100% - 24px));
-        margin: 0 auto;
-        padding: 20px 0 72px;
-      }
+    .intro {
+      margin-bottom: 24px;
+      padding: 25px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .intro h2 {
+      margin: 0 0 8px;
+      color: var(--espresso);
+      font-family: "Noto Serif TC", "Microsoft JhengHei", serif;
+      font-size: 29px;
+      line-height: 1.35;
+    }
+    .intro p { margin: 0; color: var(--muted); }
+    .intro .gentle-note {
+      margin-top: 15px;
+      padding-top: 15px;
+      color: var(--coffee);
+      border-top: 1px solid #e6d5c5;
+    }
+    .record-rule {
+      margin: 0 0 26px;
+      padding: 18px 20px;
+      color: var(--espresso);
+      background: var(--amber);
+      border: 1px solid #e2bf79;
+      border-radius: 16px;
+      font-weight: 800;
+    }
+    .tool-photo-toggle { margin-top: 0; }
+    .tool-photo-toggle .first-tool-photo { margin: 0; }
+    .food-photo-toggle .allowed-food-photo { margin: 0; }
+    .secondary-leaving { margin-top: 2px; }
 
-      .hero,
-      .panel {
-        background: var(--surface);
-        border: 1px solid rgba(37, 91, 83, 0.1);
-        box-shadow: var(--shadow);
-      }
+    .timeline-head { margin: 24px 0 14px; }
+    .timeline-head h2 { margin: 0; color: var(--espresso); font-size: 25px; }
+    .timeline-head p { margin: 3px 0 0; color: var(--muted); font-size: 15px; }
+    .phase-list {
+      position: relative;
+      display: grid;
+      gap: 16px;
+      padding-left: 34px;
+    }
+    .phase-list::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: 28px;
+      bottom: 28px;
+      width: 2px;
+      background: #d4bda7;
+    }
+    .phase {
+      position: relative;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .phase::before {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      left: -29px;
+      top: 27px;
+      width: 14px;
+      height: 14px;
+      background: var(--paper);
+      border: 3px solid #a87a53;
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px var(--cream);
+    }
+    .phase[open]::before { background: var(--coffee); border-color: var(--coffee); }
+    .phase-title {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 24px 24px 18px;
+      list-style: none;
+      cursor: pointer;
+    }
+    .phase-title::-webkit-details-marker { display: none; }
+    .phase-title::after {
+      content: "+";
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--coffee);
+      background: #f1e3d6;
+      border-radius: 50%;
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .phase[open] > .phase-title::after { content: "−"; }
+    .phase-number { display: none; }
+    .time-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      color: var(--caramel);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+    .phase-title h3 { margin: 0; color: var(--espresso); font-size: 26px; line-height: 1.3; }
+    .phase-title p { margin: 2px 0 0; color: var(--muted); font-size: 16px; }
+    .phase-body { padding: 0 24px 24px; }
+    .phase[open] > .phase-body { border-top: 1px solid #eadbcd; padding-top: 20px; }
+    .phase-body > ol, .phase-body > ul { margin: 0; padding-left: 26px; }
+    .phase-body li { margin: 8px 0; }
+    .strong { color: var(--coffee); font-size: 27px; font-weight: 950; white-space: nowrap; }
+    .number-accent {
+      color: #835126;
+      font-size: inherit;
+      line-height: inherit;
+      vertical-align: baseline;
+      font-weight: 950;
+      font-variant-numeric: tabular-nums;
+    }
 
-      .hero {
-        border-radius: var(--radius-xl);
-        padding: 24px;
-        position: relative;
-        overflow: hidden;
-      }
+    .amounts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .amount-card {
+      padding: 18px;
+      background: #f6ece2;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+    .amount-card b { display: block; color: var(--coffee); font-size: 18px; }
+    .amount-card strong { display: block; margin: 3px 0; color: var(--espresso); font-size: 39px; line-height: 1.08; }
+    .amount-card strong small { display: block; margin-bottom: 4px; color: var(--muted); font-size: 16px; font-weight: 800; }
+    .amount-card > span { color: var(--muted); font-size: 16px; }
+    .amount-card.wide { grid-column: 1 / -1; }
+    .section-label { margin: 2px 0 8px; color: var(--espresso); font-size: 18px; }
+    .hunger-note {
+      margin: 0 0 16px;
+      padding: 14px 16px;
+      color: var(--espresso);
+      background: #f8f0e8;
+      border-left: 4px solid var(--coffee);
+      border-radius: 12px;
+    }
+    .daily-plan {
+      margin: 14px 0;
+      overflow: hidden;
+      background: #f8f0e8;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+    }
+    .daily-row {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 12px;
+      padding: 13px 15px;
+      border-bottom: 1px solid #e5d4c4;
+    }
+    .daily-row:last-child { border-bottom: 0; }
+    .daily-row b { color: var(--coffee); }
+    .guide-group { margin-top: 18px; background: #f4e7da; }
+    .guide-group > summary { font-size: 18px; }
+    .guide-list > details { background: var(--paper); }
 
-      .hero::after {
-        content: "";
-        position: absolute;
-        right: -56px;
-        bottom: -76px;
-        width: 220px;
-        height: 220px;
-        border-radius: 999px;
-        background: radial-gradient(circle, rgba(37, 91, 83, 0.16), transparent 68%);
-      }
+    details {
+      margin-top: 14px;
+      background: #fbf4ec;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+    summary {
+      padding: 16px 18px;
+      color: var(--coffee);
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .detail-body { padding: 0 18px 20px; }
+    .detail-body ol, .detail-body ul { margin: 0; padding-left: 25px; }
+    .warning {
+      margin-top: 15px;
+      padding: 16px 18px;
+      color: var(--espresso);
+      background: var(--amber);
+      border-radius: 14px;
+    }
+    .miaomiao-link {
+      color: var(--coffee);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      font-weight: 900;
+    }
+    .danger { background: var(--red-soft); border: 1px solid #d7a5a0; }
 
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: rgba(37, 91, 83, 0.1);
-        color: var(--brand);
-        font-size: 13px;
-        font-weight: 800;
-      }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .photo-slot {
+      min-height: 130px;
+      margin: 0;
+      display: grid;
+      place-content: center;
+      padding: 16px;
+      text-align: center;
+      background: #efe3d7;
+      border: 2px dashed #b99c82;
+      border-radius: 14px;
+    }
+    .photo-slot b { color: var(--coffee); }
+    .photo-slot figcaption { margin-top: 4px; color: var(--muted); font-size: 14px; line-height: 1.4; }
+    .allowed-food-photo {
+      min-height: 210px;
+      margin: 18px 0 0;
+      display: grid;
+      place-content: center;
+      padding: 24px;
+      text-align: center;
+      background: #efe3d7;
+      border: 2px dashed #a98565;
+      border-radius: 18px;
+    }
+    .allowed-food-photo b { color: var(--coffee); font-size: 22px; }
+    .allowed-food-photo figcaption { margin-top: 7px; color: var(--muted); font-size: 15px; }
+    .first-tool-photo {
+      min-height: 170px;
+      margin: 0 0 18px;
+      display: grid;
+      place-content: center;
+      padding: 22px;
+      text-align: center;
+      background: #efe3d7;
+      border: 2px dashed #a98565;
+      border-radius: 18px;
+    }
+    .first-tool-photo b { color: var(--coffee); font-size: 22px; }
+    .first-tool-photo figcaption { margin-top: 7px; color: var(--muted); font-size: 15px; }
+    .real-photo { margin: 0; }
+    .real-photo img {
+      width: 100%;
+      max-height: 470px;
+      display: block;
+      object-fit: contain;
+      background: #efe3d7;
+      border-radius: 14px;
+    }
+    .real-photo figcaption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      text-align: left;
+    }
+    .real-photo figcaption strong { color: var(--espresso); }
+    .single-photo { margin-top: 14px; }
+    .medicine-grid { margin-top: 14px; }
 
-      h1 {
-        margin: 14px 0 8px;
-        font-size: clamp(28px, 5vw, 42px);
-        line-height: 1.08;
-      }
+    .before-leaving {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .before-leaving li {
+      position: relative;
+      min-height: 52px;
+      margin: 0;
+      padding: 13px 8px 13px 30px;
+      background: transparent;
+      border-bottom: 1px solid #e8d9cb;
+    }
+    .before-leaving li:last-child { border-bottom: 0; }
+    .before-leaving li::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 23px;
+      width: 8px;
+      height: 8px;
+      background: var(--caramel);
+      border-radius: 50%;
+    }
+    .before-leaving .must-water {
+      margin: 6px 0;
+      padding: 15px 14px 15px 38px;
+      color: var(--espresso);
+      background: var(--amber);
+      border: 1px solid #e2bf79;
+      border-radius: 12px;
+    }
+    .before-leaving .must-water::before { left: 15px; top: 25px; }
 
-      .hero-copy {
-        margin: 0;
-        max-width: 760px;
-        color: var(--muted);
-        line-height: 1.7;
-      }
+    .tool-box, .contact-box {
+      margin-bottom: 22px;
+      padding: 25px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .tool-box h2, .contact-box h2 { margin: 0 0 8px; color: var(--espresso); font-size: 29px; }
+    .tool-box > p, .contact-box > p { margin: 0 0 18px; color: var(--muted); }
+    .four-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .four-steps li {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 15px;
+      background: #f6ece2;
+      border-radius: 14px;
+    }
+    .four-steps b {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: var(--coffee);
+      border-radius: 50%;
+    }
+    .four-steps b .number-accent { color: white; font-size: inherit; }
+    .record-formats {
+      margin: 16px 0 0;
+      padding: 16px 18px;
+      background: #f6ece2;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    .record-formats > strong { display: block; margin-bottom: 10px; color: var(--espresso); }
+    .record-format-row { display: flex; gap: 10px; align-items: baseline; padding: 7px 0; }
+    .record-format-row + .record-format-row { border-top: 1px solid var(--line); }
+    .record-format-row b { min-width: 52px; color: var(--coffee); }
+    .record-format-note { margin: 10px 0 0; color: var(--muted); }
+    .screens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
+    .screen { margin: 0; }
+    .screen-label {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 5px 11px;
+      color: white;
+      background: var(--coffee);
+      border-radius: 999px;
+      font-weight: 900;
+    }
+    .screen img { width: 100%; max-height: 560px; display: block; object-fit: contain; object-position: top; border-radius: 14px; }
+    .screen figcaption { margin-top: 7px; color: var(--muted); font-size: 15px; text-align: left; }
 
-      .preview-badge {
-        display: none;
-        margin-top: 14px;
-        padding: 12px 14px;
-        border-radius: var(--radius-md);
-        background: #fff0df;
-        color: #8b5928;
-        font-size: 14px;
-      }
+    .action {
+      display: flex;
+      min-height: 62px;
+      margin-top: 14px;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      color: white;
+      text-decoration: none;
+      background: var(--coffee);
+      border-radius: 14px;
+      font-weight: 900;
+    }
+    .call { background: var(--red); }
+    .phone { display: block; margin: 12px 0; color: var(--espresso); font-size: clamp(32px, 9vw, 48px); font-weight: 950; }
+    .roster-intro {
+      margin-bottom: 22px;
+      padding: 24px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .roster-intro h2 { margin: 0 0 6px; color: var(--espresso); font-size: 29px; }
+    .roster-intro p { margin: 0; color: var(--muted); }
+    .roster-list { display: grid; gap: 20px; }
+    .day-card {
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .day-head {
+      padding: 18px 22px;
+      color: var(--espresso);
+      background: #ead8c6;
+      border-bottom: 1px solid var(--line);
+    }
+    .day-head strong { display: block; font-size: 26px; }
+    .shift-list { position: relative; margin: 0; padding: 8px 22px 14px 42px; list-style: none; }
+    .shift-list::before {
+      content: "";
+      position: absolute;
+      left: 25px;
+      top: 25px;
+      bottom: 30px;
+      width: 2px;
+      background: #dfc9b6;
+    }
+    .shift {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #e7d8ca;
+    }
+    .shift::before {
+      content: "";
+      position: absolute;
+      left: -21px;
+      top: 22px;
+      width: 8px;
+      height: 8px;
+      background: var(--paper);
+      border: 2px solid var(--caramel);
+      border-radius: 50%;
+    }
+    .shift:last-child { border-bottom: 0; }
+    .shift-time { min-width: 0; color: var(--espresso); font-weight: 900; white-space: normal; overflow-wrap: anywhere; }
+    .shift-person { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .person-block { display: flex; flex-direction: column; }
+    .person-name { color: var(--coffee); font-size: 22px; font-weight: 950; }
+    .shift-detail { color: var(--muted); font-size: 15px; }
+    .shift-note {
+      flex: 0 0 auto;
+      padding: 3px 9px;
+      color: var(--coffee);
+      background: #efe1d3;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .overnight {
+      margin: 4px 0;
+      padding: 16px;
+      background: #f2e3d4;
+      border-radius: 14px;
+      border-bottom: 0;
+    }
+    .handover-note {
+      margin-top: 20px;
+      padding: 17px 19px;
+      color: var(--espresso);
+      background: var(--amber);
+      border: 1px solid #e2bf79;
+      border-radius: 16px;
+    }
+    .thanks {
+      margin-top: 30px;
+      padding: 24px;
+      color: var(--espresso);
+      text-align: center;
+      background: #f1e1d1;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      line-height: 1.8;
+    }
+    .thanks strong { display: block; margin-bottom: 4px; color: var(--coffee); font-size: 22px; }
+    .footer { margin-top: 30px; color: var(--muted); text-align: center; font-size: 14px; }
 
-      .stack {
-        display: grid;
-        gap: 18px;
-        margin-top: 18px;
-      }
-
-      .panel {
-        border-radius: var(--radius-lg);
-        padding: 20px;
-      }
-
-      .toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .date-box {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 10px;
-        padding: 12px;
-        border-radius: 18px;
-        background: rgba(37, 91, 83, 0.06);
-      }
-
-      .status-line {
-        margin-left: auto;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .summary-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 16px;
-      }
-
-      .summary-card {
-        padding: 16px;
-        border-radius: 18px;
-        background: var(--surface-strong);
-        border: 1px solid var(--line);
-      }
-
-      .summary-label {
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 700;
-      }
-
-      .summary-value {
-        margin-top: 8px;
-        font-size: clamp(24px, 3vw, 34px);
-        font-weight: 900;
-        line-height: 1.05;
-      }
-
-      .summary-sub {
-        margin-top: 8px;
-        color: #536562;
-        font-size: 14px;
-        line-height: 1.6;
-      }
-
-      .doctor-note {
-        margin-top: 16px;
-        padding: 16px 18px;
-        border-radius: 18px;
-        background: linear-gradient(135deg, rgba(37, 91, 83, 0.08), rgba(255, 255, 255, 0.84));
-        border: 1px solid rgba(37, 91, 83, 0.1);
-      }
-
-      .doctor-title {
-        margin: 0 0 8px;
-        font-size: 16px;
-        font-weight: 800;
-      }
-
-      .doctor-text {
-        margin: 0;
-        color: #445754;
-        line-height: 1.75;
-      }
-
-      .photo-card {
-        margin-top: 16px;
-        padding: 16px;
-        border-radius: 18px;
-        background: var(--surface-strong);
-        border: 1px solid var(--line);
-      }
-
-      .photo-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 12px;
-      }
-
-      .photo-title {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 800;
-      }
-
-      .photo-sub {
-        color: var(--muted);
-        font-size: 13px;
-      }
-
-      .photo-thumb-wrap {
-        display: grid;
-        gap: 10px;
-      }
-
-      .photo-thumb {
-        width: 100%;
-        max-width: 240px;
+    @media (max-width: 560px) {
+      body { font-size: 16px; line-height: 1.68; }
+      .header-inner, .nav-inner, main { width: calc(100% - 64px); }
+      .header { border-bottom-width: 3px; }
+      .header-inner { padding: 20px 0 18px; }
+      .kicker { margin-bottom: 2px; font-size: 13px; }
+      h1 { font-size: 26px; line-height: 1.2; letter-spacing: .18em; }
+      .nav-wrap { padding: 8px 0; }
+      .nav-inner { grid-template-columns: repeat(4, 1fr); }
+      .nav-inner { gap: 4px; padding: 4px; border-radius: 15px; }
+      .tab { min-height: 42px; padding: 5px 2px; border-radius: 9px; font-size: 13px; }
+      main { padding: 16px 0 64px; }
+      .intro, .tool-box, .contact-box, .roster-intro {
+        margin-bottom: 14px;
+        padding: 21px;
         border-radius: 16px;
-        border: 1px solid var(--line);
-        cursor: zoom-in;
-        background: #f2efe7;
+        box-shadow: none;
       }
-
-      .photo-empty {
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .upload-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
+      .intro { padding: 5px 2px 13px; background: transparent; border: 0; border-radius: 0; }
+      .intro h2, .tool-box h2, .contact-box h2, .roster-intro h2 { font-size: 21px; }
+      .intro .gentle-note { margin-top: 12px; padding-top: 12px; }
+      .record-rule { margin-bottom: 16px; padding: 13px 15px; border-radius: 12px; }
+      .timeline-head { margin: 18px 0 11px; }
+      .timeline-head h2 { font-size: 20px; }
+      .phase-list { gap: 11px; padding-left: 27px; }
+      .phase-list::before { left: 9px; top: 25px; bottom: 25px; }
+      .phase { border-radius: 17px; box-shadow: none; }
+      .phase::before { left: -23px; top: 23px; width: 12px; height: 12px; box-shadow: 0 0 0 4px var(--cream); }
+      .phase-title { gap: 8px; padding: 16px 18px; }
+      .phase-title::after { width: 30px; height: 30px; font-size: 20px; }
+      .phase-title h3 { font-size: 20px; }
+      .phase-title p { font-size: 15px; }
+      .time-label { font-size: 12px; }
+      .phase-body { padding: 0 18px 19px; }
+      .phase[open] > .phase-body { padding-top: 18px; }
+      .phase-body > ol, .phase-body > ul { padding-left: 22px; }
+      .phase-body li { margin: 5px 0; }
+      .amounts { grid-template-columns: 1fr; gap: 9px; margin: 12px 0 18px; }
+      .amount-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: auto auto;
+        column-gap: 14px;
         align-items: center;
-        margin-top: 12px;
+        padding: 14px 16px;
+        border-radius: 13px;
       }
-
-      .file-input {
-        max-width: 320px;
-      }
-
-      .section-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 12px;
-      }
-
-      .section-title {
-        margin: 0;
-        font-size: 20px;
-      }
-
-      .section-note {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .timeline {
-        display: grid;
-        gap: 10px;
-      }
-
-      .entry {
-        display: grid;
-        grid-template-columns: 126px 1fr auto;
-        gap: 14px;
-        align-items: start;
-        padding: 14px;
-        border-radius: 18px;
-        background: var(--surface-strong);
-        border: 1px solid var(--line);
-      }
-
-      .entry-time {
-        font-size: 24px;
-        font-weight: 900;
-        line-height: 1.05;
-      }
-
-      .entry-time small {
-        display: block;
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .entry-main {
-        display: grid;
-        gap: 8px;
-      }
-
-      .chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .chip {
-        display: inline-flex;
-        align-items: center;
-        padding: 7px 10px;
-        border-radius: 999px;
-        background: rgba(37, 91, 83, 0.08);
-        color: var(--brand);
-        font-size: 13px;
-        font-weight: 800;
-      }
-
-      .chip.warn {
-        background: var(--warn-soft);
-        color: var(--warn);
-      }
-
-      .entry-note {
-        color: #4a5b58;
-        line-height: 1.65;
-        white-space: pre-wrap;
-      }
-
-      .empty {
-        padding: 24px;
-        border-radius: 18px;
-        border: 1px dashed rgba(37, 91, 83, 0.2);
-        background: rgba(255, 255, 255, 0.58);
-        color: var(--muted);
-        text-align: center;
-      }
-
-      details.panel {
-        padding: 0;
-        overflow: hidden;
-      }
-
-      details > summary {
-        list-style: none;
-        cursor: pointer;
-        padding: 20px;
-      }
-
-      details > summary::-webkit-details-marker {
-        display: none;
-      }
-
-      .summary-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      }
-
-      .summary-row .left h3 {
-        margin: 0 0 4px;
-        font-size: 20px;
-      }
-
-      .summary-row .left p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .toggle-hint {
-        color: var(--brand);
-        font-size: 14px;
-        font-weight: 800;
-      }
-
-      .form-wrap {
-        padding: 0 20px 20px;
-      }
-
-      .form-grid {
-        display: grid;
-        gap: 14px;
-      }
-
-      .field,
-      .field-row {
-        display: grid;
-        gap: 8px;
-      }
-
-      .field-row {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      label {
-        font-size: 13px;
-        font-weight: 800;
-        color: #4a635e;
-      }
-
-      input,
-      select,
-      textarea,
-      button {
-        font: inherit;
-      }
-
-      input,
-      select,
-      textarea {
-        width: 100%;
-        border: 1px solid var(--line);
+      .amount-card b { font-size: 15px; }
+      .amount-card strong { grid-column: 2; grid-row: 1 / 3; margin: 0; font-size: 28px; text-align: right; }
+      .amount-card:last-child strong { font-size: 28px; line-height: 1.2; }
+      .amount-card strong small { margin-bottom: 2px; font-size: 15px; }
+      .amount-card > span { grid-column: 1; display: block; font-size: 14px; line-height: 1.42; }
+      .amount-card.wide { grid-column: auto; }
+      .section-label { font-size: 17px; }
+      .daily-row { grid-template-columns: 74px 1fr; gap: 9px; padding: 11px 12px; }
+      .strong { font-size: 20px; }
+      details { margin-top: 10px; border-radius: 13px; }
+      summary { padding: 14px 17px; }
+      .detail-body { padding: 0 17px 19px; }
+      .warning { margin-top: 12px; padding: 13px 14px; border-radius: 11px; }
+      .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+      .medicine-grid, .leaving-photo-grid { grid-template-columns: 1fr; gap: 14px; }
+      .photo-slot { min-height: 92px; padding: 11px; border-radius: 12px; }
+      .photo-slot figcaption { font-size: 13px; }
+      .allowed-food-photo, .first-tool-photo {
+        min-height: 118px;
+        padding: 15px;
         border-radius: 14px;
-        background: var(--surface-strong);
-        padding: 12px 14px;
-        color: var(--ink);
       }
-
-      textarea {
-        min-height: 92px;
-        resize: vertical;
+      .allowed-food-photo { margin-top: 13px; }
+      .first-tool-photo { margin-bottom: 13px; }
+      .allowed-food-photo b, .first-tool-photo b { font-size: 18px; }
+      .allowed-food-photo figcaption, .first-tool-photo figcaption { font-size: 14px; }
+      .real-photo img {
+        width: 78%;
+        max-height: 390px;
+        margin-inline: auto;
       }
-
-      input:focus,
-      select:focus,
-      textarea:focus {
-        outline: none;
-        border-color: rgba(37, 91, 83, 0.45);
-        box-shadow: 0 0 0 4px rgba(37, 91, 83, 0.08);
+      .real-photo figcaption {
+        width: 78%;
+        margin: 10px auto 0;
       }
-
-      .check-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
+      .single-photo + .single-photo { margin-top: 26px; }
+      .screen img {
+        width: 78%;
+        max-height: 500px;
+        margin-inline: auto;
       }
+      .screen-label { margin-left: 11%; }
+      .screen figcaption { width: 78%; margin: 9px auto 0; }
+      .before-leaving li { min-height: 46px; padding-block: 10px; }
+      .before-leaving li::before { top: 20px; }
+      .four-steps { gap: 7px; }
+      .four-steps li { grid-template-columns: 34px 1fr; gap: 10px; padding: 11px; }
+      .four-steps b { width: 34px; height: 34px; }
+      .screens { grid-template-columns: 1fr; margin-top: 14px; }
+      .shift-detail { font-size: 15px; }
+      .roster-list { gap: 14px; }
+      .day-card { border-radius: 16px; box-shadow: none; }
+      .day-head { padding: 13px 17px; }
+      .day-head strong { font-size: 20px; }
+      .shift-list { padding: 5px 17px 10px 36px; }
+      .shift-list::before { left: 21px; }
+      .shift::before { left: -19px; }
+      .shift { padding: 12px 0; }
+      .shift-time { font-size: 16px; }
+      .person-name { font-size: 18px; }
+      .overnight { padding: 12px; border-radius: 11px; }
+      .handover-note { margin-top: 14px; padding: 13px 15px; border-radius: 12px; }
+      .thanks { margin-top: 18px; padding: 17px; border-radius: 15px; }
+      .thanks strong { font-size: 18px; }
+      .footer { margin-top: 20px; }
+      .shift { grid-template-columns: 1fr; gap: 3px; }
+      .shift-person { align-items: flex-start; }
+    }
+    @media (max-width: 360px) {
+      .header-inner, .nav-inner, main { width: calc(100% - 44px); }
+      .tab { font-size: 12px; }
+      h1 { font-size: 24px; }
+      .amount-card { padding-inline: 10px; }
+      .amount-card strong { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <h1>蚵仔照護</h1>
+    </div>
+  </header>
 
-      .check-card {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 14px;
-        border-radius: 16px;
-        border: 1px solid var(--line);
-        background: var(--surface-strong);
-      }
+  <nav class="nav-wrap" aria-label="主要內容">
+    <div class="nav-inner" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="carePanel">照護方式</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="recordPanel">怎麼記錄</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="rosterPanel">交班時間</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="contactPanel">聯絡青青</button>
+    </div>
+  </nav>
 
-      .check-card input {
-        width: auto;
-        margin: 0;
-      }
+  <main>
+    <section class="panel" id="carePanel" role="tabpanel">
+      <p class="record-rule">餵食或餵水後，方便的話幫我在「<a class="miaomiao-link" href="https://line.me/R/ti/p/@232mjffx" target="_blank" rel="noopener noreferrer">喵喵管家</a>」記下食物克數和水的ml數即可，不用記時間，謝謝你。</p>
 
-      .actions {
-        display: flex;
-        gap: 10px;
-      }
-
-      .btn {
-        border: none;
-        border-radius: 999px;
-        padding: 12px 18px;
-        cursor: pointer;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #255b53, #36766b);
-        color: #fff;
-        font-weight: 800;
-      }
-
-      .btn-secondary {
-        background: rgba(37, 91, 83, 0.08);
-        color: var(--brand);
-        font-weight: 800;
-      }
-
-      .btn-danger {
-        background: rgba(180, 84, 77, 0.08);
-        color: var(--warn);
-        font-weight: 800;
-      }
-
-      .lightbox {
-        position: fixed;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        background: rgba(17, 24, 24, 0.78);
-        z-index: 50;
-      }
-
-      .lightbox.open {
-        display: flex;
-      }
-
-      .lightbox-inner {
-        position: relative;
-        max-width: min(92vw, 1080px);
-        max-height: 90vh;
-      }
-
-      .lightbox img {
-        display: block;
-        max-width: 100%;
-        max-height: 90vh;
-        border-radius: 20px;
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-      }
-
-      .lightbox-close {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-      }
-
-      .loading {
-        opacity: 0.66;
-        pointer-events: none;
-      }
-
-      @media (max-width: 860px) {
-        .summary-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .entry {
-          grid-template-columns: 1fr;
-        }
-
-        .field-row {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      @media (max-width: 560px) {
-        .shell {
-          width: min(100% - 16px, 100%);
-          padding-top: 14px;
-        }
-
-        .hero,
-        .panel,
-        details > summary,
-        .form-wrap {
-          padding-left: 16px;
-          padding-right: 16px;
-        }
-
-        .summary-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .actions {
-          display: grid;
-        }
-
-        .status-line {
-          margin-left: 0;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="shell">
-      <section class="hero">
-        <div class="eyebrow">蚵仔照護站</div>
-        <h1><span id="catName">蚵仔</span> 每日狀況總覽</h1>
-        <p class="hero-copy">先看每天加總與腸胃重點，再往下看細節紀錄。這樣醫生第一眼就能知道今天喝水、進食、餵藥、大便嘔吐狀況，還能搭配每日照片。</p>
-        <div id="previewBadge" class="preview-badge">
-          目前是本機預覽模式，資料只會存在這台裝置的瀏覽器。部署到 Google Apps Script 後，資料會寫進 Google 試算表，照片也會跟著存在試算表。
-        </div>
-      </section>
-
-      <div class="stack">
-        <section class="panel" id="summaryPanel">
-          <div class="toolbar">
-            <div class="date-box">
-              <label for="selectedDate">查看日期</label>
-              <input id="selectedDate" type="date">
-              <button class="btn btn-secondary" type="button" id="goTodayBtn">今天</button>
-              <button class="btn btn-secondary" type="button" id="reloadBtn">重新整理</button>
-            </div>
-            <div class="status-line" id="statusLine">讀取中…</div>
+      <div class="timeline-head">
+        <h2>現在要做哪一段？</h2>
+        <p>依時間往下看，點開需要的內容。</p>
+      </div>
+      <div class="phase-list">
+        <details class="phase" open>
+          <summary class="phase-title"><div><span class="time-label">剛到家</span><h3>到達時</h3><p>鑰匙・找蚵仔・看一下狀況</p></div></summary>
+          <div class="phase-body">
+            <details class="key-photo-toggle">
+              <summary>查看郵箱與鑰匙照片</summary>
+              <div class="detail-body photo-grid leaving-photo-grid">
+                <figure class="real-photo"><img src="site/assets/friend-key-cropped.png" alt="提供給照護者使用的鑰匙"><figcaption><strong>照護者使用的鑰匙：</strong>鑰匙會和黃色信封放在一起。</figcaption></figure>
+                <figure class="real-photo"><img src="site/assets/mailbox-envelope-private.png" alt="裝有鑰匙的黃色信封放入郵箱"><figcaption><strong>鑰匙位置：</strong>鑰匙會裝在黃色信封裡，放在郵箱內。</figcaption></figure>
+              </div>
+            </details>
+            <details>
+              <summary>安撫蚵仔的方法</summary>
+              <div class="detail-body"><b>摸蚵仔前請先洗手。</b>肚子不要摸；牠特別喜歡輕輕摸額頭、拍拍屁屁。可以多陪牠、摸摸牠。</div>
+            </details>
+            <details>
+              <summary>蚵仔太過於抗拒怎麼辦？</summary>
+              <div class="detail-body">蚵仔餵水或餵藥時一定會扭動，稍微抗拒是正常的。如果掙扎得太激烈、持續咳嗽、嗆到或呼吸和平常不同，就先停下來讓牠休息。這次沒有餵完水或藥也沒關係，幫我準備乾淨的碗和水，也請幫我摸摸牠，感恩！</div>
+            </details>
+            <details>
+              <summary>找不到蚵仔時</summary>
+              <div class="detail-body">他很喜歡待在<b>推車內、廁所內、浴缸內或紙箱內</b>，可以先看看這幾個地方。</div>
+            </details>
           </div>
+        </details>
 
-          <div class="summary-grid">
-            <article class="summary-card">
-              <div class="summary-label">喝水總量</div>
-              <div class="summary-value" id="waterTotal">0 g</div>
-              <div class="summary-sub" id="entryCountText">0 筆紀錄</div>
-            </article>
-            <article class="summary-card">
-              <div class="summary-label">食物總量</div>
-              <div class="summary-value" id="foodTotal">0 g</div>
-              <div class="summary-sub" id="foodDetail">乾糧 0 g / 罐罐 0 g</div>
-            </article>
-            <article class="summary-card">
-              <div class="summary-label">早晚藥</div>
-              <div class="summary-value" id="medicationHeadline">未勾選</div>
-              <div class="summary-sub" id="medicationStatus">早藥未勾選 / 晚藥未勾選</div>
-            </article>
-            <article class="summary-card">
-              <div class="summary-label">腸胃重點</div>
-              <div class="summary-value" id="digestiveHeadline">穩定</div>
-              <div class="summary-sub" id="digestiveSub">沒有大便或嘔吐備註</div>
-            </article>
+        <details class="phase">
+          <summary class="phase-title"><div><span class="time-label">陪伴期間</span><h3>照護中</h3><p>目前只吃乾乾・早上下午晚上各至少1次・每次約15g・藍白藥早晚各1顆・灰白藥下午1～2點1顆</p></div></summary>
+          <div class="phase-body">
+            <p class="hunger-note"><strong>蚵仔餓了時：</strong>可能會蹭你的腳，或在飯碗附近喵喵叫。</p>
+            <h4 class="section-label">乾乾怎麼餵</h4>
+            <div class="amounts">
+              <div class="amount-card wide"><b>乾乾</b><strong><small>每次約</small>15g</strong><span>早上、下午、晚上各至少1次</span></div>
+            </div>
+            <h4 class="section-label">一天大概這樣餵</h4>
+            <div class="daily-plan">
+              <div class="daily-row"><b>早上</b><span>乾乾約15g・左邊藍白藥1顆・盡量餵水3 ml針筒10支</span></div>
+              <div class="daily-row"><b>下午</b><span>乾乾約15g・下午1～2點餵右邊灰白藥1顆・盡量餵水3 ml針筒10支</span></div>
+              <div class="daily-row"><b>晚上</b><span>乾乾約15g・左邊藍白藥1顆・盡量餵水3 ml針筒10支</span></div>
+            </div>
+            <p class="warning"><strong>餵藥：</strong>左邊藍白色膠囊，早上1顆、晚上1顆；右邊灰白色膠囊，下午1～2點之間餵1顆。</p>
+            <details class="guide-group">
+              <summary>照片與操作教學</summary>
+              <div class="detail-body guide-list">
+            <details class="tool-photo-toggle">
+              <summary>查看針管與餵藥器</summary>
+              <div class="detail-body">
+                <figure class="real-photo single-photo">
+                  <img src="site/assets/water-medicine-tools-labeled.png" alt="3 ml餵水針管、5 ml餵水針管與膠囊餵藥器的標示照片">
+                  <figcaption>照片已標出：<strong>3 ml餵水針管、5 ml餵水針管、膠囊餵藥器</strong>。</figcaption>
+                </figure>
+              </div>
+            </details>
+            <details class="food-photo-toggle">
+              <summary>查看蚵仔目前唯一能吃的食物</summary>
+              <div class="detail-body">
+                <figure class="real-photo single-photo">
+                  <img src="site/assets/dry-food-only-20260924.jpg" alt="蚵仔目前唯一能吃的皇家腸胃道低過敏乾乾">
+                  <figcaption><strong>蚵仔目前只能吃照片中的乾乾。</strong>不要餵罐頭或其他食物。</figcaption>
+                </figure>
+                <p class="warning">蚵仔現在的腸胃比較敏感，目前只餵照片中的乾乾，謝謝你。</p>
+              </div>
+            </details>
+            <details class="medicine-photo-toggle">
+              <summary>查看兩種藥與餵藥時間</summary>
+              <div class="detail-body">
+                <p class="warning"><strong>請看照片分左右：</strong>左邊藍白色膠囊，早上1顆、晚上1顆；右邊灰白色膠囊，下午1～2點之間餵1顆。</p>
+                <figure class="real-photo single-photo">
+                  <img src="site/assets/medicine-schedule-20260924.jpg" alt="左邊藍白色膠囊與右邊灰白色膠囊的用藥照片">
+                  <figcaption><strong>左邊藍白色：</strong>早上1顆、晚上1顆。<br><strong>右邊灰白色：</strong>下午1～2點之間1顆。餵完藥後請洗手。</figcaption>
+                </figure>
+                <figure class="real-photo single-photo">
+                  <img src="site/assets/medicine-probiotic-location.jpg" alt="飲水機桌上的小盒子，裡面放著蚵仔的藥和益生菌">
+                  <figcaption><strong>藥和益生菌的位置：</strong>都放在飲水機桌上的小盒子裡。</figcaption>
+                </figure>
+              </div>
+            </details>
+
+            <details>
+              <summary>怎麼秤食物</summary>
+              <div class="detail-body">
+                <ol>
+                  <li>開啟食物秤，放上空碗。</li>
+                  <li>先確認畫面右上角的單位是<span class="strong">g</span>。</li>
+                  <li>按「歸零／TARE」，畫面顯示<span class="strong">0.0 g</span>後，再開始放食物。</li>
+                  <li>碗放在秤的中央，乾乾也盡量放在碗中間，測量會比較準確。</li>
+                  <li>放入食物，秤到指定克數。</li>
+                </ol>
+                <figure class="real-photo single-photo">
+                  <img src="site/assets/scale-zero-g.jpg" alt="食物秤顯示g單位並歸零為0.0 g的畫面">
+                  <figcaption><strong>正確畫面：</strong>右上角顯示g，數字已歸零為0.0。</figcaption>
+                </figure>
+              </div>
+            </details>
+
+            <details class="water-cup-toggle">
+              <summary>每天清洗餵水杯</summary>
+              <div class="detail-body">
+                <ol>
+                  <li><strong>每天至少清洗一次這個餵水杯。</strong></li>
+                  <li>清洗乾淨後，重新加入乾淨的水。</li>
+                  <li><strong>水量盡量加到滿。</strong></li>
+                </ol>
+                <figure class="real-photo single-photo">
+                  <img src="site/assets/water-cup-daily-clean-20260924.jpg" alt="每天要清洗並盡量加滿水的貓咪餵水杯">
+                  <figcaption><strong>餵水杯：</strong>每天洗一次，乾淨的水盡量加到滿。</figcaption>
+                </figure>
+              </div>
+            </details>
+
+            <details>
+              <summary>餵藥與餵水</summary>
+              <div class="detail-body">
+                <ul>
+                  <li><strong>早上、下午、晚上，盡量各餵3 ml針筒10支水。</strong></li>
+                  <li><strong>開始前，先在旁邊準備一張衛生紙。</strong>蚵仔餵水或餵藥時可能會流口水，可以馬上擦乾淨。</li>
+                  <li>玻璃罐放在飲水機旁，可以先把水放進玻璃罐，再用餵水針筒吸水。</li>
+                  <li>可以從嘴巴側邊慢慢餵，讓蚵仔有時間吞下去。</li>
+                  <li><strong>每餵一顆膠囊後，先用3 ml小針筒餵水。</strong></li>
+                  <li><strong>確認蚵仔已經把膠囊吞下去，再繼續餵下一顆藥。</strong></li>
+                  <li>餵完後，看3 ml針筒剩多少。</li>
+                  <li>憑感覺扣掉大概流掉的水，記錄約喝下幾ml。</li>
+                  <li>如果掙扎得很厲害、咳嗽、嗆到或呼吸和平常不同，就先停下來讓他休息。</li>
+                  <li>這次沒有餵到藥或水也沒關係，幫我記一下就好。</li>
+                  <li>如果不確定藥有沒有吞下，先別補第二次，LINE跟青青說一聲即可。</li>
+                </ul>
+                <figure class="real-photo single-photo">
+                  <img src="site/assets/water-from-glass-jar.jpg" alt="用餵水針筒從玻璃罐吸水">
+                  <figcaption>玻璃罐在<strong>飲水機旁</strong>，可以在玻璃罐內用餵水針筒吸水。</figcaption>
+                </figure>
+              </div>
+            </details>
+            <details>
+              <summary>特別注意：不能吃或碰到的東西</summary>
+              <div class="detail-body">
+                <p class="warning danger"><strong>不能吃或喝：</strong>咖啡、茶、巧克力、橘子。</p>
+                <p class="warning danger"><strong>不能碰到：</strong>清潔劑、洗碗精、防曬乳等用品。請放在蚵仔碰不到的地方。</p>
+              </div>
+            </details>
+              </div>
+            </details>
           </div>
+        </details>
 
-          <div class="doctor-note">
-            <h2 class="doctor-title">給醫生的一句話摘要</h2>
-            <p class="doctor-text" id="doctorSummary">今天還沒有紀錄。</p>
-          </div>
-
-          <div class="photo-card">
-            <div class="photo-head">
-              <div>
-                <h3 class="photo-title">每日照片</h3>
-                <div class="photo-sub">每天可放一張，點圖片可放大。</div>
+        <details class="phase">
+          <summary class="phase-title"><div><span class="time-label">準備回家</span><h3>離開前</h3><p>貓砂・益生菌・乾乾・水・鑰匙</p></div></summary>
+          <div class="phase-body">
+            <ul class="before-leaving">
+              <li><b>鏟貓砂一次</b>，查看有沒有尿尿與便便；垃圾直接放進垃圾袋即可。</li>
+              <li>離開前可餵益生菌：<b>半包</b>＋約<b>9 ml常溫礦泉水</b>攪拌，水量接近即可，再用約3支3 ml小針筒慢慢餵。</li>
+              <li>離開前要確認碗裡還有約<b>15g乾乾</b>；不足時補到約15g。</li>
+              <li class="must-water"><b>請用水碟放乾淨的水給蚵仔。</b></li>
+            </ul>
+            <details>
+              <summary>最後離開前：冷氣、窗戶與鑰匙</summary>
+              <div class="detail-body">
+                <ul class="before-leaving secondary-leaving">
+                  <li><b>所有窗戶都保持關上，冷氣不需關掉。</b></li>
+                  <li>帶著鑰匙，鎖好大門後輕拉一下門確認即可。</li>
+                  <li>鑰匙用原本信封包好，放回原本郵箱。</li>
+                </ul>
+                <p class="warning danger">先鎖好門，再把鑰匙用原本信封包好、放回郵箱。</p>
               </div>
-            </div>
-            <div id="photoArea" class="photo-thumb-wrap">
-              <div class="photo-empty">今天還沒有照片。</div>
-            </div>
-            <div class="upload-row">
-              <input id="dailyImageInput" class="file-input" type="file" accept="image/*">
-              <button class="btn btn-secondary" type="button" id="uploadImageBtn">上傳今日照片</button>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel" id="timelinePanel">
-          <div class="section-head">
-            <div>
-              <h2 class="section-title">當日紀錄</h2>
-              <p class="section-note">以下是今天的補充細節，沒有填時間的紀錄會排在最後。</p>
-            </div>
-          </div>
-          <div id="timeline" class="timeline"></div>
-        </section>
-
-        <details class="panel" open>
-          <summary>
-            <div class="summary-row">
-              <div class="left">
-                <h3>新增紀錄</h3>
-                <p>需要時再展開填寫，避免首頁過度複雜。</p>
+            </details>
+            <details>
+              <summary>查看離開前照片</summary>
+              <div class="detail-body photo-grid leaving-photo-grid">
+                <figure class="real-photo"><img src="site/assets/probiotic.jpg" alt="蚵仔睡前或離開前要吃的益生菌"><figcaption><strong>益生菌：</strong>半包加入常溫水攪拌後，用針筒慢慢餵；離開前可餵。</figcaption></figure>
+                <figure class="real-photo"><img src="site/assets/water-dishes-rotated.png" alt="蚵仔喝水使用的水碟"><figcaption><strong>蚵仔的水碟：</strong>這是蚵仔喝水使用的水碟。</figcaption></figure>
               </div>
-              <div class="toggle-hint">展開 / 收合</div>
-            </div>
-          </summary>
-
-          <div class="form-wrap" id="formPanel">
-            <form id="entryForm" class="form-grid">
-              <div class="field-row">
-                <div class="field">
-                  <label for="date">日期</label>
-                  <input id="date" name="date" type="date" required>
-                </div>
-                <div class="field">
-                  <label for="time">時間（可留白）</label>
-                  <input id="time" name="time" type="time">
-                </div>
-              </div>
-
-              <div class="field-row">
-                <div class="field">
-                  <label for="waterG">喝水量（g）</label>
-                  <input id="waterG" name="waterG" type="number" min="0" step="1" placeholder="例如 80">
-                </div>
-                <div class="field">
-                  <label for="foodAmountG">食物量（g）</label>
-                  <input id="foodAmountG" name="foodAmountG" type="number" min="0" step="1" placeholder="例如 42">
-                </div>
-              </div>
-
-              <div class="field-row">
-                <div class="field">
-                  <label for="foodType">食物類型</label>
-                  <select id="foodType" name="foodType">
-                    <option value="">未填</option>
-                    <option value="乾糧">乾糧</option>
-                    <option value="罐罐">罐罐</option>
-                    <option value="零食">零食</option>
-                    <option value="其他">其他</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="brand">品牌 / 品項</label>
-                  <input id="brand" name="brand" list="brandSuggestions" placeholder="例如 法米納腎臟罐">
-                  <datalist id="brandSuggestions"></datalist>
-                </div>
-              </div>
-
-              <div class="field">
-                <label>早晚餵藥</label>
-                <div class="check-row">
-                  <label class="check-card"><input id="medMorning" name="medMorning" type="checkbox" value="有"> 早藥有餵</label>
-                  <label class="check-card"><input id="medNight" name="medNight" type="checkbox" value="有"> 晚藥有餵</label>
-                </div>
-              </div>
-
-              <div class="field">
-                <label for="stoolDetail">大便狀況</label>
-                <textarea id="stoolDetail" name="stoolDetail" placeholder="例如：有便，成形偏軟，顏色正常。"></textarea>
-              </div>
-
-              <div class="field">
-                <label for="vomitDetail">嘔吐狀況</label>
-                <textarea id="vomitDetail" name="vomitDetail" placeholder="例如：凌晨吐透明泡沫，量少。"></textarea>
-              </div>
-
-              <div class="field">
-                <label for="note">其他備註</label>
-                <textarea id="note" name="note" placeholder="例如：精神普通、食慾一般、有自己去喝水。"></textarea>
-              </div>
-
-              <div class="actions">
-                <button class="btn btn-primary" type="submit">存進今天紀錄</button>
-                <button class="btn btn-secondary" type="button" id="resetFormBtn">清空</button>
-              </div>
-            </form>
+            </details>
           </div>
         </details>
       </div>
-    </div>
+    </section>
 
-    <div id="lightbox" class="lightbox">
-      <div class="lightbox-inner">
-        <button class="btn btn-danger lightbox-close" type="button" id="closeLightboxBtn">關閉</button>
-        <img id="lightboxImage" alt="每日照片放大圖">
+    <section class="panel" id="recordPanel" role="tabpanel" hidden>
+      <article class="tool-box">
+        <h2><a class="miaomiao-link" href="https://line.me/R/ti/p/@232mjffx" target="_blank" rel="noopener noreferrer">喵喵管家</a></h2>
+        <ol class="four-steps">
+          <li><b>1</b><span>開啟<a class="miaomiao-link" href="https://line.me/R/ti/p/@232mjffx" target="_blank" rel="noopener noreferrer">喵喵管家</a></span></li>
+          <li><b>2</b><span>照下方的固定格式輸入</span></li>
+          <li><b>3</b><span>按下儲存</span></li>
+        </ol>
+        <div class="record-formats">
+          <strong>只要照這樣輸入：</strong>
+          <div class="record-format-row"><b>乾乾</b><span>乾乾＋克數</span></div>
+          <p class="record-format-note">目前只需要記乾乾克數；另外餵水時，再輸入「水＋ml數」。</p>
+        </div>
+        <p class="warning">水量不用非常精準。用3 ml或5 ml針筒餵完後，扣掉剩餘與大概流掉的量，記錄約喝下幾ml即可。</p>
+        <div class="screens">
+          <figure class="screen"><span class="screen-label">記乾乾</span><img src="site/assets/miaomiao-record-dry-food-20260924.png" alt="喵喵管家記錄乾乾的成功畫面"><figcaption>輸入乾乾與克數後，確認出現已記錄畫面。</figcaption></figure>
+          <figure class="screen"><span class="screen-label">記水</span><img src="site/assets/miaomiao-record-water-20260924.png" alt="喵喵管家記錄飲水的成功畫面"><figcaption>輸入水與ml數後，確認出現已記錄畫面。</figcaption></figure>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel" id="rosterPanel" role="tabpanel" hidden>
+      <div class="roster-intro">
+        <h2>照護交班時間</h2>
+        <p>依日期查看照護者與時段。</p>
       </div>
+      <div class="roster-list">
+        <article class="day-card">
+          <header class="day-head"><strong>9月28日</strong></header>
+          <ul class="shift-list">
+            <li class="shift"><span class="shift-time">14:00－隔日10:00</span><span class="shift-person"><span class="person-block"><b class="person-name">小琳</b><small class="shift-detail">離開前請餵蚵仔早上的藍白膠囊 1 顆，感謝。</small></span><small class="shift-note">下午至過夜</small></span></li>
+          </ul>
+        </article>
+
+        <article class="day-card">
+          <header class="day-head"><strong>9月29日</strong></header>
+          <ul class="shift-list">
+            <li class="shift"><span class="shift-time">10:00－12:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">上午</small></span></li>
+            <li class="shift"><span class="shift-time">15:00－17:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">下午</small></span></li>
+            <li class="shift"><span class="shift-time">20:30－22:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">晚上</small></span></li>
+          </ul>
+        </article>
+
+        <article class="day-card">
+          <header class="day-head"><strong>9月30日</strong></header>
+          <ul class="shift-list">
+            <li class="shift"><span class="shift-time">09:30－12:00</span><span class="shift-person"><b class="person-name">弟弟</b><small class="shift-note">上午</small></span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="contactPanel" role="tabpanel" hidden>
+      <article class="contact-box">
+        <h2>有些狀況想告訴青青</h2>
+        <p>如果看到嘔吐、拉肚子、沒吃、沒有排泄、沒餵到藥水，或和平常不太一樣，LINE跟青青說一聲就好。</p>
+      </article>
+      <article class="contact-box">
+        <h2>需要馬上聯絡時</h2>
+        <p>如果看到呼吸不順、倒下、叫不醒、持續抽搐或大量流血，麻煩立刻用 LINE 聯絡青青，謝謝。</p>
+      </article>
+    </section>
+
+    <div class="thanks">
+      <strong>謝謝大家願意幫忙照顧蚵仔，深深感謝。</strong>
     </div>
+    <p class="footer">蚵仔照護交接說明</p>
+  </main>
 
-    <script>
-      const CAT_NAME = '蚵仔';
-      const STORAGE_KEY = 'oyster-care-local-preview-v3';
-
-      const state = {
-        selectedDate: '',
-        entries: [],
-        brands: [],
-        summary: null,
-        dailyImages: {}
-      };
-
-      const isAppsScript =
-        typeof google !== 'undefined' &&
-        google.script &&
-        google.script.run;
-
-      const els = {
-        catName: document.getElementById('catName'),
-        previewBadge: document.getElementById('previewBadge'),
-        summaryPanel: document.getElementById('summaryPanel'),
-        timelinePanel: document.getElementById('timelinePanel'),
-        formPanel: document.getElementById('formPanel'),
-        entryForm: document.getElementById('entryForm'),
-        date: document.getElementById('date'),
-        time: document.getElementById('time'),
-        selectedDate: document.getElementById('selectedDate'),
-        brandSuggestions: document.getElementById('brandSuggestions'),
-        resetFormBtn: document.getElementById('resetFormBtn'),
-        goTodayBtn: document.getElementById('goTodayBtn'),
-        reloadBtn: document.getElementById('reloadBtn'),
-        statusLine: document.getElementById('statusLine'),
-        waterTotal: document.getElementById('waterTotal'),
-        foodTotal: document.getElementById('foodTotal'),
-        foodDetail: document.getElementById('foodDetail'),
-        medicationHeadline: document.getElementById('medicationHeadline'),
-        medicationStatus: document.getElementById('medicationStatus'),
-        digestiveHeadline: document.getElementById('digestiveHeadline'),
-        digestiveSub: document.getElementById('digestiveSub'),
-        doctorSummary: document.getElementById('doctorSummary'),
-        entryCountText: document.getElementById('entryCountText'),
-        timeline: document.getElementById('timeline'),
-        photoArea: document.getElementById('photoArea'),
-        dailyImageInput: document.getElementById('dailyImageInput'),
-        uploadImageBtn: document.getElementById('uploadImageBtn'),
-        lightbox: document.getElementById('lightbox'),
-        lightboxImage: document.getElementById('lightboxImage'),
-        closeLightboxBtn: document.getElementById('closeLightboxBtn')
-      };
-
-      const localApi = {
-        getInitialData(dateString) {
-          const selectedDate = normalizeDate(dateString) || getToday();
-          const allEntries = readLocalEntries();
-          const entries = allEntries.filter((entry) => entry.date === selectedDate).sort(compareEntries);
-          const images = readLocalImages();
-          return Promise.resolve({
-            catName: CAT_NAME,
-            selectedDate,
-            entries,
-            summary: buildSummary(entries),
-            brands: uniqueBrands(allEntries),
-            dailyImage: images[selectedDate] || null
-          });
-        },
-        saveEntry(payload) {
-          const allEntries = readLocalEntries();
-          const entry = normalizePayload(payload);
-          validateEntry(entry);
-          allEntries.push(entry);
-          writeLocalEntries(allEntries);
-          return this.getInitialData(entry.date);
-        },
-        deleteEntry(entryId) {
-          const allEntries = readLocalEntries();
-          const target = allEntries.find((entry) => entry.id === entryId);
-          if (!target) throw new Error('找不到這筆紀錄。');
-          writeLocalEntries(allEntries.filter((entry) => entry.id !== entryId));
-          return this.getInitialData(target.date);
-        },
-        saveDailyImage(payload) {
-          const images = readLocalImages();
-          const date = normalizeDate(payload.date) || getToday();
-          const dataUrl = `data:${payload.mimeType || 'image/jpeg'};base64,${payload.base64Data}`;
-          images[date] = {
-            date,
-            fileUrl: dataUrl,
-            fileName: payload.fileName || 'daily-photo.jpg',
-            updatedAt: new Date().toISOString()
-          };
-          writeLocalImages(images);
-          return this.getInitialData(date);
-        }
-      };
-
-      function getToday() {
-        return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' });
-      }
-
-      function normalizeDate(value) {
-        return /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? value : '';
-      }
-
-      function compareEntries(a, b) {
-        const timeA = a.time || '99:99';
-        const timeB = b.time || '99:99';
-        const byTime = String(timeA).localeCompare(String(timeB));
-        if (byTime !== 0) return byTime;
-        return String(a.createdAt || '').localeCompare(String(b.createdAt || ''));
-      }
-
-      function readLocalEntries() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY + '-entries');
-          return raw ? JSON.parse(raw) : [];
-        } catch (error) {
-          return [];
-        }
-      }
-
-      function writeLocalEntries(entries) {
-        localStorage.setItem(STORAGE_KEY + '-entries', JSON.stringify(entries));
-      }
-
-      function readLocalImages() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY + '-images');
-          return raw ? JSON.parse(raw) : {};
-        } catch (error) {
-          return {};
-        }
-      }
-
-      function writeLocalImages(images) {
-        localStorage.setItem(STORAGE_KEY + '-images', JSON.stringify(images));
-      }
-
-      function uniqueBrands(entries) {
-        return [...new Set(entries.map((entry) => (entry.brand || '').trim()).filter(Boolean))].sort();
-      }
-
-      function normalizePayload(payload) {
-        return {
-          id: payload.id || `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-          date: normalizeDate(payload.date),
-          time: payload.time || '',
-          waterG: Number(payload.waterG || 0),
-          foodType: (payload.foodType || '').trim(),
-          brand: (payload.brand || '').trim(),
-          foodAmountG: Number(payload.foodAmountG || 0),
-          medMorning: payload.medMorning || '',
-          medNight: payload.medNight || '',
-          stoolDetail: (payload.stoolDetail || '').trim(),
-          vomitDetail: (payload.vomitDetail || '').trim(),
-          note: (payload.note || '').trim(),
-          createdAt: payload.createdAt || new Date().toISOString()
-        };
-      }
-
-      function validateEntry(entry) {
-        if (!entry.date) throw new Error('請先選擇日期。');
-
-        const hasContent = Boolean(
-          entry.waterG ||
-          entry.foodType ||
-          entry.foodAmountG ||
-          entry.medMorning ||
-          entry.medNight ||
-          entry.stoolDetail ||
-          entry.vomitDetail ||
-          entry.note
-        );
-
-        if (!hasContent) throw new Error('請至少填一項內容再儲存。');
-      }
-
-      function buildSummary(entries) {
-        const summary = {
-          waterTotal: 0,
-          dryFoodTotal: 0,
-          wetFoodTotal: 0,
-          otherFoodTotal: 0,
-          vomitCount: 0,
-          stoolCount: 0,
-          stoolDetails: [],
-          vomitDetails: [],
-          entryCount: entries.length,
-          medMorning: '未勾選',
-          medNight: '未勾選'
-        };
-
-        let hasMorningMedication = false;
-        let hasNightMedication = false;
-
-        entries.forEach((entry) => {
-          summary.waterTotal += Number(entry.waterG || 0);
-
-          if (entry.foodType === '乾糧') summary.dryFoodTotal += Number(entry.foodAmountG || 0);
-          if (entry.foodType === '罐罐') summary.wetFoodTotal += Number(entry.foodAmountG || 0);
-          if (entry.foodType && !['乾糧', '罐罐'].includes(entry.foodType)) {
-            summary.otherFoodTotal += Number(entry.foodAmountG || 0);
-          }
-
-          if (entry.medMorning === '有') hasMorningMedication = true;
-          if (entry.medNight === '有') hasNightMedication = true;
-
-          if (entry.stoolDetail) {
-            summary.stoolCount += 1;
-            summary.stoolDetails.push(`${entry.time || '未記時間'} ${entry.stoolDetail}`);
-          }
-
-          if (entry.vomitDetail) {
-            summary.vomitCount += 1;
-            summary.vomitDetails.push(`${entry.time || '未記時間'} ${entry.vomitDetail}`);
-          }
-        });
-
-        summary.medMorning = hasMorningMedication ? '有餵' : '未勾選';
-        summary.medNight = hasNightMedication ? '有餵' : '未勾選';
-        return summary;
-      }
-
-      function escapeHtml(value) {
-        return String(value || '')
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;');
-      }
-
-      function setLoading(isLoading) {
-        els.summaryPanel.classList.toggle('loading', isLoading);
-        els.timelinePanel.classList.toggle('loading', isLoading);
-        els.formPanel.classList.toggle('loading', isLoading);
-      }
-
-      function callServer(method, payload) {
-        if (!isAppsScript) {
-          return Promise.resolve().then(() => localApi[method](payload));
-        }
-
-        return new Promise((resolve, reject) => {
-          const runner = google.script.run
-            .withSuccessHandler(resolve)
-            .withFailureHandler((error) => reject(new Error(error && error.message ? error.message : error)));
-
-          if (payload === undefined) {
-            runner[method]();
-          } else {
-            runner[method](payload);
-          }
-        });
-      }
-
-      function updateBrandSuggestions(brands) {
-        els.brandSuggestions.innerHTML = brands
-          .map((brand) => `<option value="${escapeHtml(brand)}"></option>`)
-          .join('');
-      }
-
-      function renderTimeline(entries) {
-        if (!entries.length) {
-          els.timeline.innerHTML = '<div class="empty">這一天還沒有紀錄，可以等有需要時再補。</div>';
-          return;
-        }
-
-        els.timeline.innerHTML = entries.map((entry) => {
-          const chips = [];
-          if (entry.waterG) chips.push(`<span class="chip">喝水 ${entry.waterG} g</span>`);
-          if (entry.foodAmountG || entry.foodType || entry.brand) {
-            const foodLabel = [entry.foodType, entry.brand].filter(Boolean).join(' / ');
-            chips.push(`<span class="chip">食物 ${entry.foodAmountG || 0} g${foodLabel ? ` ・ ${escapeHtml(foodLabel)}` : ''}</span>`);
-          }
-          if (entry.medMorning) chips.push('<span class="chip">早藥已餵</span>');
-          if (entry.medNight) chips.push('<span class="chip">晚藥已餵</span>');
-          if (entry.stoolDetail) chips.push('<span class="chip">有大便備註</span>');
-          if (entry.vomitDetail) chips.push('<span class="chip warn">有嘔吐備註</span>');
-          if (!chips.length) chips.push('<span class="chip">一般觀察</span>');
-
-          const notes = [];
-          if (entry.stoolDetail) notes.push(`大便：${escapeHtml(entry.stoolDetail)}`);
-          if (entry.vomitDetail) notes.push(`嘔吐：${escapeHtml(entry.vomitDetail)}`);
-          if (entry.note) notes.push(escapeHtml(entry.note));
-
-          return `
-            <article class="entry">
-              <div class="entry-time">${escapeHtml(entry.time || '未記時間')}<small>${escapeHtml(entry.date)}</small></div>
-              <div class="entry-main">
-                <div class="chips">${chips.join('')}</div>
-                ${notes.length ? `<div class="entry-note">${notes.join('<br>')}</div>` : ''}
-              </div>
-              <button class="btn btn-danger" type="button" data-delete-id="${escapeHtml(entry.id)}">刪除</button>
-            </article>
-          `;
-        }).join('');
-      }
-
-      function renderSummary(summary) {
-        const totalFood = summary.dryFoodTotal + summary.wetFoodTotal + summary.otherFoodTotal;
-
-        els.waterTotal.textContent = `${summary.waterTotal} g`;
-        els.foodTotal.textContent = `${totalFood} g`;
-        els.foodDetail.textContent = `乾糧 ${summary.dryFoodTotal} g / 罐罐 ${summary.wetFoodTotal} g${summary.otherFoodTotal ? ` / 其他 ${summary.otherFoodTotal} g` : ''}`;
-        els.entryCountText.textContent = `${summary.entryCount} 筆紀錄`;
-
-        const hasMedication = summary.medMorning === '有餵' || summary.medNight === '有餵';
-        els.medicationHeadline.textContent = hasMedication ? '已有紀錄' : '未勾選';
-        els.medicationStatus.textContent = `早藥${summary.medMorning} / 晚藥${summary.medNight}`;
-
-        if (summary.vomitCount > 0) {
-          els.digestiveHeadline.textContent = '需留意';
-          els.digestiveSub.textContent = `嘔吐 ${summary.vomitCount} 次${summary.stoolCount ? ` / 大便備註 ${summary.stoolCount} 筆` : ''}`;
-        } else if (summary.stoolCount > 0) {
-          els.digestiveHeadline.textContent = '有紀錄';
-          els.digestiveSub.textContent = `大便備註 ${summary.stoolCount} 筆`;
+  <script>
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(item => item.setAttribute('aria-selected', String(item === tab)));
+      const target = tab.getAttribute('aria-controls');
+      panels.forEach(panel => panel.hidden = panel.id !== target);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }));
+    const phases = [...document.querySelectorAll('.phase')];
+    phases.forEach(phase => phase.addEventListener('toggle', () => {
+      if (!phase.open) return;
+      phases.forEach(other => { if (other !== phase) other.open = false; });
+    }));
+    const numberWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const numberNodes = [];
+    while (numberWalker.nextNode()) {
+      const node = numberWalker.currentNode;
+      if (/\d/.test(node.nodeValue) && !['SCRIPT', 'STYLE'].includes(node.parentElement?.tagName)) numberNodes.push(node);
+    }
+    numberNodes.forEach(node => {
+      const parts = node.nodeValue.split(/(\d+(?:[:：.]\d+)?)/g);
+      if (parts.length < 2) return;
+      const fragment = document.createDocumentFragment();
+      parts.forEach(part => {
+        if (/^\d+(?:[:：.]\d+)?$/.test(part)) {
+          const span = document.createElement('span');
+          span.className = 'number-accent';
+          span.textContent = part;
+          fragment.appendChild(span);
         } else {
-          els.digestiveHeadline.textContent = '穩定';
-          els.digestiveSub.textContent = '沒有大便或嘔吐備註';
+          fragment.appendChild(document.createTextNode(part));
         }
-
-        const doctorParts = [];
-        doctorParts.push(`今日喝水 ${summary.waterTotal} g`);
-        doctorParts.push(`食物 ${totalFood} g`);
-        doctorParts.push(`早藥${summary.medMorning}、晚藥${summary.medNight}`);
-        doctorParts.push(summary.vomitDetails.length ? `嘔吐：${summary.vomitDetails.join('；')}` : '今日無嘔吐備註');
-        doctorParts.push(summary.stoolDetails.length ? `大便：${summary.stoolDetails.join('；')}` : '今日無大便備註');
-        els.doctorSummary.textContent = doctorParts.join('。') + '。';
-      }
-
-      function renderDailyImage(image) {
-        if (!image || !image.fileUrl) {
-          els.photoArea.innerHTML = '<div class="photo-empty">今天還沒有照片。</div>';
-          return;
-        }
-
-        const previewUrl = image.fileUrl.startsWith('data:')
-          ? image.fileUrl
-          : image.fileUrl.replace('/view?usp=drivesdk', '/preview').replace('/view?usp=drive_link', '/preview');
-
-        els.photoArea.innerHTML = `
-          <img
-            class="photo-thumb"
-            src="${escapeHtml(previewUrl)}"
-            alt="${escapeHtml(image.fileName || '每日照片')}"
-            data-full-url="${escapeHtml(previewUrl)}"
-          >
-          <div class="photo-sub">更新時間：${escapeHtml(image.updatedAt || '')}</div>
-        `;
-      }
-
-      function renderAll(data) {
-        state.selectedDate = data.selectedDate;
-        state.entries = data.entries || [];
-        state.brands = data.brands || [];
-        state.summary = data.summary || buildSummary([]);
-
-        els.catName.textContent = data.catName || CAT_NAME;
-        els.date.value = data.selectedDate;
-        els.selectedDate.value = data.selectedDate;
-        els.statusLine.textContent = `${data.selectedDate} 共 ${state.entries.length} 筆`;
-
-        updateBrandSuggestions(state.brands);
-        renderSummary(state.summary);
-        renderTimeline(state.entries);
-        renderDailyImage(data.dailyImage || null);
-      }
-
-      function collectFormData() {
-        const formData = new FormData(els.entryForm);
-        return Object.fromEntries(formData.entries());
-      }
-
-      function resetForm() {
-        const keepDate = els.date.value || getToday();
-        els.entryForm.reset();
-        els.date.value = keepDate;
-      }
-
-      async function readFileAsBase64(file) {
-        const prepared = await prepareImageFile(file);
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const result = String(reader.result || '');
-            const commaIndex = result.indexOf(',');
-            resolve({
-              base64Data: commaIndex >= 0 ? result.slice(commaIndex + 1) : result,
-              mimeType: prepared.type || 'image/jpeg',
-              fileName: prepared.name || file.name || 'daily-photo.jpg'
-            });
-          };
-          reader.onerror = () => reject(new Error('讀取圖片失敗'));
-          reader.readAsDataURL(prepared);
-        });
-      }
-
-      function prepareImageFile(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const image = new Image();
-            image.onload = () => {
-              const maxSide = 1280;
-              const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
-              const width = Math.max(1, Math.round(image.width * scale));
-              const height = Math.max(1, Math.round(image.height * scale));
-              const canvas = document.createElement('canvas');
-              canvas.width = width;
-              canvas.height = height;
-              const ctx = canvas.getContext('2d');
-              if (!ctx) {
-                reject(new Error('圖片處理失敗'));
-                return;
-              }
-              ctx.drawImage(image, 0, 0, width, height);
-              canvas.toBlob((blob) => {
-                if (!blob) {
-                  reject(new Error('圖片壓縮失敗'));
-                  return;
-                }
-                resolve(new File([blob], file.name || 'daily-photo.jpg', { type: 'image/jpeg' }));
-              }, 'image/jpeg', 0.82);
-            };
-            image.onerror = () => reject(new Error('圖片讀取失敗'));
-            image.src = String(reader.result || '');
-          };
-          reader.onerror = () => reject(new Error('圖片讀取失敗'));
-          reader.readAsDataURL(file);
-        });
-      }
-
-      async function loadDate(dateString) {
-        try {
-          setLoading(true);
-          els.statusLine.textContent = '讀取中…';
-          const data = await callServer('getInitialData', dateString);
-          renderAll(data);
-        } catch (error) {
-          alert(error.message || '讀取失敗');
-          els.statusLine.textContent = '讀取失敗';
-        } finally {
-          setLoading(false);
-        }
-      }
-
-      async function handleSubmit(event) {
-        event.preventDefault();
-        try {
-          setLoading(true);
-          const result = await callServer('saveEntry', collectFormData());
-          renderAll(result);
-          resetForm();
-          els.statusLine.textContent = '已儲存';
-        } catch (error) {
-          alert(error.message || '儲存失敗');
-        } finally {
-          setLoading(false);
-        }
-      }
-
-      async function handleDelete(entryId) {
-        if (!confirm('要刪除這筆紀錄嗎？')) return;
-        try {
-          setLoading(true);
-          const result = await callServer('deleteEntry', entryId);
-          renderAll(result);
-          els.statusLine.textContent = '已刪除';
-        } catch (error) {
-          alert(error.message || '刪除失敗');
-        } finally {
-          setLoading(false);
-        }
-      }
-
-      async function handleImageUpload() {
-        const file = els.dailyImageInput.files && els.dailyImageInput.files[0];
-        if (!file) {
-          alert('請先選一張圖片。');
-          return;
-        }
-
-        try {
-          setLoading(true);
-          const imageData = await readFileAsBase64(file);
-          const payload = {
-            date: els.selectedDate.value || getToday(),
-            fileName: imageData.fileName,
-            mimeType: imageData.mimeType,
-            base64Data: imageData.base64Data
-          };
-          const result = await callServer('saveDailyImage', payload);
-          renderAll(result);
-          els.dailyImageInput.value = '';
-          els.statusLine.textContent = '照片已上傳';
-        } catch (error) {
-          alert(error.message || '上傳失敗');
-        } finally {
-          setLoading(false);
-        }
-      }
-
-      function openLightbox(url) {
-        els.lightboxImage.src = url;
-        els.lightbox.classList.add('open');
-      }
-
-      function closeLightbox() {
-        els.lightbox.classList.remove('open');
-        els.lightboxImage.removeAttribute('src');
-      }
-
-      function bindEvents() {
-        els.entryForm.addEventListener('submit', handleSubmit);
-        els.resetFormBtn.addEventListener('click', resetForm);
-        els.goTodayBtn.addEventListener('click', () => loadDate(getToday()));
-        els.reloadBtn.addEventListener('click', () => loadDate(els.selectedDate.value));
-        els.selectedDate.addEventListener('change', () => loadDate(els.selectedDate.value));
-        els.timeline.addEventListener('click', (event) => {
-          const button = event.target.closest('[data-delete-id]');
-          if (button) handleDelete(button.dataset.deleteId);
-        });
-        els.uploadImageBtn.addEventListener('click', handleImageUpload);
-        els.photoArea.addEventListener('click', (event) => {
-          const image = event.target.closest('[data-full-url]');
-          if (image) openLightbox(image.dataset.fullUrl);
-        });
-        els.closeLightboxBtn.addEventListener('click', closeLightbox);
-        els.lightbox.addEventListener('click', (event) => {
-          if (event.target === els.lightbox) closeLightbox();
-        });
-      }
-
-      async function bootstrap() {
-        if (!isAppsScript) {
-          els.previewBadge.style.display = 'block';
-        }
-        els.catName.textContent = CAT_NAME;
-        els.date.value = getToday();
-        els.selectedDate.value = getToday();
-        bindEvents();
-        await loadDate(getToday());
-      }
-
-      bootstrap();
-    </script>
-  </body>
-  </html>
+      });
+      node.replaceWith(fragment);
+    });
+  </script>
+</body>
+</html>
