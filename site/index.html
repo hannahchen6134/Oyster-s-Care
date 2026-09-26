@@ -373,6 +373,28 @@
     }
     .real-photo figcaption strong { color: var(--espresso); }
     .single-photo { margin-top: 14px; }
+    .brand-photo-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #efe3d7;
+    }
+    .brand-photo-wrap img { width: 100%; border-radius: 0; }
+    .food-brand-label {
+      position: absolute;
+      z-index: 1;
+      padding: 8px 12px;
+      border: 2px solid rgba(255,255,255,.9);
+      border-radius: 999px;
+      background: rgba(91,49,19,.9);
+      color: white;
+      font-size: 16px;
+      font-weight: 950;
+      line-height: 1;
+      box-shadow: 0 5px 16px rgba(44,26,15,.2);
+    }
+    .food-brand-label.hills { left: 12px; bottom: 12px; }
+    .food-brand-label.royal { right: 12px; top: 12px; }
     .medicine-grid { margin-top: 14px; }
 
     .before-leaving {
@@ -660,6 +682,9 @@
         width: 78%;
         margin: 10px auto 0;
       }
+      .brand-photo-wrap { width: 78%; margin-inline: auto; }
+      .brand-photo-wrap img { width: 100%; }
+      .food-brand-label { padding: 7px 10px; font-size: 14px; }
       .single-photo + .single-photo { margin-top: 26px; }
       .screen img {
         width: 78%;
@@ -753,18 +778,19 @@
         </details>
 
         <details class="phase">
-          <summary class="phase-title"><div><span class="time-label">陪伴期間</span><h3>照護中</h3><p>目前只吃乾乾・早上下午晚上各至少1次・每次約15g・藍白藥早晚各1顆・灰白藥下午1～2點1顆</p></div></summary>
+          <summary class="phase-title"><div><span class="time-label">陪伴期間</span><h3>照護中</h3><p>罐頭每次約35g，早中晚各1～2次・乾乾早晚各約15g・藍白藥早晚各1顆・灰白藥下午1～2點1顆</p></div></summary>
           <div class="phase-body">
             <p class="hunger-note"><strong>蚵仔餓了時：</strong>可能會蹭你的腳，或在飯碗附近喵喵叫。</p>
-            <h4 class="section-label">乾乾怎麼餵</h4>
+            <h4 class="section-label">食物怎麼餵</h4>
             <div class="amounts">
-              <div class="amount-card wide"><b>乾乾</b><strong><small>每次約</small>15g</strong><span>早上、下午、晚上各至少1次</span></div>
+              <div class="amount-card"><b>乾乾</b><strong><small>每次約</small>15g</strong><span>早上、晚上各1次</span></div>
+              <div class="amount-card"><b>罐頭</b><strong><small>每次約</small>35g</strong><span>早上、中午、晚上各1～2次</span></div>
             </div>
             <h4 class="section-label">一天大概這樣餵</h4>
             <div class="daily-plan">
-              <div class="daily-row"><b>早上</b><ul class="daily-items"><li>乾乾約15g</li><li>左邊藍白藥1顆</li><li>盡量餵水3 ml針筒10支</li></ul></div>
-              <div class="daily-row"><b>下午</b><ul class="daily-items"><li>乾乾約15g</li><li>下午1～2點餵右邊灰白藥1顆</li><li>盡量餵水3 ml針筒10支</li></ul></div>
-              <div class="daily-row"><b>晚上</b><ul class="daily-items"><li>乾乾約15g</li><li>左邊藍白藥1顆</li><li>盡量餵水3 ml針筒10支</li></ul></div>
+              <div class="daily-row"><b>早上</b><ul class="daily-items"><li>罐頭每次約35g，餵1～2次</li><li>乾乾約15g</li><li>左邊藍白藥1顆</li><li>盡量餵水3 ml針筒10支</li></ul></div>
+              <div class="daily-row"><b>下午</b><ul class="daily-items"><li>罐頭每次約35g，餵1～2次</li><li>下午1～2點餵右邊灰白藥1顆</li><li>盡量餵水3 ml針筒10支</li></ul></div>
+              <div class="daily-row"><b>晚上</b><ul class="daily-items"><li>罐頭每次約35g，餵1～2次</li><li>乾乾約15g</li><li>左邊藍白藥1顆</li><li>盡量餵水3 ml針筒10支</li></ul></div>
             </div>
             <p class="warning"><strong>餵藥：</strong>左邊藍白色膠囊，早上1顆、晚上1顆；右邊灰白色膠囊，下午1～2點之間餵1顆。</p>
             <details class="guide-group">
@@ -780,13 +806,21 @@
               </div>
             </details>
             <details class="food-photo-toggle">
-              <summary>查看蚵仔目前唯一能吃的食物</summary>
+              <summary>查看可以吃的食物</summary>
               <div class="detail-body">
                 <figure class="real-photo single-photo">
-                  <img src="assets/dry-food-only-20260924.jpg" alt="蚵仔目前唯一能吃的皇家腸胃道低過敏乾乾">
-                  <figcaption><strong>蚵仔目前只能吃照片中的乾乾。</strong>不要餵罐頭或其他食物。</figcaption>
+                  <img src="assets/dry-food-only-20260924.jpg" alt="蚵仔食用的皇家腸胃道低過敏乾乾">
+                  <figcaption><strong>乾乾請餵照片中的皇家腸胃道低過敏配方。</strong></figcaption>
                 </figure>
-                <p class="warning">蚵仔現在的腸胃比較敏感，目前只餵照片中的乾乾，謝謝你。</p>
+                <p class="warning">乾乾每次約15g，只在早上、晚上餵。</p>
+                <figure class="real-photo single-photo">
+                  <div class="brand-photo-wrap">
+                    <img src="assets/canned-food-brands-20260926.jpg" alt="蚵仔可以吃的兩種罐頭，左邊是希爾斯罐頭，右邊是皇家罐頭">
+                    <span class="food-brand-label hills">左邊｜希爾斯罐頭</span>
+                    <span class="food-brand-label royal">右邊｜皇家罐頭</span>
+                  </div>
+                  <figcaption><strong>可以吃的罐頭：</strong>左邊是希爾斯罐頭，右邊是皇家罐頭。每次約35g。</figcaption>
+                </figure>
               </div>
             </details>
             <details class="medicine-photo-toggle">
@@ -904,7 +938,8 @@
         <div class="record-formats">
           <strong>只要照這樣輸入：</strong>
           <div class="record-format-row"><b>乾乾</b><span>乾乾＋克數</span></div>
-          <p class="record-format-note">目前只需要記乾乾克數；另外餵水時，再輸入「水＋ml數」。</p>
+          <div class="record-format-row"><b>罐頭</b><span>品牌＋罐頭＋克數</span></div>
+          <p class="record-format-note"><strong>餵罐頭時要記下品牌。</strong>例如：「希爾斯罐頭35g」或「皇家罐頭35g」。另外餵水時，再輸入「水＋ml數」。</p>
         </div>
         <p class="warning">水量不用非常精準。用3 ml或5 ml針筒餵完後，扣掉剩餘與大概流掉的量，記錄約喝下幾ml即可。</p>
         <div class="screens">
