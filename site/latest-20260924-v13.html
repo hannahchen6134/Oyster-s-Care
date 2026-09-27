@@ -85,6 +85,8 @@
       box-shadow: 0 6px 20px rgba(57, 34, 20, .05);
     }
     .tab {
+      display: grid;
+      place-items: center;
       min-width: 0;
       min-height: 50px;
       padding: 8px 4px;
@@ -95,11 +97,14 @@
       font-weight: 900;
       white-space: nowrap;
       cursor: pointer;
+      text-decoration: none;
+      touch-action: manipulation;
     }
     .tab[aria-selected="true"] { color: white; background: var(--coffee); }
 
     main { padding: 28px 0 100px; }
     [hidden] { display: none !important; }
+    .panel:target { display: block !important; scroll-margin-top: 92px; }
     .panel { animation: enter .18s ease-out; }
     @keyframes enter { from { opacity: 0; transform: translateY(4px); } }
 
@@ -736,10 +741,10 @@
 
   <nav class="nav-wrap" aria-label="主要內容">
     <div class="nav-inner" role="tablist">
-      <button class="tab" role="tab" aria-selected="true" aria-controls="carePanel">照護方式</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="recordPanel">怎麼記錄</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="rosterPanel">交班時間</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="contactPanel">聯絡青青</button>
+      <a class="tab" role="tab" aria-selected="true" aria-controls="carePanel" href="#carePanel">照護方式</a>
+      <a class="tab" role="tab" aria-selected="false" aria-controls="recordPanel" href="#recordPanel">怎麼記錄</a>
+      <a class="tab" role="tab" aria-selected="false" aria-controls="rosterPanel" href="#rosterPanel">交班時間</a>
+      <a class="tab" role="tab" aria-selected="false" aria-controls="contactPanel" href="#contactPanel">聯絡青青</a>
     </div>
   </nav>
 
@@ -1003,32 +1008,40 @@
   </main>
 
   <script>
-    const tabs = [...document.querySelectorAll('[role="tab"]')];
-    const panels = [...document.querySelectorAll('[role="tabpanel"]')];
-    tabs.forEach(tab => tab.addEventListener('click', () => {
-      tabs.forEach(item => item.setAttribute('aria-selected', String(item === tab)));
-      const target = tab.getAttribute('aria-controls');
-      panels.forEach(panel => panel.hidden = panel.id !== target);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }));
-    const phases = [...document.querySelectorAll('.phase')];
-    phases.forEach(phase => phase.addEventListener('toggle', () => {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+    var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function (event) {
+        event.preventDefault();
+        tabs.forEach(function (item) { item.setAttribute('aria-selected', String(item === tab)); });
+        var target = tab.getAttribute('aria-controls');
+        panels.forEach(function (panel) { panel.hidden = panel.id !== target; });
+        if (history.replaceState) history.replaceState(null, '', '#' + target);
+        window.scrollTo(0, 0);
+      });
+    });
+    var requestedPanel = location.hash ? location.hash.slice(1) : '';
+    var requestedTab = tabs.filter(function (tab) { return tab.getAttribute('aria-controls') === requestedPanel; })[0];
+    if (requestedTab) requestedTab.click();
+    var phases = Array.prototype.slice.call(document.querySelectorAll('.phase'));
+    phases.forEach(function (phase) { phase.addEventListener('toggle', function () {
       if (!phase.open) return;
-      phases.forEach(other => { if (other !== phase) other.open = false; });
-    }));
-    const numberWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    const numberNodes = [];
+      phases.forEach(function (other) { if (other !== phase) other.open = false; });
+    }); });
+    var numberWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    var numberNodes = [];
     while (numberWalker.nextNode()) {
-      const node = numberWalker.currentNode;
-      if (/\d/.test(node.nodeValue) && !['SCRIPT', 'STYLE'].includes(node.parentElement?.tagName)) numberNodes.push(node);
+      var node = numberWalker.currentNode;
+      var parentTag = node.parentElement ? node.parentElement.tagName : '';
+      if (/\d/.test(node.nodeValue) && parentTag !== 'SCRIPT' && parentTag !== 'STYLE') numberNodes.push(node);
     }
-    numberNodes.forEach(node => {
-      const parts = node.nodeValue.split(/(\d+(?:[:：.]\d+)?)/g);
+    numberNodes.forEach(function (node) {
+      var parts = node.nodeValue.split(/(\d+(?:[:：.]\d+)?)/g);
       if (parts.length < 2) return;
-      const fragment = document.createDocumentFragment();
-      parts.forEach(part => {
+      var fragment = document.createDocumentFragment();
+      parts.forEach(function (part) {
         if (/^\d+(?:[:：.]\d+)?$/.test(part)) {
-          const span = document.createElement('span');
+          var span = document.createElement('span');
           span.className = 'number-accent';
           span.textContent = part;
           fragment.appendChild(span);
@@ -1036,7 +1049,7 @@
           fragment.appendChild(document.createTextNode(part));
         }
       });
-      node.replaceWith(fragment);
+      node.parentNode.replaceChild(fragment, node);
     });
   </script>
 </body>
