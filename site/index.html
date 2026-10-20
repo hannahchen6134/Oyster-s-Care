@@ -84,6 +84,7 @@
       border-radius: 18px;
       box-shadow: 0 6px 20px rgba(57, 34, 20, .05);
     }
+    .nav-inner.temporary-two-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .tab {
       display: grid;
       place-items: center;
@@ -105,6 +106,8 @@
     main { padding: 28px 0 100px; }
     [hidden] { display: none !important; }
     .panel:target { display: block !important; scroll-margin-top: 92px; }
+    .panel[hidden] { display: none !important; }
+    .panel.temporarily-hidden { display: none !important; }
     .panel { animation: enter .18s ease-out; }
     @keyframes enter { from { opacity: 0; transform: translateY(4px); } }
 
@@ -614,6 +617,7 @@
       h1 { font-size: 26px; line-height: 1.2; letter-spacing: .18em; }
       .nav-wrap { padding: 8px 0; }
       .nav-inner { grid-template-columns: repeat(4, 1fr); }
+      .nav-inner.temporary-two-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .nav-inner { gap: 4px; padding: 4px; border-radius: 15px; }
       .tab { min-height: 42px; padding: 5px 2px; border-radius: 9px; font-size: 13px; }
       main { padding: 16px 0 64px; }
@@ -740,10 +744,10 @@
   </header>
 
   <nav class="nav-wrap" aria-label="主要內容">
-    <div class="nav-inner" role="tablist">
+    <div class="nav-inner temporary-two-tabs" role="tablist">
       <a class="tab" role="tab" aria-selected="true" aria-controls="carePanel" href="#carePanel">照護方式</a>
-      <a class="tab" role="tab" aria-selected="false" aria-controls="recordPanel" href="#recordPanel">怎麼記錄</a>
-      <a class="tab" role="tab" aria-selected="false" aria-controls="rosterPanel" href="#rosterPanel">交班時間</a>
+      <a class="tab" aria-controls="recordPanel" href="#recordPanel" hidden aria-hidden="true" tabindex="-1">怎麼記錄</a>
+      <a class="tab" aria-controls="rosterPanel" href="#rosterPanel" hidden aria-hidden="true" tabindex="-1">交班時間</a>
       <a class="tab" role="tab" aria-selected="false" aria-controls="contactPanel" href="#contactPanel">聯絡青青</a>
     </div>
   </nav>
@@ -815,14 +819,10 @@
               <summary>查看可以吃的食物</summary>
               <div class="detail-body">
                 <figure class="real-photo single-photo">
-                  <img src="assets/dry-food-only-20260924.jpg" alt="蚵仔食用的皇家腸胃道低過敏乾乾">
-                  <figcaption><strong>皇家乾乾：</strong>皇家腸胃道低過敏配方。</figcaption>
-                </figure>
-                <figure class="real-photo single-photo">
                   <img src="assets/dry-food-hills-20260927.jpg" alt="蚵仔可以吃的希爾斯腸胃道生物群系乾糧">
                   <figcaption><strong>希爾斯乾糧：</strong>這包也是蚵仔可以吃的乾乾。</figcaption>
                 </figure>
-                <p class="warning">以上兩種乾乾都可以吃；每次約15g，只在早上、晚上餵。</p>
+                <p class="warning">希爾斯乾乾每次約15g，只在早上、晚上餵。</p>
                 <figure class="real-photo single-photo">
                   <div class="brand-photo-wrap">
                     <img src="assets/canned-food-brands-20260926.jpg" alt="蚵仔可以吃的兩種罐頭，左邊是希爾斯罐頭，右邊是皇家罐頭">
@@ -830,10 +830,6 @@
                     <span class="food-brand-label royal">右邊｜皇家罐頭</span>
                   </div>
                   <figcaption><strong>可以吃的罐頭：</strong>左邊是希爾斯罐頭，右邊是皇家罐頭。每次約35g。</figcaption>
-                </figure>
-                <figure class="real-photo single-photo">
-                  <img src="assets/cucumber-juice-20260927.jpg" alt="蚵仔可以喝的小黃瓜汁">
-                  <figcaption><strong>小黃瓜汁：</strong>每天勿超過100ml，約30支3ml針筒。</figcaption>
                 </figure>
               </div>
             </details>
@@ -941,7 +937,7 @@
       </div>
     </section>
 
-    <section class="panel" id="recordPanel" role="tabpanel" hidden>
+    <section class="panel temporarily-hidden" id="recordPanel" role="tabpanel" hidden aria-hidden="true">
       <article class="tool-box">
         <h2><a class="miaomiao-link" href="https://line.me/R/ti/p/@232mjffx" target="_blank" rel="noopener noreferrer">喵喵管家</a></h2>
         <ol class="four-steps">
@@ -963,7 +959,7 @@
       </article>
     </section>
 
-    <section class="panel" id="rosterPanel" role="tabpanel" hidden>
+    <section class="panel temporarily-hidden" id="rosterPanel" role="tabpanel" hidden aria-hidden="true">
       <div class="roster-intro">
         <h2>照護交班時間</h2>
         <p>依日期查看照護者與時段。</p>
@@ -1004,6 +1000,16 @@
         <h2>需要馬上聯絡時</h2>
         <p>如果看到呼吸不順、倒下、叫不醒、持續抽搐或大量流血，麻煩立刻用 LINE 聯絡青青，謝謝。</p>
       </article>
+      <article class="contact-box">
+        <h2>緊急聯絡人</h2>
+        <p><strong>蔡智堯（我男友）</strong></p>
+        <p><a href="tel:0930030040">0930030040</a></p>
+      </article>
+      <article class="contact-box">
+        <h2>緊急聯絡醫院</h2>
+        <p><strong>湖光動物醫院（我都找院長）</strong></p>
+        <p><strong>需預約。</strong> <a href="https://www.huguang.com.tw/aboutus.html" target="_blank" rel="noopener noreferrer">查看湖光動物醫院網站</a></p>
+      </article>
     </section>
 
     <div class="thanks">
@@ -1013,7 +1019,16 @@
   </main>
 
   <script>
-    var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    function scrollPanelToStart(panel) {
+      if (!panel) return;
+      var root = document.documentElement;
+      var previousBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      panel.scrollIntoView({ block: 'start' });
+      root.style.scrollBehavior = previousBehavior;
+    }
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]:not([hidden])'));
     var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
     tabs.forEach(function (tab) {
       tab.addEventListener('click', function (event) {
@@ -1022,12 +1037,22 @@
         var target = tab.getAttribute('aria-controls');
         panels.forEach(function (panel) { panel.hidden = panel.id !== target; });
         if (history.replaceState) history.replaceState(null, '', '#' + target);
-        window.scrollTo(0, 0);
+        var activePanel = document.getElementById(target);
+        if (activePanel) {
+          requestAnimationFrame(function () {
+            scrollPanelToStart(activePanel);
+          });
+          setTimeout(function () { scrollPanelToStart(activePanel); }, 0);
+        }
       });
     });
     var requestedPanel = location.hash ? location.hash.slice(1) : '';
     var requestedTab = tabs.filter(function (tab) { return tab.getAttribute('aria-controls') === requestedPanel; })[0];
     if (requestedTab) requestedTab.click();
+    window.addEventListener('load', function () {
+      var selectedTab = tabs.filter(function (tab) { return tab.getAttribute('aria-selected') === 'true'; })[0];
+      if (selectedTab) scrollPanelToStart(document.getElementById(selectedTab.getAttribute('aria-controls')));
+    });
     var phases = Array.prototype.slice.call(document.querySelectorAll('.phase'));
     phases.forEach(function (phase) { phase.addEventListener('toggle', function () {
       if (!phase.open) return;
